@@ -26,3 +26,5 @@ simulator/results_quick/
 docs/results_quick/
 __pycache__/
 *.pyc
+eval/results/smoke/
+eval/results/ci/

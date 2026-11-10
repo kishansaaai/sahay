@@ -276,6 +276,8 @@ fun main(args: Array<String>) {
         check(f.suggestion().action == NONE, "flagged ${f.index()}")
     }
 
+    val (lp, lf) = llmTests(args[0]); passed += lp; failures += lf
+
     println("\n$passed passed, $failures failed")
     if (failures > 0) kotlin.system.exitProcess(1)
 }

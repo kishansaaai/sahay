@@ -30,7 +30,7 @@ def load_task(name):
 def _data(obj):
     """Wrap input as data. Public keys only (keys starting with '_' are private to validators). Closing tags are neutralised."""
     pub = {k: v for k, v in obj.items() if not k.startswith("_")}
-    return "<data>" + json.dumps(pub, ensure_ascii=False).replace("</data>", "<\\/data>") + "</data>"
+    return "<data>" + json.dumps(pub, ensure_ascii=False, separators=(",", ":")).replace("</data>", "<\\/data>") + "</data>"
 
 
 def build_messages(task, inp, language="en", error=None, previous=None):
@@ -39,7 +39,7 @@ def build_messages(task, inp, language="en", error=None, previous=None):
         raise ValueError("language must be one of %s" % (LANGS,))
     t = load_task(task)
     ex = [e for e in t["examples"] if e["lang"] == language]
-    shown = "\n\n".join("Input: %s\nOutput: %s" % (_data(e["input"]), json.dumps(e["output"], ensure_ascii=False)) for e in ex)
+    shown = "\n\n".join("Input: %s\nOutput: %s" % (_data(e["input"]), json.dumps(e["output"], ensure_ascii=False, separators=(",", ":"))) for e in ex)
     user = "%s\nLanguage: %s\nSchema: %s\n\n%s\n\nInput: %s\nOutput:" % (
         t["instruction"][language], "Hindi" if language == "hi" else "English",
         json.dumps(t["schema"], ensure_ascii=False, separators=(",", ":")), shown, _data(inp))

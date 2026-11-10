@@ -16,6 +16,12 @@ jobs:
         run: python scripts/validate_content.py
       - name: Learning engine unit tests
         run: python -m unittest discover -s engine/tests
+      - name: LLM layer tests, fixed prompt sets and harness smoke test
+        run: |
+          python -m unittest discover -s llm/tests -t .
+          python eval/prompt_sets.py
+          python eval/run_eval.py --generator mock --label ci --n 20 > /dev/null
+          python export/build_pte.py --checkpoint-dir /nonexistent --dry-run > /dev/null
       - name: Simulator tests
         run: python -m unittest discover -s simulator/tests
       - uses: actions/setup-java@v4
@@ -33,3 +39,6 @@ jobs:
           python3 engine/parity_python.py > /tmp/py.txt || exit 16
           java -cp /tmp/engine.jar:/tmp/tests com.sahay.engine.ParityKt content > /tmp/kt.txt || exit 17
           diff /tmp/py.txt /tmp/kt.txt || exit 18
+          python3 llm/parity_python.py > /tmp/lpy.txt || exit 19
+          java -cp /tmp/engine.jar:/tmp/tests com.sahay.engine.LlmParityKt content > /tmp/lkt.txt || exit 20
+          diff /tmp/lpy.txt /tmp/lkt.txt || exit 21
