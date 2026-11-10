@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="sahay_primary">#0F62FE</color>
+    <color name="sahay_primary_container">#E3F2FD</color>
+    <color name="sahay_secondary">#6750A4</color>
+    <color name="sahay_background">#FDFDFD</color>
+    <color name="sahay_surface">#FFFFFF</color>
+    <color name="sahay_on_background">#1C1B1F</color>
+    <color name="sahay_on_surface">#1C1B1F</color>
+</resources>
