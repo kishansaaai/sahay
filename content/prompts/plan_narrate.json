@@ -1,0 +1,160 @@
+{
+ "task": "plan_narrate",
+ "version": 1,
+ "temperature": 0.7,
+ "max_tokens": 400,
+ "instruction": {
+  "en": "The plan in <data> was built by the app and its order is fixed. Write a short motivating summary and one friendly sentence per item. Return every item id exactly once and do not add, drop or reorder items.",
+  "hi": "<data> में दी गई योजना ऐप ने बनाई है और उसका क्रम तय है। एक छोटा प्रेरक सारांश और हर आइटम के लिए एक मित्रवत वाक्य लिखें। हर आइटम की id ठीक एक बार लौटाएँ; कोई आइटम न जोड़ें, न हटाएँ, न क्रम बदलें।"
+ },
+ "schema": {
+  "type": "object",
+  "required": [
+   "summary",
+   "items"
+  ],
+  "additionalProperties": false,
+  "properties": {
+   "summary": {
+    "type": "string",
+    "minLength": 1,
+    "maxLength": 300
+   },
+   "items": {
+    "type": "array",
+    "minItems": 1,
+    "maxItems": 40,
+    "items": {
+     "type": "object",
+     "required": [
+      "id",
+      "text"
+     ],
+     "additionalProperties": false,
+     "properties": {
+      "id": {
+       "type": "string",
+       "minLength": 1,
+       "maxLength": 40
+      },
+      "text": {
+       "type": "string",
+       "minLength": 1,
+       "maxLength": 160
+      }
+     }
+    }
+   }
+  }
+ },
+ "examples": [
+  {
+   "lang": "en",
+   "input": {
+    "items": [
+     {
+      "id": "p1",
+      "kind": "learn",
+      "skill": "Arrays and indexing",
+      "minutes": 40
+     },
+     {
+      "id": "p2",
+      "kind": "repair",
+      "skill": "Stack",
+      "minutes": 20
+     }
+    ]
+   },
+   "output": {
+    "summary": "A steady start: build array confidence, then fix one stack mix-up.",
+    "items": [
+     {
+      "id": "p1",
+      "text": "Spend 40 minutes learning arrays and indexing."
+     },
+     {
+      "id": "p2",
+      "text": "Take 20 minutes to clear up the stack misconception."
+     }
+    ]
+   }
+  },
+  {
+   "lang": "en",
+   "input": {
+    "items": [
+     {
+      "id": "p1",
+      "kind": "revise",
+      "skill": "Hashing",
+      "minutes": 15
+     }
+    ]
+   },
+   "output": {
+    "summary": "A quick revision keeps hashing fresh.",
+    "items": [
+     {
+      "id": "p1",
+      "text": "Revise hashing for 15 minutes before it fades."
+     }
+    ]
+   }
+  },
+  {
+   "lang": "hi",
+   "input": {
+    "items": [
+     {
+      "id": "p1",
+      "kind": "learn",
+      "skill": "Linked list",
+      "minutes": 30
+     },
+     {
+      "id": "p2",
+      "kind": "revise",
+      "skill": "Arrays",
+      "minutes": 15
+     }
+    ]
+   },
+   "output": {
+    "summary": "आज लिंक्ड लिस्ट सीखें और ऐरे को दोहराएँ। छोटे कदम, पक्की तैयारी।",
+    "items": [
+     {
+      "id": "p1",
+      "text": "30 मिनट लिंक्ड लिस्ट सीखें।"
+     },
+     {
+      "id": "p2",
+      "text": "15 मिनट में ऐरे दोहराएँ।"
+     }
+    ]
+   }
+  },
+  {
+   "lang": "hi",
+   "input": {
+    "items": [
+     {
+      "id": "p1",
+      "kind": "learn",
+      "skill": "Queue",
+      "minutes": 25
+     }
+    ]
+   },
+   "output": {
+    "summary": "आज सिर्फ़ क्यू पर ध्यान दें।",
+    "items": [
+     {
+      "id": "p1",
+      "text": "25 मिनट क्यू सीखें।"
+     }
+    ]
+   }
+  }
+ ]
+}

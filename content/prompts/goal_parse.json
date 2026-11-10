@@ -1,0 +1,111 @@
+{
+ "task": "goal_parse",
+ "version": 1,
+ "temperature": 0.2,
+ "max_tokens": 120,
+ "instruction": {
+  "en": "Read the learner's goal in <data>. Pick the best matching domain_id from domains. Reply with the goal in one short sentence, the domain_id, target_level (beginner, intermediate or advanced) and timeframe_weeks (1 to 52).",
+  "hi": "<data> में दिए गए लक्ष्य को पढ़ें। domains में से सबसे सही domain_id चुनें। लक्ष्य को एक छोटे वाक्य में, domain_id, target_level (beginner, intermediate या advanced) और timeframe_weeks (1 से 52) के साथ लिखें।"
+ },
+ "schema": {
+  "type": "object",
+  "required": [
+   "goal",
+   "domain_id",
+   "target_level",
+   "timeframe_weeks"
+  ],
+  "additionalProperties": false,
+  "properties": {
+   "goal": {
+    "type": "string",
+    "minLength": 1,
+    "maxLength": 200
+   },
+   "domain_id": {
+    "type": "string",
+    "minLength": 1,
+    "maxLength": 40
+   },
+   "target_level": {
+    "type": "string",
+    "enum": [
+     "beginner",
+     "intermediate",
+     "advanced"
+    ]
+   },
+   "timeframe_weeks": {
+    "type": "integer",
+    "minimum": 1,
+    "maximum": 52
+   }
+  }
+ },
+ "examples": [
+  {
+   "lang": "en",
+   "input": {
+    "goal": "I want to crack coding interviews at product companies in 8 weeks",
+    "domains": [
+     "dsa",
+     "mleng"
+    ]
+   },
+   "output": {
+    "goal": "Crack product-company coding interviews",
+    "domain_id": "dsa",
+    "target_level": "advanced",
+    "timeframe_weeks": 8
+   }
+  },
+  {
+   "lang": "en",
+   "input": {
+    "goal": "Learn the basics of machine learning before my semester project",
+    "domains": [
+     "dsa",
+     "mleng"
+    ]
+   },
+   "output": {
+    "goal": "Learn machine learning basics for a semester project",
+    "domain_id": "mleng",
+    "target_level": "beginner",
+    "timeframe_weeks": 10
+   }
+  },
+  {
+   "lang": "hi",
+   "input": {
+    "goal": "मुझे 6 हफ्ते में प्लेसमेंट के लिए डेटा स्ट्रक्चर तैयार करने हैं",
+    "domains": [
+     "dsa",
+     "mleng"
+    ]
+   },
+   "output": {
+    "goal": "प्लेसमेंट के लिए डेटा स्ट्रक्चर की तैयारी",
+    "domain_id": "dsa",
+    "target_level": "intermediate",
+    "timeframe_weeks": 6
+   }
+  },
+  {
+   "lang": "hi",
+   "input": {
+    "goal": "मशीन लर्निंग इंजीनियर की नौकरी के लिए 3 महीने में तैयारी",
+    "domains": [
+     "dsa",
+     "mleng"
+    ]
+   },
+   "output": {
+    "goal": "मशीन लर्निंग इंजीनियर की नौकरी की तैयारी",
+    "domain_id": "mleng",
+    "target_level": "advanced",
+    "timeframe_weeks": 12
+   }
+  }
+ ]
+}

@@ -1,0 +1,119 @@
+{
+ "task": "explain",
+ "version": 1,
+ "temperature": 0.7,
+ "max_tokens": 450,
+ "instruction": {
+  "en": "Explain the skill using only the notes in <data>. Answer the learner's question at their level in at most 120 words. If analogy is true, give a short everyday analogy that uses one of the learner's interests; otherwise set analogy to an empty string. End with one check_question the learner can answer in a sentence. The explanation must name the skill.",
+  "hi": "<data> में दिए नोट्स के आधार पर ही कौशल समझाएँ। सीखने वाले के प्रश्न का उत्तर उसके स्तर के अनुसार अधिकतम 120 शब्दों में दें। यदि analogy true है तो सीखने वाले की किसी रुचि से जुड़ी एक छोटी रोज़मर्रा की उपमा दें, नहीं तो analogy को खाली स्ट्रिंग रखें। अंत में एक check_question दें जिसका उत्तर एक वाक्य में हो। व्याख्या में कौशल का नाम होना चाहिए।"
+ },
+ "schema": {
+  "type": "object",
+  "required": [
+   "skill_id",
+   "explanation",
+   "analogy",
+   "check_question"
+  ],
+  "additionalProperties": false,
+  "properties": {
+   "skill_id": {
+    "type": "string",
+    "minLength": 1,
+    "maxLength": 60
+   },
+   "explanation": {
+    "type": "string",
+    "minLength": 40,
+    "maxLength": 900
+   },
+   "analogy": {
+    "type": "string",
+    "maxLength": 300
+   },
+   "check_question": {
+    "type": "string",
+    "minLength": 10,
+    "maxLength": 250
+   }
+  }
+ },
+ "examples": [
+  {
+   "lang": "en",
+   "input": {
+    "skill_id": "dsa.stack",
+    "skill_name": "Stack",
+    "notes": "A stack is a last-in first-out structure. push adds on top, pop removes the top, peek reads it. All three run in O(1). Stacks power undo, bracket matching and recursion.",
+    "question": "Why is a stack called LIFO?",
+    "interests": [
+     "cricket"
+    ],
+    "analogy": true,
+    "language": "en"
+   },
+   "output": {
+    "skill_id": "dsa.stack",
+    "explanation": "A stack is LIFO: the last item you push is the first one pop removes. push, pop and peek all work only at the top, so each takes O(1).",
+    "analogy": "Like a pile of match scorecards: you always pick up the one placed last.",
+    "check_question": "Which operation removes the top item of a stack?"
+   }
+  },
+  {
+   "lang": "en",
+   "input": {
+    "skill_id": "dsa.queue",
+    "skill_name": "Queue",
+    "notes": "A queue is first-in first-out. enqueue adds at the back, dequeue removes from the front. It is used in BFS and task scheduling.",
+    "question": "Where does a queue add items?",
+    "interests": [],
+    "analogy": false,
+    "language": "en"
+   },
+   "output": {
+    "skill_id": "dsa.queue",
+    "explanation": "A queue is FIFO. New items are added at the back with enqueue, and dequeue removes from the front, so the oldest item leaves first.",
+    "analogy": "",
+    "check_question": "Which end does dequeue remove from?"
+   }
+  },
+  {
+   "lang": "hi",
+   "input": {
+    "skill_id": "dsa.stack",
+    "skill_name": "Stack",
+    "notes": "A stack is a last-in first-out structure. push adds on top, pop removes the top, peek reads it. All three run in O(1). Stacks power undo, bracket matching and recursion.",
+    "question": "स्टैक में पहले कौन सा आइटम निकलता है?",
+    "interests": [
+     "क्रिकेट"
+    ],
+    "analogy": true,
+    "language": "hi"
+   },
+   "output": {
+    "skill_id": "dsa.stack",
+    "explanation": "स्टैक (Stack) LIFO है: जो आइटम सबसे आख़िर में push हुआ, वही सबसे पहले pop होता है। push, pop और peek सिर्फ़ ऊपर से होते हैं, इसलिए हर एक O(1) है।",
+    "analogy": "जैसे स्कोरकार्ड का ढेर: आप सबसे ऊपर रखा आख़िरी कार्ड ही उठाते हैं।",
+    "check_question": "स्टैक का ऊपरी आइटम किस ऑपरेशन से हटता है?"
+   }
+  },
+  {
+   "lang": "hi",
+   "input": {
+    "skill_id": "dsa.queue",
+    "skill_name": "Queue",
+    "notes": "A queue is first-in first-out. enqueue adds at the back, dequeue removes from the front. It is used in BFS and task scheduling.",
+    "question": "क्यू क्या होती है?",
+    "interests": [],
+    "analogy": false,
+    "language": "hi"
+   },
+   "output": {
+    "skill_id": "dsa.queue",
+    "explanation": "क्यू (Queue) FIFO है। enqueue से आइटम पीछे जुड़ता है और dequeue से आगे से निकलता है, इसलिए सबसे पुराना आइटम पहले जाता है।",
+    "analogy": "",
+    "check_question": "dequeue किस सिरे से आइटम हटाता है?"
+   }
+  }
+ ]
+}

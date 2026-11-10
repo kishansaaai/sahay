@@ -1,0 +1,98 @@
+{
+ "task": "hint",
+ "version": 1,
+ "temperature": 0.7,
+ "max_tokens": 150,
+ "instruction": {
+  "en": "Give one hint for the question in <data>. level 0: a gentle nudge toward the right idea. level 1: name the key concept or rule without naming any option. level 2: work the first step of the solution. level 3: explain the full solution and state the correct answer. At levels 0 and 1 never quote or reveal the correct option.",
+  "hi": "<data> के प्रश्न के लिए एक संकेत दें। level 0: सही विचार की ओर हल्का इशारा। level 1: किसी विकल्प का नाम लिए बिना मुख्य अवधारणा या नियम बताएँ। level 2: हल का पहला चरण करके दिखाएँ। level 3: पूरा हल समझाएँ और सही उत्तर बताएँ। level 0 और 1 पर सही विकल्प कभी न लिखें।"
+ },
+ "schema": {
+  "type": "object",
+  "required": [
+   "hint"
+  ],
+  "additionalProperties": false,
+  "properties": {
+   "hint": {
+    "type": "string",
+    "minLength": 10,
+    "maxLength": 350
+   }
+  }
+ },
+ "examples": [
+  {
+   "lang": "en",
+   "input": {
+    "stem": "What is the time complexity of one loop from 1 to n with constant work per step?",
+    "options": [
+     "O(log n)",
+     "O(n)",
+     "O(1)",
+     "O(n^2)"
+    ],
+    "learner_answer": "O(1)",
+    "level": 0,
+    "notes": "Count how many times the dominant operation runs."
+   },
+   "output": {
+    "hint": "Think about how many times the loop body runs as n grows."
+   }
+  },
+  {
+   "lang": "en",
+   "input": {
+    "stem": "What is the time complexity of one loop from 1 to n with constant work per step?",
+    "options": [
+     "O(log n)",
+     "O(n)",
+     "O(1)",
+     "O(n^2)"
+    ],
+    "learner_answer": "O(1)",
+    "level": 2,
+    "notes": "Count how many times the dominant operation runs."
+   },
+   "output": {
+    "hint": "The body runs once per value of i, so it runs n times. Now match that count to a complexity class."
+   }
+  },
+  {
+   "lang": "hi",
+   "input": {
+    "stem": "n तक एक लूप, हर चरण में स्थिर काम, की समय जटिलता क्या है?",
+    "options": [
+     "O(log n)",
+     "O(n)",
+     "O(1)",
+     "O(n^2)"
+    ],
+    "learner_answer": "O(1)",
+    "level": 1,
+    "notes": "सबसे ज़्यादा चलने वाले ऑपरेशन की गिनती करें।"
+   },
+   "output": {
+    "hint": "याद रखें, समय जटिलता यह गिनती है कि मुख्य ऑपरेशन n बढ़ने पर कितनी बार चलता है।"
+   }
+  },
+  {
+   "lang": "hi",
+   "input": {
+    "stem": "n तक एक लूप, हर चरण में स्थिर काम, की समय जटिलता क्या है?",
+    "options": [
+     "O(log n)",
+     "O(n)",
+     "O(1)",
+     "O(n^2)"
+    ],
+    "learner_answer": "O(1)",
+    "level": 3,
+    "notes": "सबसे ज़्यादा चलने वाले ऑपरेशन की गिनती करें।"
+   },
+   "output": {
+    "hint": "लूप की बॉडी n बार चलती है और हर बार काम स्थिर है, इसलिए कुल समय O(n) है।"
+   }
+  }
+ ]
+}
