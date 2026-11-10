@@ -18,6 +18,10 @@ jobs:
         run: python -m unittest discover -s engine/tests
       - name: Simulator tests
         run: python -m unittest discover -s simulator/tests
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
       - name: Kotlin engine tests and Python parity
         run: |
           curl -fsSL -o /tmp/kc.zip https://github.com/JetBrains/kotlin/releases/download/v2.0.21/kotlin-compiler-2.0.21.zip || exit 11
