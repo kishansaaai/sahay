@@ -16,3 +16,5 @@ jobs:
         run: python scripts/validate_content.py
       - name: Learning engine unit tests
         run: python -m unittest discover -s engine/tests
+      - name: Simulator tests
+        run: python -m unittest discover -s simulator/tests

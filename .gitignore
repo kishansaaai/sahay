@@ -19,3 +19,10 @@ __pycache__/
 .venv/
 # OS
 .DS_Store
+
+# Simulator raw shards (regenerable: python simulator/run_all.py)
+simulator/results/
+simulator/results_quick/
+docs/results_quick/
+__pycache__/
+*.pyc

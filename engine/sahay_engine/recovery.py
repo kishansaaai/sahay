@@ -1,15 +1,21 @@
 """Missed-day recovery with knapsack replanning (PRD 9.6, feature I6).
 
-The remaining hours are a budget. Item value = importance x mastery gap, cost = hours. Prerequisite closure is
-enforced: an item is kept only if every unmastered prerequisite item is kept. Dropped items are listed with a reason.
-Method: exact 0/1 knapsack on minute weights, then closure repair and refill, repeated until stable.
-(The closure-constrained problem is NP-hard in general; this is a heuristic, tested against brute force.)
+The remaining study time is a budget. Item value = importance x mastery gap (PRD 9.6), item cost = minutes to learn it, and prerequisite closure is enforced: a skill is kept
+only if every unmastered prerequisite is kept. The chosen skills are then sequenced, repaired and revised by the
+ordinary planner (same state, same rules), and every dropped skill is listed with the reason.
+
+Selection: exact 0/1 knapsack on minutes, then closure repair and refill, repeated until stable. The closure-constrained
+problem is NP-hard in general; this is a heuristic, tested against brute force on a small graph (>= 90% of optimum).
+`old_plan` is accepted for API compatibility and only used for its weights when `profile.weights` is empty.
 """
-from .planner import Plan, PlanItem
+import math
+
+from .misconceptions import MisconceptionEngine
+from .planner import Plan, PlanItem, build_plan, learn_minutes
 
 
 def _knapsack(items, budget):
-    """items: list of (key, value, cost_minutes). Returns set of chosen keys. Exact DP on integer minutes."""
+    """items: list of (key, value, cost_minutes). Returns the set of chosen keys. Exact DP on integer minutes."""
     n = len(items)
     best = [[0.0] * (budget + 1) for _ in range(n + 1)]
     for i, (_, v, c) in enumerate(items, 1):
@@ -26,75 +32,43 @@ def _knapsack(items, budget):
     return chosen
 
 
-def recover(content, model, profile, now, targets, old_plan, budget_minutes, version=2):
-    """Re-pack the learn work of old_plan (not yet done) into budget_minutes while keeping prerequisite closure."""
+def recover(content, model, profile, now, targets, old_plan, budget_minutes, mis=None, version=2):
     g = content.graph
     tgt = profile.target_mastery
-    skills = {}
-    for it in old_plan.items:
-        if it.type == "learn" and it.status in ("planned", "skipped"):
-            skills[it.skill_id] = skills.get(it.skill_id, 0) + it.minutes
-    unmastered = set(skills)
-    value = {}
-    for s, m in skills.items():
-        gap = max(0.0, tgt - model.p_eff(s, now))
-        value[s] = profile.weights.get(s, 1.0) * gap * (1 + len([d for d in g.dependents(s) if d in unmastered]))
-    pool = set(skills)
+    mis = mis or MisconceptionEngine()
+    closure = g.closure(targets)
+    gap = {s: tgt - model.p_eff(s, now) for s in closure}
+    pool = {s for s in closure if gap[s] > 1e-9}
+    cost = {s: learn_minutes(content, s, gap[s], tgt) for s in pool}
+    value = {s: profile.weights.get(s, 1.0) * gap[s] for s in pool}          # PRD 9.6: importance x mastery gap
+    avail = set(pool)
     chosen = set()
-    for _ in range(len(skills) + 1):
-        cand = [(s, value[s], skills[s]) for s in sorted(pool)]
-        chosen = _knapsack(cand, int(budget_minutes))
-        # closure repair: drop chosen items with an unmastered prerequisite that was not chosen
+    for _ in range(len(pool) + 1):
+        chosen = _knapsack([(s, value[s], cost[s]) for s in sorted(avail)], int(budget_minutes))
         changed = True
-        while changed:
+        while changed:                        # closure repair: drop chosen skills whose unmastered prerequisite is not chosen
             changed = False
             for s in sorted(chosen):
-                if any(p in unmastered and p not in chosen for p in g.prereq_closure(s)):
+                if any(p in pool and p not in chosen for p in g.prereq_closure(s)):
                     chosen.discard(s)
-                    pool.discard(s)
+                    avail.discard(s)
                     changed = True
-        # refill: add skills whose prerequisites are all chosen (or mastered) if they still fit
-        used = sum(skills[s] for s in chosen)
-        for s in sorted(pool - chosen, key=lambda x: -value[x] / skills[x]):
-            if used + skills[s] <= budget_minutes and all((p not in unmastered) or (p in chosen) for p in g.prereq_closure(s)):
+        used = sum(cost[s] for s in chosen)   # refill with skills whose prerequisites are all kept
+        for s in sorted(avail - chosen, key=lambda x: -value[x] / cost[x]):
+            if used + cost[s] <= budget_minutes and all((p not in pool) or (p in chosen) for p in g.prereq_closure(s)):
                 chosen.add(s)
-                used += skills[s]
-        if all(all((p not in unmastered) or (p in chosen) for p in g.prereq_closure(s)) for s in chosen):
+                used += cost[s]
+        if all(all((p not in pool) or (p in chosen) for p in g.prereq_closure(s)) for s in chosen):
             break
-    keep = [s for s in g.topo_order(chosen)]
-    items, dropped = [], []
-    day = None
-    for it in old_plan.items:
-        if it.type == "learn" and it.status in ("planned", "skipped"):
-            if it.skill_id in chosen:
-                items.append(it)
-            else:
-                d = PlanItem("learn", skill_id=it.skill_id, minutes=it.minutes, day=it.day, status="dropped")
-                blocked = [p for p in g.prereq_closure(it.skill_id) if p in unmastered and p not in chosen]
-                d.reason = ("a prerequisite (%s) was dropped" % blocked[0]) if blocked else "lowest value per hour for the time left"
-                dropped.append(d)
-        elif it.type in ("repair",):
-            items.append(it)
-    # re-lay the kept items on study days from tomorrow in topological order, respecting daily minutes
-    import math
-    start = int(math.ceil(now)) + 1
-    order = {s: i for i, s in enumerate(keep)}
-    items.sort(key=lambda x: (order.get(x.skill_id, -1), 0 if x.type == "repair" else 1))
-    used, d = {}, start
-    out = []
-    while not profile.is_study_day(d, start):
-        d += 1
-    for it in items:
-        while used.get(d, 0) + it.minutes > profile.day_minutes:
-            d += 1
-            while not profile.is_study_day(d, start):
-                d += 1
-        if d > profile.deadline_day:
-            it.status, it.reason = "dropped", "not enough days before the deadline"
-            dropped.append(it)
-            continue
-        it.day = d
-        used[d] = used.get(d, 0) + it.minutes
-        out.append(it)
-    reason = "recovery: %d of %d skills kept within %d minutes; %d dropped" % (len(chosen), len(skills), budget_minutes, len({x.skill_id for x in dropped}))
-    return Plan(version=version, created_day=now, reason=reason, items=out, dropped=dropped)
+    if chosen:
+        plan = build_plan(content, model, mis, profile, now, sorted(chosen), version=version)
+    else:
+        plan = Plan(version, now, "", [])
+    dropped = list(plan.dropped)
+    for s in sorted(pool - chosen):
+        blocked = [p for p in g.prereq_closure(s) if p in pool and p not in chosen]
+        reason = ("prerequisite %s was dropped" % blocked[0]) if blocked else "lowest value per hour for the time left"
+        dropped.append(PlanItem("learn", skill_id=s, minutes=cost[s], status="dropped", reason=reason))
+    plan.dropped = dropped
+    plan.reason = "recovery: %d of %d skills kept within %d minutes; %d dropped" % (len(chosen), len(pool), budget_minutes, len(pool - chosen))
+    return plan

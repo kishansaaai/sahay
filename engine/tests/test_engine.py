@@ -220,7 +220,11 @@ class TestPlanner(unittest.TestCase):
             mastered = {s for s in C.graph.closure(targets) if m.p_eff(s, now) >= tgt}
             dropped_skills = {d.skill_id for d in plan.dropped}
             # dropped items only at the tail; planned learn skills must have all unmastered prereqs planned first
-            self.assertEqual(plan.prerequisite_violations(C, mastered | dropped_skills), 0, (i, targets))
+            self.assertEqual(plan.prerequisite_violations(C, mastered), 0, (i, targets))
+            planned = {it.skill_id for it in plan.items if it.type == "learn"}
+            for s in planned:               # every direct prerequisite is planned, mastered, or dropped at the tail
+                for pq in C.graph.prereqs(s):
+                    self.assertTrue(pq in planned or pq in mastered or pq in dropped_skills, (i, s, pq))
             self.assertTrue(plan.reason)
             for it in plan.items:
                 self.assertLessEqual(it.day, prof.deadline_day)
@@ -295,7 +299,7 @@ class TestRecovery(unittest.TestCase):
     def test_closure_budget_and_reasons(self):
         for frac in (0.2, 0.4, 0.6, 0.8):
             budget = int(self.total_learn() * frac)
-            rec = recover(C, self.m, self.prof, 0, self.targets, self.old, budget)
+            rec = recover(C, self.m, self.prof, 0, self.targets, self.old, budget, mis=self.mis)
             kept = {i.skill_id for i in rec.items if i.type == "learn"}
             self.assertLessEqual(sum(i.minutes for i in rec.items if i.type == "learn"), budget)
             for s in kept:
@@ -321,7 +325,7 @@ class TestRecovery(unittest.TestCase):
         ids = list(skills)
         def value(s):
             unm = set(ids)
-            return max(0, 0.8 - m.p_eff(s, 0)) * (1 + len([d for d in C.graph.dependents(s) if d in unm]))
+            return max(0, 0.8 - m.p_eff(s, 0))
         best = 0.0
         for r in range(len(ids) + 1):
             for sub in itertools.combinations(ids, r):

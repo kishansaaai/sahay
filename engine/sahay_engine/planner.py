@@ -69,7 +69,9 @@ class Plan:
         return order
 
     def prerequisite_violations(self, content, mastered=()):
-        """Count learn skills whose first session is not after the last session of every unmastered DIRECT prerequisite."""
+        """Count planned learn skills whose first session is not after the last session of every planned DIRECT prerequisite.
+        A prerequisite that is not in the plan is skipped here (it was judged mastered or dropped at the tail); the
+        planner tests separately that every unplanned prerequisite really is mastered or dropped."""
         first, last = {}, {}
         for i, it in enumerate(self.items):
             if it.type == "learn":
@@ -80,10 +82,15 @@ class Plan:
             for p in content.graph.prereqs(s):
                 if p in mastered:
                     continue
-                if p not in last or last[p] > f:
+                if p in last and last[p] > f:
                     bad += 1
                     break
         return bad
+
+
+def learn_minutes(content, skill, gap, target):
+    """Minutes the planner allots to learn a skill whose mastery gap is `gap` (shared with recovery)."""
+    return max(MIN_LEARN_MIN, int(round(content.graph.est_hours(skill) * 60 * min(1.0, gap / target))))
 
 
 def _chunks(total, cap=SESSION_MIN):
@@ -120,7 +127,7 @@ def build_plan(content, model, mis, profile, now, targets, version=1,
 
     seq = []
     for s in order:
-        minutes = max(MIN_LEARN_MIN, int(round(g.est_hours(s) * 60 * min(1.0, (tgt - cur[s]) / tgt))))
+        minutes = learn_minutes(content, s, tgt - cur[s], tgt)
         for c in _chunks(minutes):
             seq.append(PlanItem("learn", skill_id=s, minutes=c, reason="gap %.2f, need %.3f" % (tgt - cur[s], need(s))))
 
@@ -220,17 +227,12 @@ def build_plan(content, model, mis, profile, now, targets, version=1,
     return Plan(version=version, created_day=now, reason=reason, items=items, dropped=dropped)
 
 
-def plan_stability(old, new, horizon_days=7):
-    """Fraction of the old plan's next-week items that moved (different day or dropped) in the new plan."""
-    if old is None:
-        return 0.0
-    lo = min((i.day for i in old.items), default=0)
-    first = [i for i in old.items if i.day < lo + horizon_days]
-    if not first:
+def plan_stability(old, new, k=10):
+    """Fraction of the next k items of the old plan (by order) that are no longer among the next k items of the new plan.
+    0 means the near-term plan did not change; 1 means it was completely reshuffled."""
+    if old is None or not old.items:
         return 0.0
     key = lambda i: (i.type, i.skill_id, i.misconception_id)
-    newmap = {}
-    for i in new.items:
-        newmap.setdefault(key(i), set()).add(i.day)
-    moved = sum(1 for i in first if i.day not in newmap.get(key(i), set()))
-    return moved / len(first)
+    a = [key(i) for i in old.items[:k]]
+    b = {key(i) for i in new.items[:k]}
+    return sum(1 for x in a if x not in b) / len(a)
