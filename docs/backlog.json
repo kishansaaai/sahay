@@ -1,0 +1,1052 @@
+{
+  "milestones": [
+    {
+      "key": "G1",
+      "title": "Gate 1 - demo app runs (Nov 11)",
+      "due": "2026-11-11T18:29:00Z",
+      "description": "Official ExecuTorch Llama Android demo runs on a real phone; repo, CI and content schema ready."
+    },
+    {
+      "key": "G2",
+      "title": "Gate 2 - streaming chat on phone (Nov 14)",
+      "due": "2026-11-14T18:29:00Z",
+      "description": "Our INT4 Llama 3.2 1B streams tokens inside our own app; first benchmark numbers exist."
+    },
+    {
+      "key": "G3",
+      "title": "Gate 3 - adaptive loop end to end (Nov 17)",
+      "due": "2026-11-17T18:29:00Z",
+      "description": "Intake, diagnostic, roadmap, a wrong answer and an adapted plan work end to end, offline."
+    },
+    {
+      "key": "G4",
+      "title": "Gate 4 - feature status review (Nov 19)",
+      "due": "2026-11-19T18:29:00Z",
+      "description": "Every innovation feature is marked Shipped, Prototype or Cut; beta testers have the APK."
+    },
+    {
+      "key": "G5",
+      "title": "Gate 5 - feature freeze (Nov 21)",
+      "due": "2026-11-21T18:29:00Z",
+      "description": "Feature freeze. From here only bug fixes, benchmarks, video and report."
+    },
+    {
+      "key": "SUB",
+      "title": "Submit - Nov 22 (deadline Nov 23)",
+      "due": "2026-11-22T18:29:00Z",
+      "description": "Repo, APK, demo video and technical report submitted through the organisers' form."
+    }
+  ],
+  "streams": {
+    "A": {
+      "name": "Runtime and ML",
+      "label": "stream:A-runtime-ml"
+    },
+    "B": {
+      "name": "Android and Device",
+      "label": "stream:B-android-device"
+    },
+    "C": {
+      "name": "Learning Engine and Evaluation",
+      "label": "stream:C-engine-eval"
+    }
+  },
+  "issues": [
+    {
+      "id": "A01",
+      "stream": "A",
+      "milestone": "G1",
+      "points": 3,
+      "priority": "P0",
+      "type": "infra",
+      "title": "Run the official ExecuTorch Llama Android demo on a real phone",
+      "prd": "Section 6 (B1), Section 18",
+      "acceptance": [
+        "Demo app installs and generates text on the team test phone",
+        "Phone model, RAM, Android version and exact steps are recorded in docs/setup-runtime.md",
+        "Any blocker is emailed to tech-queries@armbharatchallenge.com the same day (subject starts with PS4)"
+      ],
+      "blocked_by": []
+    },
+    {
+      "id": "A02",
+      "stream": "A",
+      "milestone": "G1",
+      "points": 1,
+      "priority": "P0",
+      "type": "docs",
+      "title": "Accept the Llama licence; record licences and credits",
+      "prd": "Section 2, Section 17",
+      "acceptance": [
+        "Model access is confirmed",
+        "LICENSES/ lists the Llama licence notice, and every library or dataset is added as it is introduced"
+      ],
+      "blocked_by": []
+    },
+    {
+      "id": "A03",
+      "stream": "A",
+      "milestone": "G2",
+      "points": 5,
+      "priority": "P0",
+      "type": "infra",
+      "title": "Export Llama 3.2 1B Instruct to INT4 .pte with a reproducible script",
+      "prd": "Section 6 (B1), Section 10.1",
+      "acceptance": [
+        "export/ script builds the .pte from a clean checkout and documents the exact quantization recipe",
+        "SHA-256 is recorded in releases/CHECKSUMS.txt; the model file is NOT committed to Git",
+        "Model answers a fixed 20-prompt set on the phone"
+      ],
+      "blocked_by": [
+        "A01",
+        "A02"
+      ]
+    },
+    {
+      "id": "A04",
+      "stream": "A",
+      "milestone": "G2",
+      "points": 5,
+      "priority": "P0",
+      "type": "feature",
+      "title": "JNI wrapper: load, streaming generate, stop, unload",
+      "prd": "Section 6 (B2)",
+      "acceptance": [
+        "Tokens reach Kotlin through a Flow as they are generated",
+        "Stop halts generation within 500 ms",
+        "No memory growth over 200 consecutive generations"
+      ],
+      "blocked_by": [
+        "A03"
+      ]
+    },
+    {
+      "id": "A05",
+      "stream": "A",
+      "milestone": "G2",
+      "points": 3,
+      "priority": "P0",
+      "type": "feature",
+      "title": "Model manager: lazy load, warm-up, low-memory handling",
+      "prd": "Section 6 (B3)",
+      "acceptance": [
+        "App survives a simulated onTrimMemory without crashing and reloads the model on next use",
+        "Warm-up generation runs at app start so the first user request is fast"
+      ],
+      "blocked_by": [
+        "A04"
+      ]
+    },
+    {
+      "id": "A06",
+      "stream": "A",
+      "milestone": "G2",
+      "points": 3,
+      "priority": "P0",
+      "type": "eval",
+      "title": "Benchmark harness v1: time to first token, tokens/sec, RAM",
+      "prd": "Section 11.1",
+      "acceptance": [
+        "One command or screen reports median and p95 over 10 runs",
+        "First numbers are committed under bench/ with the phone model and conditions"
+      ],
+      "blocked_by": [
+        "A04"
+      ]
+    },
+    {
+      "id": "A07",
+      "stream": "A",
+      "milestone": "G3",
+      "points": 5,
+      "priority": "P0",
+      "type": "feature",
+      "title": "Prompt templates and JSON schemas for every LLM task",
+      "prd": "Section 10.2, Section 10.3",
+      "acceptance": [
+        "content/prompts/ has a template and schema for goal parsing, plan narration, concept explanation, hint, question drafting, teach-back grading and syllabus compilation",
+        "System prompt is under 300 tokens and identical across tasks",
+        "Each template has two examples; Hindi and English variants exist"
+      ],
+      "blocked_by": [
+        "A03"
+      ]
+    },
+    {
+      "id": "A08",
+      "stream": "A",
+      "milestone": "G3",
+      "points": 5,
+      "priority": "P0",
+      "type": "feature",
+      "title": "Orchestrator: validate output, retry twice, fall back to templates",
+      "prd": "Section 10.4",
+      "acceptance": [
+        "Output is checked against the task schema and validator",
+        "Up to two retries append the exact validation error to the prompt",
+        "After that a deterministic template or simpler question is used; the learner never sees a parse error",
+        "Validity rate per task is logged for the report"
+      ],
+      "blocked_by": [
+        "A04",
+        "A07"
+      ]
+    },
+    {
+      "id": "A09",
+      "stream": "A",
+      "milestone": "G3",
+      "points": 3,
+      "priority": "P1",
+      "type": "feature",
+      "title": "Grounded explanations with analogy and language parameters (I5)",
+      "prd": "Section 6 (I5), Section 10.2",
+      "acceptance": [
+        "Explanation uses the skill's reference note looked up by skill id",
+        "Interest-based analogy toggle works; output language switches between Hindi and English",
+        "Output includes one check question"
+      ],
+      "blocked_by": [
+        "A07",
+        "A08"
+      ]
+    },
+    {
+      "id": "A10",
+      "stream": "A",
+      "milestone": "G3",
+      "points": 3,
+      "priority": "P1",
+      "type": "feature",
+      "title": "Hint generation without answer leakage (I1, LLM side)",
+      "prd": "Section 9.4, Section 10.3",
+      "acceptance": [
+        "Hint levels 0 and 1 never contain the correct option text (automated test)",
+        "Levels escalate: nudge, hint, worked step, solution"
+      ],
+      "blocked_by": [
+        "A07",
+        "A08"
+      ]
+    },
+    {
+      "id": "A11",
+      "stream": "A",
+      "milestone": "G4",
+      "points": 3,
+      "priority": "P1",
+      "type": "feature",
+      "title": "Teach-back grading: rubric prompt and validator (I7)",
+      "prd": "Section 6 (I7), Section 10.3",
+      "acceptance": [
+        "Scores for accuracy, completeness, clarity and example are in range 0 to 3; feedback is mandatory",
+        "At least 70% agreement with a human grader on 40 sample explanations (measured in A17)"
+      ],
+      "blocked_by": [
+        "A08"
+      ]
+    },
+    {
+      "id": "A12",
+      "stream": "A",
+      "milestone": "G4",
+      "points": 3,
+      "priority": "P1",
+      "type": "feature",
+      "title": "Syllabus compiler: OCR text to skill graph draft with validator (I4)",
+      "prd": "Section 6 (I4), Section 10.3",
+      "acceptance": [
+        "Graph must be acyclic and have at most 60 skills; invalid graphs are rejected",
+        "At least 80% of topics captured on 5 real syllabi",
+        "OCR text is treated as data inside delimiters, never as instructions"
+      ],
+      "blocked_by": [
+        "A08"
+      ]
+    },
+    {
+      "id": "A13",
+      "stream": "A",
+      "milestone": "G4",
+      "points": 5,
+      "priority": "P1",
+      "type": "feature",
+      "title": "Thermal, battery and memory governor with four modes (I2)",
+      "prd": "Section 6 (I2), Section 11.3",
+      "acceptance": [
+        "Reads thermal status, battery level, charging state and free memory every few seconds",
+        "Modes Full, Balanced, Saver, Pause change generation limits and thread count",
+        "Every mode change is logged with a reason and visible in the debug panel"
+      ],
+      "blocked_by": [
+        "A05"
+      ]
+    },
+    {
+      "id": "A14",
+      "stream": "A",
+      "milestone": "G5",
+      "points": 3,
+      "priority": "P1",
+      "type": "eval",
+      "title": "Sustained 20-minute thermal test with and without the governor",
+      "prd": "Section 11.1, Section 11.3",
+      "acceptance": [
+        "Chart of tokens/sec over time with governor on and off",
+        "Governor keeps tokens/sec within 25% of peak, or the shortfall is reported honestly"
+      ],
+      "blocked_by": [
+        "A13"
+      ]
+    },
+    {
+      "id": "A15",
+      "stream": "A",
+      "milestone": "G5",
+      "points": 3,
+      "priority": "P1",
+      "type": "eval",
+      "title": "Energy-per-token and battery-per-session measurement protocol",
+      "prd": "Section 11.1",
+      "acceptance": [
+        "Method, starting charge, brightness and uncertainty are written down",
+        "Results for 1B INT4 are in bench/; a USB power meter is used if one is available"
+      ],
+      "blocked_by": [
+        "A06"
+      ]
+    },
+    {
+      "id": "A16",
+      "stream": "A",
+      "milestone": "G5",
+      "points": 5,
+      "priority": "P1",
+      "type": "eval",
+      "title": "LLM evaluation harness: JSON validity, rubric scoring, base vs tuned",
+      "prd": "Section 12.3",
+      "acceptance": [
+        "500 fixed prompts per task; validity rate before and after retry reported",
+        "Scripts for the two-reviewer explanation rubric and the Hindi review sample",
+        "One command reproduces the LLM numbers in the report"
+      ],
+      "blocked_by": [
+        "A08"
+      ]
+    },
+    {
+      "id": "A17",
+      "stream": "A",
+      "milestone": "G5",
+      "points": 3,
+      "priority": "P2",
+      "type": "experiment",
+      "title": "Prompt prefix or KV-cache reuse experiment (X4)",
+      "prd": "Section 11.4",
+      "acceptance": [
+        "Ask mentors whether the ExecuTorch Android runner supports prefix reuse",
+        "Report time to first token with and without the optimisation, or document why it is not possible"
+      ],
+      "blocked_by": [
+        "A06"
+      ]
+    },
+    {
+      "id": "A18",
+      "stream": "A",
+      "milestone": "G5",
+      "points": 5,
+      "priority": "P2",
+      "type": "experiment",
+      "title": "Offline LoRA fine-tune for tutoring tone and JSON discipline (X5)",
+      "prd": "Section 10.7",
+      "acceptance": [
+        "Reviewed, licensed training data in Hindi and English",
+        "Adapter merged, quantized and exported to ExecuTorch",
+        "Evaluation compares tuned vs base; the base model ships if tuned is not better"
+      ],
+      "blocked_by": [
+        "A16"
+      ]
+    },
+    {
+      "id": "A19",
+      "stream": "A",
+      "milestone": "G5",
+      "points": 1,
+      "priority": "P0",
+      "type": "infra",
+      "title": "Model checksums and release asset (no model in Git)",
+      "prd": "Section 14, Section 17",
+      "acceptance": [
+        "SHA-256 of every shipped model is verified at load",
+        "Model file is attached to a GitHub release or documented transfer method"
+      ],
+      "blocked_by": [
+        "A03"
+      ]
+    },
+    {
+      "id": "B01",
+      "stream": "B",
+      "milestone": "G1",
+      "points": 3,
+      "priority": "P0",
+      "type": "infra",
+      "title": "Repo skeleton: Gradle modules (app, engine), CI, formatting",
+      "prd": "Section 7, Section 17.1",
+      "acceptance": [
+        "app and engine are separate Gradle modules; engine has no Android dependency",
+        "CI runs unit tests and scripts/ci_checks.py on every push"
+      ],
+      "blocked_by": []
+    },
+    {
+      "id": "B02",
+      "stream": "B",
+      "milestone": "G1",
+      "points": 1,
+      "priority": "P0",
+      "type": "infra",
+      "title": "Release manifest without INTERNET permission, enforced in CI (B4)",
+      "prd": "Section 6 (B4), Section 14",
+      "acceptance": [
+        "AndroidManifest.xml declares no INTERNET permission",
+        "scripts/ci_checks.py fails the build if the permission appears"
+      ],
+      "blocked_by": [
+        "B01"
+      ]
+    },
+    {
+      "id": "B03",
+      "stream": "B",
+      "milestone": "G2",
+      "points": 3,
+      "priority": "P0",
+      "type": "feature",
+      "title": "Compose app shell: navigation, theme, string resources",
+      "prd": "Section 13",
+      "acceptance": [
+        "Screens in section 13.1 exist as navigable stubs",
+        "All user-facing text comes from string resources"
+      ],
+      "blocked_by": [
+        "B01"
+      ]
+    },
+    {
+      "id": "B04",
+      "stream": "B",
+      "milestone": "G2",
+      "points": 3,
+      "priority": "P0",
+      "type": "feature",
+      "title": "Room database schema and repositories",
+      "prd": "Section 8",
+      "acceptance": [
+        "Entities match the PRD data model: Skill, Question, LearnerProfile, SkillState, MisconceptionState, Attempt, Plan, PlanItem, Session, TeachBack",
+        "Attempt rows are the single source of truth and can be replayed",
+        "Learner snapshot export and import as JSON"
+      ],
+      "blocked_by": [
+        "B01"
+      ]
+    },
+    {
+      "id": "B05",
+      "stream": "B",
+      "milestone": "G3",
+      "points": 5,
+      "priority": "P0",
+      "type": "feature",
+      "title": "Intake chat UI with quick-reply chips (C1)",
+      "prd": "Section 6 (C1), Section 13",
+      "acceptance": [
+        "Collects goal, level, hours per week, deadline, interests and language",
+        "Produces a valid LearnerProfile; free-text goals fall back to chips if parsing fails"
+      ],
+      "blocked_by": [
+        "B03",
+        "B04",
+        "A08"
+      ]
+    },
+    {
+      "id": "B06",
+      "stream": "B",
+      "milestone": "G3",
+      "points": 3,
+      "priority": "P0",
+      "type": "feature",
+      "title": "Streaming tutor chat UI with stop button (C6)",
+      "prd": "Section 6 (C6)",
+      "acceptance": [
+        "First token on screen within 3 seconds on the test phone",
+        "Visible stop button; answers cite the current skill and can show the source note"
+      ],
+      "blocked_by": [
+        "A04",
+        "B03"
+      ]
+    },
+    {
+      "id": "B07",
+      "stream": "B",
+      "milestone": "G3",
+      "points": 5,
+      "priority": "P0",
+      "type": "feature",
+      "title": "Diagnostic quiz UI with confidence slider and hint ladder button (C3, I1)",
+      "prd": "Section 6 (C3, I1), Section 13",
+      "acceptance": [
+        "Confidence slider 0 to 100 before each answer; hint button escalates the ladder",
+        "Each attempt stores confidence, response time and hint level"
+      ],
+      "blocked_by": [
+        "B03",
+        "B04"
+      ]
+    },
+    {
+      "id": "B08",
+      "stream": "B",
+      "milestone": "G3",
+      "points": 3,
+      "priority": "P0",
+      "type": "feature",
+      "title": "Roadmap screen with reasons and 'why this' sheet",
+      "prd": "Section 13.1",
+      "acceptance": [
+        "Weekly cards show learn, practice, revise and repair items",
+        "Every plan change shows one sentence on why it changed"
+      ],
+      "blocked_by": [
+        "B03"
+      ]
+    },
+    {
+      "id": "B09",
+      "stream": "B",
+      "milestone": "G3",
+      "points": 3,
+      "priority": "P0",
+      "type": "feature",
+      "title": "Today and study/practice screens",
+      "prd": "Section 13.1",
+      "acceptance": [
+        "One clear next action with estimated minutes",
+        "Streamed explanation, analogy toggle, and check question"
+      ],
+      "blocked_by": [
+        "B03",
+        "A09"
+      ]
+    },
+    {
+      "id": "B10",
+      "stream": "B",
+      "milestone": "G4",
+      "points": 5,
+      "priority": "P0",
+      "type": "feature",
+      "title": "Dashboard: mastery heatmap, forecast to goal, calibration chart (C7)",
+      "prd": "Section 6 (C7)",
+      "acceptance": [
+        "Updates within 1 second of finishing a quiz; works in portrait and landscape",
+        "Lists active misconceptions"
+      ],
+      "blocked_by": [
+        "B04",
+        "C06"
+      ]
+    },
+    {
+      "id": "B11",
+      "stream": "B",
+      "milestone": "G4",
+      "points": 2,
+      "priority": "P1",
+      "type": "feature",
+      "title": "Recover screen: before/after plan and dropped items (I6)",
+      "prd": "Section 6 (I6)",
+      "acceptance": [
+        "Shows what was dropped and why; never exceeds declared weekly hours"
+      ],
+      "blocked_by": [
+        "C11"
+      ]
+    },
+    {
+      "id": "B12",
+      "stream": "B",
+      "milestone": "G4",
+      "points": 5,
+      "priority": "P1",
+      "type": "feature",
+      "title": "Camera OCR scan for syllabus and textbook page (I4, I8)",
+      "prd": "Section 6 (I4, I8)",
+      "acceptance": [
+        "On-device OCR preview with edit-before-generate",
+        "Works in airplane mode; scan-to-quiz under 60 seconds on the main phone"
+      ],
+      "blocked_by": [
+        "B03",
+        "A12"
+      ]
+    },
+    {
+      "id": "B13",
+      "stream": "B",
+      "milestone": "G4",
+      "points": 3,
+      "priority": "P1",
+      "type": "feature",
+      "title": "Device and energy screen; settings with data export and delete",
+      "prd": "Section 13.1, Section 14",
+      "acceptance": [
+        "Shows governor mode, tokens/sec and battery cost",
+        "One tap deletes all data; JSON export works"
+      ],
+      "blocked_by": [
+        "A13"
+      ]
+    },
+    {
+      "id": "B14",
+      "stream": "B",
+      "milestone": "G4",
+      "points": 3,
+      "priority": "P1",
+      "type": "experiment",
+      "title": "Thread sweep and INT8 / Llama 3.2 3B comparison runs on device",
+      "prd": "Section 11.2",
+      "acceptance": [
+        "Best thread count identified for decode",
+        "1B INT4 vs 1B INT8 vs 3B INT4 table with speed, RAM and a fixed quality task set"
+      ],
+      "blocked_by": [
+        "A06"
+      ]
+    },
+    {
+      "id": "B15",
+      "stream": "B",
+      "milestone": "G4",
+      "points": 2,
+      "priority": "P1",
+      "type": "docs",
+      "title": "Beta programme: distribute APK, collect the device table, Hindi review",
+      "prd": "Section 12.4, Section 15.1",
+      "acceptance": [
+        "At least 8 distinct Arm phones benchmarked and listed in bench/devices.md",
+        "Volunteers test and review only; they do not write code"
+      ],
+      "blocked_by": [
+        "B16"
+      ]
+    },
+    {
+      "id": "B16",
+      "stream": "B",
+      "milestone": "G4",
+      "points": 2,
+      "priority": "P0",
+      "type": "infra",
+      "title": "Debug APK build for testers and daily integration build",
+      "prd": "Section 15.2",
+      "acceptance": [
+        "Installable debug APK produced by CI on every push to main"
+      ],
+      "blocked_by": [
+        "B01"
+      ]
+    },
+    {
+      "id": "B17",
+      "stream": "B",
+      "milestone": "G5",
+      "points": 3,
+      "priority": "P2",
+      "type": "feature",
+      "title": "QR plan export/import and teacher class heatmap (X3)",
+      "prd": "Section 6 (X3)",
+      "acceptance": [
+        "Full roadmap round-trips through QR without data loss",
+        "Teacher phone merges 5 simulated students into a heatmap"
+      ],
+      "blocked_by": [
+        "B04"
+      ]
+    },
+    {
+      "id": "B18",
+      "stream": "B",
+      "milestone": "G5",
+      "points": 3,
+      "priority": "P2",
+      "type": "feature",
+      "title": "Offline voice: speech to text and text to speech prototype (X2)",
+      "prd": "Section 6 (X2)",
+      "acceptance": [
+        "Works in airplane mode on at least 3 test phones, otherwise marked Prototype"
+      ],
+      "blocked_by": [
+        "B06"
+      ]
+    },
+    {
+      "id": "B19",
+      "stream": "B",
+      "milestone": "G5",
+      "points": 3,
+      "priority": "P1",
+      "type": "feature",
+      "title": "UI localisation: Hindi and English complete, UI strings for 4 more languages",
+      "prd": "Section 10.5",
+      "acceptance": [
+        "Language can be switched at any time without losing state",
+        "Tamil, Telugu, Bengali and Marathi UI strings present; LLM output in those is labelled experimental"
+      ],
+      "blocked_by": [
+        "B03"
+      ]
+    },
+    {
+      "id": "B20",
+      "stream": "B",
+      "milestone": "G5",
+      "points": 2,
+      "priority": "P1",
+      "type": "feature",
+      "title": "Accessibility pass: TalkBack, large text, contrast",
+      "prd": "Section 13.2",
+      "acceptance": [
+        "TalkBack labels on all controls; large-text and high-contrast themes verified"
+      ],
+      "blocked_by": [
+        "B03"
+      ]
+    },
+    {
+      "id": "B21",
+      "stream": "B",
+      "milestone": "G5",
+      "points": 2,
+      "priority": "P0",
+      "type": "infra",
+      "title": "Release build, signing, APK on GitHub releases, clean-install test",
+      "prd": "Section 17.4",
+      "acceptance": [
+        "APK installs on a fresh phone and passes the airplane-mode test",
+        "Release tag and backup APK link exist"
+      ],
+      "blocked_by": [
+        "B02"
+      ]
+    },
+    {
+      "id": "B22",
+      "stream": "B",
+      "milestone": "SUB",
+      "points": 3,
+      "priority": "P0",
+      "type": "docs",
+      "title": "Demo video: script, recording, captions in English and Hindi",
+      "prd": "Section 17.3",
+      "acceptance": [
+        "4 to 5 minute video following the PRD demo path, airplane mode visible",
+        "Uploaded and linked from the README"
+      ],
+      "blocked_by": [
+        "B21"
+      ]
+    },
+    {
+      "id": "C01",
+      "stream": "C",
+      "milestone": "G1",
+      "points": 3,
+      "priority": "P0",
+      "type": "content",
+      "title": "Choose two domains; skill graph schema and validator (C2)",
+      "prd": "Section 6 (C2), Section 8",
+      "acceptance": [
+        "Two domains are named (suggested: DSA for placements and ML engineering) with a subject reviewer each",
+        "JSON schema and validator: acyclic graph, difficulty 1 to 5, estimated hours, reference notes"
+      ],
+      "blocked_by": []
+    },
+    {
+      "id": "C02",
+      "stream": "C",
+      "milestone": "G2",
+      "points": 5,
+      "priority": "P0",
+      "type": "content",
+      "title": "Skill graph content for domain 1 (at least 35 skills)",
+      "prd": "Section 6 (C2)",
+      "acceptance": [
+        "Prerequisites, difficulty, hours, resources and reference notes (150 to 300 tokens) per skill",
+        "Passes the validator in CI"
+      ],
+      "blocked_by": [
+        "C01"
+      ]
+    },
+    {
+      "id": "C03",
+      "stream": "C",
+      "milestone": "G3",
+      "points": 5,
+      "priority": "P0",
+      "type": "content",
+      "title": "Skill graph content for domain 2 (at least 35 skills)",
+      "prd": "Section 6 (C2)",
+      "acceptance": [
+        "Same quality bar as domain 1; passes the validator in CI"
+      ],
+      "blocked_by": [
+        "C01"
+      ]
+    },
+    {
+      "id": "C04",
+      "stream": "C",
+      "milestone": "G3",
+      "points": 5,
+      "priority": "P0",
+      "type": "content",
+      "title": "Misconception-tagged question bank for domain 1 (at least 6 per skill)",
+      "prd": "Section 6 (C3), Section 9.3",
+      "acceptance": [
+        "Every wrong option maps to a misconception id; exactly one correct option; distractors unique",
+        "Reviewed by the subject reviewer or faculty mentor"
+      ],
+      "blocked_by": [
+        "C02"
+      ]
+    },
+    {
+      "id": "C05",
+      "stream": "C",
+      "milestone": "G3",
+      "points": 5,
+      "priority": "P0",
+      "type": "content",
+      "title": "Misconception-tagged question bank for domain 2",
+      "prd": "Section 6 (C3), Section 9.3",
+      "acceptance": [
+        "Same quality bar as domain 1"
+      ],
+      "blocked_by": [
+        "C03"
+      ]
+    },
+    {
+      "id": "C06",
+      "stream": "C",
+      "milestone": "G3",
+      "points": 5,
+      "priority": "P0",
+      "type": "feature",
+      "title": "Knowledge tracing with forgetting curve and unit tests (C4)",
+      "prd": "Section 9.1, Section 9.2",
+      "acceptance": [
+        "Implements the BKT update and exponential retention exactly as in the PRD",
+        "Unit tests match reference equations; mastery stays within 0 to 1",
+        "Revision is scheduled when effective mastery falls below 0.7"
+      ],
+      "blocked_by": [
+        "B01"
+      ]
+    },
+    {
+      "id": "C07",
+      "stream": "C",
+      "milestone": "G3",
+      "points": 3,
+      "priority": "P0",
+      "type": "feature",
+      "title": "Misconception engine: evidence, repair items, resolution",
+      "prd": "Section 9.3",
+      "acceptance": [
+        "Confidence-weighted evidence; two confident hits create a repair item before dependent skills",
+        "Resolved after three correct answers spaced over at least two days"
+      ],
+      "blocked_by": [
+        "C06"
+      ]
+    },
+    {
+      "id": "C08",
+      "stream": "C",
+      "milestone": "G3",
+      "points": 3,
+      "priority": "P0",
+      "type": "feature",
+      "title": "Adaptive diagnostic question selection",
+      "prd": "Section 6 (C3)",
+      "acceptance": [
+        "10 to 15 questions; placement quality checked in the simulator",
+        "Ends within 12 minutes on average"
+      ],
+      "blocked_by": [
+        "C04",
+        "C06"
+      ]
+    },
+    {
+      "id": "C09",
+      "stream": "C",
+      "milestone": "G3",
+      "points": 5,
+      "priority": "P0",
+      "type": "feature",
+      "title": "Planner and re-planner (C5)",
+      "prd": "Section 9.5, Section 9.6",
+      "acceptance": [
+        "100% prerequisite-valid roadmaps across 1,000 simulated learners",
+        "Replan under 1 second excluding LLM text; every Plan carries a reason string"
+      ],
+      "blocked_by": [
+        "C06",
+        "C07"
+      ]
+    },
+    {
+      "id": "C10",
+      "stream": "C",
+      "milestone": "G4",
+      "points": 3,
+      "priority": "P1",
+      "type": "feature",
+      "title": "Hint ladder and confidence calibration logic (I1)",
+      "prd": "Section 9.4",
+      "acceptance": [
+        "Bias and Brier score tracked; overconfident and underconfident labels trigger the PRD behaviours",
+        "Hint level weights 1.0, 0.7, 0.4, 0 applied to mastery updates"
+      ],
+      "blocked_by": [
+        "C06"
+      ]
+    },
+    {
+      "id": "C11",
+      "stream": "C",
+      "milestone": "G4",
+      "points": 3,
+      "priority": "P1",
+      "type": "feature",
+      "title": "Missed-day recovery with knapsack replanning (I6)",
+      "prd": "Section 9.6",
+      "acceptance": [
+        "Prerequisite closure is preserved; dropped items are listed with reasons"
+      ],
+      "blocked_by": [
+        "C09"
+      ]
+    },
+    {
+      "id": "C12",
+      "stream": "C",
+      "milestone": "G4",
+      "points": 5,
+      "priority": "P1",
+      "type": "eval",
+      "title": "Learner simulator with 8 learner types (I3)",
+      "prd": "Section 12.1",
+      "acceptance": [
+        "Fast, average, slow, forgetful, overconfident, anxious, irregular and misconception-prone learners",
+        "Runs headless on a laptop using the same engine module; fixed random seeds"
+      ],
+      "blocked_by": [
+        "C09"
+      ]
+    },
+    {
+      "id": "C13",
+      "stream": "C",
+      "milestone": "G4",
+      "points": 3,
+      "priority": "P1",
+      "type": "eval",
+      "title": "Simulator baselines and ablations",
+      "prd": "Section 12.1, Section 12.2",
+      "acceptance": [
+        "Fixed roadmap, topic-only, no-forgetting, LLM-only and random-order baselines",
+        "Ablations remove one feature at a time"
+      ],
+      "blocked_by": [
+        "C12"
+      ]
+    },
+    {
+      "id": "C14",
+      "stream": "C",
+      "milestone": "G5",
+      "points": 2,
+      "priority": "P2",
+      "type": "feature",
+      "title": "Cognitive-load-aware pacing (X1)",
+      "prd": "Section 9.7",
+      "acceptance": [
+        "Fatigue index from response time and error streak; always dismissible"
+      ],
+      "blocked_by": [
+        "C10"
+      ]
+    },
+    {
+      "id": "C15",
+      "stream": "C",
+      "milestone": "G5",
+      "points": 3,
+      "priority": "P1",
+      "type": "eval",
+      "title": "Run simulator experiments and produce report tables and charts",
+      "prd": "Section 12.2",
+      "acceptance": [
+        "At least 1,000 learners per type with confidence intervals",
+        "One command reproduces every simulator number in the report"
+      ],
+      "blocked_by": [
+        "C13"
+      ]
+    },
+    {
+      "id": "C16",
+      "stream": "C",
+      "milestone": "G5",
+      "points": 5,
+      "priority": "P0",
+      "type": "docs",
+      "title": "Technical report: draft, figures, results, limitations",
+      "prd": "Section 17.2",
+      "acceptance": [
+        "Follows the 13-section outline in the PRD, including the Shipped / Prototype / Designed status table",
+        "Benchmarks are compared with the mentors' reference numbers; limitations are stated honestly"
+      ],
+      "blocked_by": [
+        "A16",
+        "C15"
+      ]
+    },
+    {
+      "id": "C17",
+      "stream": "C",
+      "milestone": "G5",
+      "points": 3,
+      "priority": "P1",
+      "type": "docs",
+      "title": "Content and report review with the faculty mentor",
+      "prd": "Section 15.1, Section 18",
+      "acceptance": [
+        "Question bank sample, skill graphs and the report are reviewed and sign-off notes saved in docs/"
+      ],
+      "blocked_by": [
+        "C04"
+      ]
+    }
+  ]
+}

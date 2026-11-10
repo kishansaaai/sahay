@@ -1,0 +1,21 @@
+# Models and large artifacts: never commit
+*.pte
+*.pt
+*.pth
+*.gguf
+*.safetensors
+*.ckpt
+checkpoints/
+# Android / Gradle
+.gradle/
+build/
+local.properties
+*.apk
+*.aab
+.idea/
+*.iml
+# Python
+__pycache__/
+.venv/
+# OS
+.DS_Store
