@@ -18,3 +18,14 @@ jobs:
         run: python -m unittest discover -s engine/tests
       - name: Simulator tests
         run: python -m unittest discover -s simulator/tests
+      - name: Kotlin engine tests and Python parity
+        run: |
+          curl -sL -o /tmp/kc.zip https://github.com/JetBrains/kotlin/releases/download/v2.0.21/kotlin-compiler-2.0.21.zip
+          unzip -q /tmp/kc.zip -d /tmp
+          export PATH=/tmp/kotlinc/bin:$PATH
+          kotlinc engine/src/main/kotlin -include-runtime -d /tmp/engine.jar
+          kotlinc -cp /tmp/engine.jar engine/src/test/kotlin -d /tmp/tests
+          java -cp /tmp/engine.jar:/tmp/tests com.sahay.engine.EngineTestsKt content
+          python3 engine/parity_python.py > /tmp/py.txt
+          java -cp /tmp/engine.jar:/tmp/tests com.sahay.engine.ParityKt content > /tmp/kt.txt
+          diff /tmp/py.txt /tmp/kt.txt

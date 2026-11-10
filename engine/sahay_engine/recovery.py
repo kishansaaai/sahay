@@ -54,7 +54,7 @@ def recover(content, model, profile, now, targets, old_plan, budget_minutes, mis
                     avail.discard(s)
                     changed = True
         used = sum(cost[s] for s in chosen)   # refill with skills whose prerequisites are all kept
-        for s in sorted(avail - chosen, key=lambda x: -value[x] / cost[x]):
+        for s in sorted(avail - chosen, key=lambda x: (-value[x] / cost[x], x)):
             if used + cost[s] <= budget_minutes and all((p not in pool) or (p in chosen) for p in g.prereq_closure(s)):
                 chosen.add(s)
                 used += cost[s]
@@ -66,7 +66,7 @@ def recover(content, model, profile, now, targets, old_plan, budget_minutes, mis
         plan = Plan(version, now, "", [])
     dropped = list(plan.dropped)
     for s in sorted(pool - chosen):
-        blocked = [p for p in g.prereq_closure(s) if p in pool and p not in chosen]
+        blocked = sorted(p for p in g.prereq_closure(s) if p in pool and p not in chosen)
         reason = ("prerequisite %s was dropped" % blocked[0]) if blocked else "lowest value per hour for the time left"
         dropped.append(PlanItem("learn", skill_id=s, minutes=cost[s], status="dropped", reason=reason))
     plan.dropped = dropped
