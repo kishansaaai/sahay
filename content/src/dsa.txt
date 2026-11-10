@@ -1,0 +1,421 @@
+# DSA for placements. Authoring format documented in scripts/build_content.py
+@skill dsa.complexity | Big-O and complexity analysis | - | 1 | 3
+notes: Big-O describes how the running time or memory of an algorithm grows as the input size n grows, ignoring constant factors and lower-order terms. We usually reason about the worst case unless told otherwise. Count how many times the dominant operation runs: a single loop over n items is O(n), two nested loops over n are O(n^2), and a loop that halves the problem each step is O(log n). Sequential blocks add, nested blocks multiply, and we keep only the largest term, so n^2 + n becomes O(n^2). Space complexity counts extra memory beyond the input, including the recursion stack. Be able to rank common classes: 1, log n, n, n log n, n^2, 2^n, n!. In interviews, always state both time and space and justify them aloud.
+res: Introduction to Algorithms (CLRS) chapter 3; Grokking Algorithms chapter 1; MIT 6.006 lecture 1
+m1: Thinks O(2n) or O(n+5) is a different, larger class than O(n)
+m2: Thinks nested loops are always O(n^2) even when the inner loop is bounded by a constant or halves
+m3: Confuses best case with worst case, or ignores the recursion stack in space complexity
+q: What is the time complexity of a single for loop that runs from 1 to n doing constant work per step? || O(n) || O(log n)~m3 || O(n^2)~m2 || O(1)~m1
+q: An algorithm does 3n + 10 basic operations. Which Big-O describes it? || O(n) || O(3n)~m1 || O(n + 10)~m1 || O(n^2)~m2
+q: for (i = 1; i < n; i *= 2) { work(); } runs in || O(log n) || O(n)~m2 || O(n log n)~m2 || O(sqrt n)~m3
+q: for (i = 0; i < n; i++) for (j = 0; j < 5; j++) work(); runs in || O(n) || O(n^2)~m2 || O(5n^2)~m1 || O(log n)~m3
+q: A recursive function f(n) calls f(n-1) once and does O(1) other work, with no loop. Its extra space (call stack) is || O(n) || O(1)~m3 || O(log n)~m3 || O(n^2)~m2
+q: Linear search for a target in an unsorted array. When is it O(1)? || Best case, target is the first element || Always, because it is a simple loop~m3 || Never, linear search is always O(n)~m3 || Worst case, target is the last element~m3
+@skill dsa.arrays | Arrays and indexing | dsa.complexity | 1 | 3
+notes: An array stores elements in contiguous memory, which gives O(1) random access by index and excellent cache behaviour. Inserting or deleting in the middle costs O(n) because later elements must shift; appending to a dynamic array is amortised O(1) because capacity doubles occasionally. Indices run from 0 to n-1, and off-by-one mistakes at the boundaries are the most common bug, so check the first and last element and the empty array. Learn to traverse, reverse in place, rotate, find max and min, and remove duplicates from a sorted array. In-place algorithms use O(1) extra space by swapping or overwriting. Know the difference between array length and the last valid index. Many interview problems reduce to a clean single pass over an array, so practise tracking a running value like a maximum or a count.
+res: Introduction to Algorithms (CLRS) chapter 10; Cracking the Coding Interview arrays and strings; NeetCode arrays roadmap
+m1: Believes the last valid index equals the length
+m2: Believes inserting at the end of a full dynamic array is always O(n) and never amortised O(1)
+m3: Believes accessing an element by index requires scanning from the start
+q: An array has length 8. What is the last valid index (0-based)? || 7 || 8~m1 || 9~m1 || 6~m1
+q: Time to read arr[k] for any valid k in an array is || O(1) || O(k)~m3 || O(n)~m3 || O(log n)~m3
+q: Inserting a value at the front of an array of n elements by shifting costs || O(n) || O(1)~m3 || O(log n)~m3 || O(n^2)~m3
+q: Appending n items one by one to a dynamic array that doubles when full costs in total || O(n) || O(n^2)~m2 || O(n log n)~m2 || O(log n)~m2
+q: To reverse an array in place using O(1) extra space you should || swap arr[i] with arr[n-1-i] for i up to the middle || copy into a new array then copy back~m3 || swap all pairs for i from 0 to n-1~m1 || sort it descending~m3
+q: In a sorted array, removing duplicates in place with O(1) extra space is best done with || a read pointer and a write pointer || a hash set of seen values~m3 || sorting again~m3 || nested loops that shift left on every duplicate~m2
+@skill dsa.strings | Strings and character handling | dsa.arrays | 1 | 3
+notes: A string is a sequence of characters, and in many languages such as Java and Python it is immutable, so building a result with repeated concatenation inside a loop costs O(n^2); use a StringBuilder or a list and join instead. Know how to iterate characters, compare strings lexicographically, reverse, check palindromes, count character frequency with an array of 26 or a map, and test anagrams by comparing counts or sorted forms. Substring extraction costs O(length) in most languages. ASCII uses 128 values while Unicode needs more, so state your alphabet assumptions. Watch for case sensitivity, spaces and empty strings. Comparing two strings with equals checks content, while the double equals operator in some languages compares references, a classic source of bugs.
+res: Cracking the Coding Interview arrays and strings; LeetCode string problems; Java String documentation
+m1: Believes strings can be modified in place in Java or Python
+m2: Believes comparing strings with == always compares content
+m3: Believes anagram check requires comparing all permutations
+q: Which is the best way to build a long string from n pieces in Java? || Use a StringBuilder and append || Use + inside a loop~m1 || Call concat on the same string n times~m1 || Convert to int first~m1
+q: In Java, s.equals(t) tests || whether the two strings have the same characters || whether both variables point to the same object~m2 || only the length of the strings~m2 || only the first character~m2
+q: Two lowercase words are anagrams. The fastest check is || compare 26-slot letter counts, O(n) || generate all permutations of one word~m3 || compare lengths only~m3 || compare first letters~m3
+q: Time to check whether a string of length n is a palindrome using two indices from both ends is || O(n) || O(n^2)~m1 || O(log n)~m1 || O(1)~m1
+q: Concatenating n single-character strings one at a time to an immutable string costs about || O(n^2) total || O(n) total~m1 || O(log n) total~m1 || O(1) total~m1
+q: What does "apple" < "banana" return in a lexicographic comparison? || true, because a comes before b || false, because apple is shorter~m3 || false, because 5 < 6 is false~m3 || it is undefined~m3
+@skill dsa.recursion | Recursion | dsa.complexity | 2 | 4
+notes: Recursion solves a problem by calling the same function on smaller inputs until a base case stops it. Every recursive function needs a base case that returns directly and a recursive step that moves strictly toward it; missing either causes infinite recursion and a stack overflow. Each call uses a stack frame, so depth d costs O(d) space. Trace small inputs by hand to see the call tree. Time complexity follows a recurrence: factorial is T(n)=T(n-1)+O(1)=O(n), while naive Fibonacci is T(n)=T(n-1)+T(n-2), which is exponential because subproblems repeat. Recursion pairs naturally with trees, divide and conquer and backtracking. Any recursion can be rewritten with an explicit stack. Learn to define what the function returns, trust it on smaller inputs, and combine results.
+res: Introduction to Algorithms (CLRS) chapter 4; CS50 recursion lecture; Grokking Algorithms chapter 3
+m1: Forgets that recursion needs a base case and a step toward it
+m2: Believes naive Fibonacci recursion is O(n)
+m3: Believes recursion uses no extra memory
+q: What are the two essential parts of a correct recursive function? || A base case and a recursive step toward it || A loop and a counter~m1 || Two return statements~m1 || A global variable and a stack~m1
+q: What happens if f(n) calls f(n) with no base case? || Stack overflow from infinite recursion || It returns 0~m1 || It stops after n calls~m1 || The compiler rewrites it as a loop~m1
+q: Naive recursive fib(n) = fib(n-1) + fib(n-2) has time complexity || exponential, about O(2^n) || O(n)~m2 || O(n^2)~m2 || O(log n)~m2
+q: Recursive sum of 1..n (sum(n)=n+sum(n-1)) uses stack space || O(n) || O(1)~m3 || O(log n)~m3 || none, recursion is free~m3
+q: Which base case is correct for factorial(n)? || n == 0 returns 1 || n == 0 returns 0~m1 || n == 1 returns 0~m1 || no base case needed~m1
+q: What does power(x, n) = x * power(x, n-1) with power(x,0)=1 compute for n=3? || x^3 || 3x~m1 || x+3~m1 || x^4~m1
+@skill dsa.sorting_basic | Elementary sorting | dsa.arrays,dsa.complexity | 2 | 3
+notes: Bubble sort repeatedly swaps adjacent out-of-order pairs, selection sort picks the minimum of the unsorted part and places it at the front, and insertion sort grows a sorted prefix by inserting each next element into place. All three run in O(n^2) worst case with O(1) extra space. Insertion sort is O(n) on nearly sorted input and is used inside real library sorts for small arrays. Selection sort always does about n^2/2 comparisons but only n swaps. Stability means equal elements keep their original relative order; insertion and bubble sort are stable while the usual selection sort is not. Be able to write insertion sort from memory, explain loop invariants, and state why comparison sorts cannot beat O(n log n) in general.
+res: Introduction to Algorithms (CLRS) chapter 2; Visualgo sorting; GeeksforGeeks sorting overview
+m1: Believes bubble sort is O(n log n)
+m2: Believes insertion sort is always O(n^2) even on sorted input
+m3: Confuses stability with being fast or in-place
+q: Worst-case time of insertion sort is || O(n^2) || O(n log n)~m1 || O(n)~m2 || O(log n)~m1
+q: Best-case time of insertion sort on an already sorted array is || O(n) || O(n^2)~m2 || O(log n)~m2 || O(n log n)~m2
+q: Which elementary sort performs the fewest swaps, at most n-1? || Selection sort || Bubble sort~m1 || Insertion sort~m1 || All do the same~m1
+q: A stable sort means || equal elements keep their original relative order || it uses O(1) extra memory~m3 || it never crashes~m3 || it is always O(n log n)~m3
+q: Bubble sort after the first full pass guarantees || the largest element is at the end || the array is fully sorted~m1 || the smallest element is at the end~m1 || nothing is guaranteed~m1
+q: Why is insertion sort used for small subarrays in library sorts? || It has low overhead and is fast on small or nearly sorted data || It is O(n) in the worst case~m2 || It is the only stable sort~m3 || It uses no comparisons~m3
+@skill dsa.binary_search | Binary search | dsa.arrays,dsa.complexity | 2 | 4
+notes: Binary search finds a target in a sorted array by comparing with the middle element and discarding half the range, giving O(log n) time and O(1) space iteratively. The array must be sorted, otherwise the logic is invalid. Keep invariants clear: with low and high inclusive, loop while low <= high, compute mid = low + (high - low) / 2 to avoid integer overflow, and set low = mid + 1 or high = mid - 1. Off-by-one errors and infinite loops come from updating with mid instead of mid plus or minus one. The same idea works on any monotonic predicate, for example finding the smallest value that satisfies a condition, which powers lower bound, upper bound and search on the answer. Know how to return the insertion index when the target is absent.
+res: Introduction to Algorithms (CLRS) exercise 2.3; Binary Search on LeetCode explore card; Errichto binary search guide
+m1: Applies binary search to unsorted data
+m2: Updates low = mid or high = mid causing infinite loops
+m3: Believes binary search is O(n) or computes mid unsafely as (low+high)/2 without considering overflow
+q: Binary search on n sorted elements takes || O(log n) || O(n)~m3 || O(n log n)~m3 || O(1)~m3
+q: Which precondition is required for binary search on an array? || The array is sorted || The array has distinct values~m1 || The array has even length~m1 || The array is stored in a hash table~m1
+q: With inclusive bounds, after finding arr[mid] < target the next step is || low = mid + 1 || low = mid~m2 || high = mid - 1~m2 || mid = mid + 1~m2
+q: A safer way to compute the middle index is || low + (high - low) / 2 || (low + high) / 2 always~m3 || high / 2~m3 || low * high~m3
+q: How many comparisons at most to search 1,000,000 sorted items? || about 20 || about 1,000~m3 || about 500,000~m3 || exactly 1,000,000~m3
+q: Binary search on an unsorted array [5, 1, 4, 2, 3] for 4 is || not guaranteed to work~m1 || guaranteed to work if you pick the middle~m1 || guaranteed to work in O(log n)~m1 || guaranteed to work if n is odd~m1
+@skill dsa.hashing | Hash tables and maps | dsa.arrays | 2 | 4
+notes: A hash table maps keys to values by passing the key through a hash function that picks a bucket, giving average O(1) insert, lookup and delete. Collisions happen when different keys land in the same bucket and are handled by chaining, with a list per bucket, or by open addressing, probing for another slot. With a poor hash function or adversarial keys, operations degrade to O(n) in the worst case. The load factor, entries divided by buckets, triggers resizing, which rehashes everything and is amortised O(1) per insert. Keys must be hashable and immutable, and iteration order is not sorted in a plain hash map. Typical uses are counting frequencies, detecting duplicates, two-sum style lookups and grouping by a computed key. A hash set stores only keys and answers membership queries quickly.
+res: Introduction to Algorithms (CLRS) chapter 11; Python dict internals talk; NeetCode hashing problems
+m1: Believes hash table lookup is always O(1) with no worst case
+m2: Believes a hash map keeps keys in sorted order
+m3: Believes two different keys can never share a bucket
+q: Average-case lookup time in a well-designed hash table is || O(1) || O(log n)~m1 || O(n)~m1 || O(n log n)~m1
+q: Two different keys hash to the same bucket. This is called || a collision, handled by chaining or probing || an overflow error that crashes the table~m3 || impossible with a good hash function~m3 || a duplicate key~m3
+q: Iterating over a standard hash map returns keys || in no guaranteed sorted order || in ascending sorted order~m2 || in descending order~m2 || in the order of their hash codes always~m2
+q: In the worst case, with all keys colliding in one bucket, lookup costs || O(n) || O(1)~m1 || O(log n)~m1 || O(n^2)~m1
+q: Two-sum on an unsorted array in one pass is best done with || a hash map from value to index, O(n) || sorting then nested loops, O(n^2)~m3 || binary search without sorting~m3 || a hash map that stores only sorted keys~m2
+q: What does resizing a hash table when the load factor gets high do? || Allocates more buckets and rehashes entries || Deletes the oldest entries~m3 || Sorts the keys~m2 || Removes collisions permanently~m3
+@skill dsa.two_pointers | Two pointers | dsa.arrays,dsa.sorting_basic | 2 | 3
+notes: The two-pointer technique uses two indices that move through a sequence to avoid a nested loop, often turning O(n^2) into O(n). In the opposite-ends pattern one pointer starts at the left and one at the right, and you move one inward based on a comparison; this solves pair-sum on a sorted array, container with most water and palindrome checks. In the same-direction pattern a slow pointer marks the write position while a fast pointer scans, used to remove duplicates or move zeros in place. The key is a clear rule for which pointer moves and a proof that no valid answer is skipped. Sorting first can enable the technique at a cost of O(n log n). Always handle empty and single-element inputs, and be careful that pointers do not cross when they should not.
+res: LeetCode two pointers study plan; Cracking the Coding Interview chapter on arrays; NeetCode two pointers roadmap
+m1: Applies opposite-end pair-sum two pointers to an unsorted array without sorting
+m2: Moves both pointers every step regardless of the comparison
+m3: Believes two pointers always needs O(n^2) time
+q: Pair-sum on a sorted array with two pointers at both ends: if arr[l] + arr[r] is less than the target, you || move l right || move r left~m2 || move both inward~m2 || stop and return false~m3
+q: Time complexity of two-pointer pair-sum on a sorted array is || O(n) || O(n^2)~m3 || O(log n)~m3 || O(n log n) after sorting is unavoidable even if already sorted~m3
+q: The opposite-end two-pointer pair-sum logic is valid only if the array is || sorted || of even length~m1 || all positive~m1 || made of distinct values only~m1
+q: Moving all zeros to the end in place, keeping order, is best done with || a slow write pointer and a fast read pointer || sorting the array~m3 || two pointers at opposite ends swapping every step~m2 || a new array of the same size~m3
+q: To check whether a string is a palindrome with two pointers you || compare s[l] and s[r] and move both inward || move only the left pointer~m2 || compare s[l] with s[l+1]~m2 || reverse the string twice~m3
+q: Which task can opposite-end two pointers do correctly on an UNSORTED array without sorting first? || Reverse the array in place || Find a pair summing to a target~m1 || Find the closest pair sum to a target~m1 || Count pairs with difference at most k~m1
+@skill dsa.sliding_window | Sliding window | dsa.two_pointers | 3 | 4
+notes: A sliding window maintains a contiguous subarray or substring defined by left and right boundaries, expanding the right edge and shrinking the left edge while tracking a running sum, count or set. For a fixed-size window of length k you add the new element and remove the one that leaves, giving O(n) rather than O(nk). For a variable-size window you expand until a condition breaks, then shrink until it holds again, which handles longest substring without repeating characters and smallest subarray with sum at least a target. Each pointer only moves forward, so total work is O(n) even though there is a loop inside a loop. Use a hash map or array of counts to track window contents. Decide clearly whether the window is valid after each expansion, and update the best answer at the right moment.
+res: LeetCode sliding window study plan; NeetCode sliding window roadmap; Cracking the Coding Interview arrays
+m1: Recomputes the whole window sum from scratch each step
+m2: Believes a window with a nested shrink loop must be O(n^2)
+m3: Applies sliding window to non-contiguous subsequences
+q: For a fixed window of size k, moving from one window to the next you should || add the new element and subtract the one leaving || recompute the sum of all k elements~m1 || sort the window~m1 || reset the sum to 0~m1
+q: Maximum sum of any k consecutive elements using a sliding window runs in || O(n) || O(nk)~m1 || O(n^2)~m2 || O(k log n)~m1
+q: Variable window with an inner while loop that moves left forward has total complexity || O(n), since each pointer moves at most n times || O(n^2) always~m2 || O(log n)~m2 || O(n log n)~m2
+q: Sliding window is suited to problems about || contiguous subarrays or substrings || any subset of elements~m3 || non-contiguous subsequences~m3 || tree depth~m3
+q: For longest substring without repeating characters you track || the characters in the current window with a set or map || the sum of the window~m1 || only the left index~m1 || the sorted order of the string~m3
+q: When a window becomes invalid (for example a repeated character) in a variable window you || move the left pointer forward until it is valid again || reset the right pointer to zero~m1 || discard the whole window and start over from the middle~m1 || stop the algorithm~m1
+@skill dsa.prefix_sums | Prefix sums | dsa.arrays | 2 | 3
+notes: A prefix sum array stores in prefix[i] the sum of the first i elements, so the sum of any range from l to r (inclusive) is prefix[r+1] - prefix[l] in O(1) after O(n) preprocessing. This turns repeated range-sum queries from O(n) each into O(1) each. Use an extra leading zero so empty ranges and ranges starting at index 0 need no special case. The idea extends to 2D grids with a rectangle formula, to counting subarrays with a given sum using a hash map of earlier prefix values, and to difference arrays that apply many range updates and recover the final array with one prefix pass. Beware of integer overflow with large sums and off-by-one errors in the indices. Prefix sums only work well when the array is static or updates are rare.
+res: Introduction to Algorithms (CLRS) exercises; LeetCode range sum query; CP-Algorithms prefix sums
+m1: Gets range-sum indices wrong by one (uses prefix[r] - prefix[l])
+m2: Believes each range-sum query still costs O(n) after preprocessing
+m3: Believes prefix sums handle frequent point updates efficiently
+q: With prefix[0]=0 and prefix[i] = sum of first i elements, the sum of indices l..r inclusive is || prefix[r+1] - prefix[l] || prefix[r] - prefix[l]~m1 || prefix[r] - prefix[l-1] with no zero entry~m1 || prefix[r] + prefix[l]~m1
+q: After building prefix sums, one range-sum query costs || O(1) || O(n)~m2 || O(log n)~m2 || O(r - l)~m2
+q: Building the prefix array takes || O(n) || O(1)~m2 || O(n^2)~m2 || O(log n)~m2
+q: For arr = [2, 4, 6, 8] what is the sum of indices 1..2? || 10 || 12~m1 || 6~m1 || 14~m1
+q: Counting subarrays with sum equal to k in O(n) uses || prefix sums with a hash map of earlier prefix values || nested loops~m2 || sorting the array~m3 || a sliding window on arrays with negatives~m3
+q: Prefix sums are a poor fit when || the array changes by many point updates between queries || the array is static~m3 || you need many range-sum queries~m3 || you need sums on a 2D grid~m3
+@skill dsa.linked_list | Linked lists | dsa.arrays,dsa.recursion | 2 | 4
+notes: A singly linked list stores each element in a node with a value and a pointer to the next node; there is no random access, so reaching the kth node costs O(k). Insertion or deletion is O(1) once you hold the previous node, but finding it costs O(n). Always handle the empty list and the head separately, or use a dummy node before the head to simplify edge cases. Core techniques are reversing a list by rewiring pointers, detecting a cycle with slow and fast pointers, finding the middle with the same trick, merging two sorted lists, and removing the nth node from the end with a gap of n between two pointers. Draw boxes and arrows before coding, and save the next pointer before overwriting it. Doubly linked lists add a previous pointer for O(1) removal given a node.
+res: Introduction to Algorithms (CLRS) chapter 10; Cracking the Coding Interview linked lists; NeetCode linked list roadmap
+m1: Believes you can access the kth node in O(1) like an array
+m2: Overwrites node.next before saving it when reversing
+m3: Believes a cycle can be found only by marking nodes with extra memory
+q: Accessing the kth node of a singly linked list takes || O(k) || O(1)~m1 || O(log k)~m1 || O(n^2)~m1
+q: Inserting after a node you already hold a reference to costs || O(1) || O(n)~m1 || O(log n)~m1 || O(n^2)~m1
+q: When reversing a list you must first || save node.next in a temporary variable || set node.next to null immediately~m2 || move the head to the tail~m2 || copy all values to an array~m2
+q: Detecting a cycle in O(1) extra space uses || slow and fast pointers || a hash set of visited nodes~m3 || sorting the nodes~m3 || reversing the list and counting~m3
+q: The slow pointer is at the middle when the fast pointer moving two steps reaches || the end of the list || the head~m1 || the node after the head~m1 || a random node~m1
+q: Why use a dummy head node? || It removes special cases for operations at the head || It makes the list doubly linked~m3 || It speeds up access to the kth node~m1 || It prevents cycles~m3
+@skill dsa.stack | Stacks | dsa.arrays,dsa.linked_list | 2 | 3
+notes: A stack is a last-in first-out structure with push, pop and peek, all O(1) when built on an array or linked list. Popping from an empty stack is an error you must guard against. Stacks model nested or reversed behaviour: the function call stack, undo history, backtracking and expression evaluation. Classic problems include balanced parentheses, where each closing bracket must match the most recent unmatched opening one, evaluating postfix expressions, converting infix to postfix, and implementing a queue with two stacks. Any recursion can be rewritten iteratively with an explicit stack, which avoids stack overflow on deep inputs. When a problem mentions the most recent item, matching pairs or reversing order, think stack first. Always check emptiness before peeking, and remember the stack must be empty at the end for balanced input.
+res: Introduction to Algorithms (CLRS) chapter 10; Cracking the Coding Interview stacks and queues; Grokking Algorithms chapter 3
+m1: Confuses LIFO with FIFO
+m2: Forgets to check for an empty stack, or forgets the stack must be empty at the end for balanced brackets
+m3: Believes pop on an array-based stack is O(n)
+q: Which ordering does a stack follow? || Last in, first out || First in, first out~m1 || Sorted order~m1 || Random order~m1
+q: Pushing 1, 2, 3 and then popping once returns || 3 || 1~m1 || 2~m1 || nothing~m1
+q: Check "([)]" for balanced brackets with a stack. The result is || not balanced, ) does not match the top [ || balanced, counts match~m2 || balanced, because each type appears twice~m2 || cannot be decided~m2
+q: For "((" after scanning all characters a correct bracket checker should || report not balanced because the stack is not empty || report balanced because there is no mismatch~m2 || crash on pop~m2 || ignore it~m2
+q: Time for push and pop on an array-backed stack is || O(1) each || O(n) each~m3 || O(log n) each~m3 || O(n^2)~m3
+q: Postfix expression "2 3 4 * +" evaluates (using a stack) to || 14 || 20~m2 || 9~m2 || 24~m2
+@skill dsa.queue | Queues and deques | dsa.stack,dsa.linked_list | 2 | 3
+notes: A queue is first-in first-out: enqueue adds at the back and dequeue removes from the front, both O(1) with a linked list or a circular array. Using a plain array and removing from index 0 costs O(n), which is a common mistake. A deque, or double-ended queue, allows O(1) insertion and removal at both ends and powers sliding window maximum and 0-1 breadth-first search. A priority queue is different: it removes the highest-priority element, not the oldest. Queues model waiting lines, task scheduling, buffering and level-order traversal in breadth-first search. A circular buffer reuses space by wrapping indices with a modulus, and you must distinguish full from empty, typically by tracking size or leaving one slot unused. Know how to implement a stack with two queues and a queue with two stacks.
+res: Introduction to Algorithms (CLRS) chapter 10; Cracking the Coding Interview stacks and queues; Python collections.deque documentation
+m1: Confuses FIFO with LIFO
+m2: Believes dequeue from the front of a plain array is O(1)
+m3: Confuses a priority queue with a normal FIFO queue
+q: Enqueue 1, 2, 3 then dequeue once. The element returned is || 1 || 3~m1 || 2~m1 || none~m1
+q: Removing the first element of a plain array of n items by shifting costs || O(n) || O(1)~m2 || O(log n)~m2 || O(n^2)~m2
+q: A deque supports O(1) insert and remove at || both ends || the front only~m3 || any position~m3 || the middle only~m3
+q: Which structure is used for level-order traversal of a tree? || a queue || a stack~m1 || a hash set~m3 || a heap~m3
+q: A priority queue dequeues || the highest-priority element || the oldest element~m3 || the newest element~m3 || a random element~m3
+q: In a circular array queue the next write index is computed as || (tail + 1) % capacity || tail + 1 always~m2 || tail - 1~m2 || capacity - tail~m2
+@skill dsa.monotonic_stack | Monotonic stack | dsa.stack,dsa.arrays | 3 | 4
+notes: A monotonic stack keeps its elements in sorted order, increasing or decreasing from bottom to top, by popping elements that would break the order before pushing a new one. It answers next greater element, previous smaller element, daily temperatures, largest rectangle in a histogram and stock span questions in O(n) total, because each element is pushed once and popped at most once. Store indices rather than values when you need distances or positions. When a new element arrives, every popped element has just found its answer: the new element is its next greater or smaller value. After the loop, elements left on the stack have no answer, often meaning a default such as minus one. Decide the direction of monotonicity from the question, for example a decreasing stack for next greater element.
+res: LeetCode monotonic stack study plan; NeetCode stack roadmap; CP-Algorithms stack tricks
+m1: Believes the nested while loop makes the algorithm O(n^2)
+m2: Uses an increasing stack where a decreasing one is needed for next greater element
+m3: Forgets to give a default answer for elements left on the stack
+q: Monotonic stack next greater element runs in || O(n), each element pushed and popped at most once || O(n^2) because of the inner while~m1 || O(n log n)~m1 || O(log n)~m1
+q: For next greater element, scanning left to right, the stack should be || decreasing from bottom to top || increasing from bottom to top~m2 || unsorted~m2 || a queue~m2
+q: In next greater element, when the current value is larger than the stack top you || pop the top and record the current value as its answer || push without popping~m2 || discard the current value~m2 || reset the stack~m3
+q: After scanning all elements, indices still on the stack for next greater element should get || -1 or another default meaning no greater element || the maximum of the array~m3 || zero days~m3 || an error~m3
+q: Why store indices on the stack rather than values for daily temperatures? || To compute the distance in days || To save memory only~m1 || Because values may be negative~m1 || Stacks cannot store values~m1
+q: Largest rectangle in a histogram is solved in O(n) using || a monotonic increasing stack of bar indices || nested loops over all pairs of bars~m1 || a hash map of heights~m1 || sorting the bars~m1
+@skill dsa.sorting_adv | Merge sort and quicksort | dsa.sorting_basic,dsa.recursion | 3 | 5
+notes: Merge sort splits the array in half, sorts each half recursively and merges the two sorted halves in linear time, giving O(n log n) in every case with O(n) extra space and a stable result. Quicksort picks a pivot, partitions the array so smaller values are left and larger values are right, and recurses on both sides; it is O(n log n) on average with O(log n) stack space but O(n^2) in the worst case, for example an already sorted array with the first element as pivot. Random or median-of-three pivots make the worst case unlikely. Quicksort is usually faster in practice because of cache behaviour, while merge sort suits linked lists and external sorting. Know that comparison sorting needs Omega(n log n) comparisons, and that counting sort breaks this for small integer ranges.
+res: Introduction to Algorithms (CLRS) chapters 2, 7; MIT 6.006 sorting lectures; Visualgo merge and quick sort
+m1: Believes quicksort is always O(n log n)
+m2: Believes merge sort needs no extra space
+m3: Believes a comparison sort can run in O(n) in general
+q: Worst-case time of quicksort with a bad pivot choice is || O(n^2) || O(n log n)~m1 || O(n)~m1 || O(log n)~m1
+q: Merge sort time complexity in every case is || O(n log n) || O(n^2)~m1 || O(n)~m3 || O(log n)~m3
+q: Merge sort on an array uses extra space of || O(n) || O(1)~m2 || O(log n) always~m2 || none, it works in place~m2
+q: Quicksort average-case time is || O(n log n) || O(n^2)~m1 || O(n)~m3 || O(2^n)~m1
+q: Which is stable by default? || Merge sort || Quicksort with in-place partition~m1 || Heap sort~m1 || Selection sort~m1
+q: The lower bound for sorting by comparisons in general is || Omega(n log n) || Omega(n)~m3 || Omega(1)~m3 || Omega(n^2)~m3
+@skill dsa.heap | Heaps and priority queues | dsa.arrays,dsa.sorting_adv | 3 | 4
+notes: A binary heap is a complete binary tree stored in an array where every parent is smaller than or equal to its children in a min-heap, or larger in a max-heap. For index i the children are at 2i+1 and 2i+2 and the parent at (i-1)/2. Insert appends at the end and sifts up in O(log n); removing the root swaps it with the last element and sifts down in O(log n); reading the root is O(1). Building a heap from n elements with bottom-up heapify costs O(n), not O(n log n). Heaps implement priority queues and power top-k problems, merging k sorted lists, running medians with two heaps and Dijkstra. To keep the k largest values use a min-heap of size k so the smallest of them sits on top. A heap does not keep all elements sorted, only the root is guaranteed extreme.
+res: Introduction to Algorithms (CLRS) chapter 6; Python heapq documentation; NeetCode heap roadmap
+m1: Believes a heap keeps all elements fully sorted
+m2: Believes building a heap from n elements costs O(n log n) at best
+m3: Uses a max-heap of size k to keep the k largest elements
+q: In a min-heap, the element at the root is || the smallest || the largest~m1 || the median~m1 || arbitrary~m1
+q: Time to extract the minimum from a binary min-heap of n elements is || O(log n) || O(1)~m1 || O(n)~m1 || O(n log n)~m1
+q: Time to read (peek) the minimum of a min-heap is || O(1) || O(log n)~m1 || O(n)~m1 || O(n log n)~m1
+q: Bottom-up heapify of n elements takes || O(n) || O(n log n)~m2 || O(log n)~m2 || O(n^2)~m2
+q: To find the k largest elements in a stream with O(log k) per element, keep || a min-heap of size k || a max-heap of size k~m3 || a sorted array of all elements~m1 || a hash set~m3
+q: In an array-based heap the parent of index i (i > 0) is at || (i - 1) / 2 (integer division) || 2 * i~m1 || i + 1~m1 || i / 3~m1
+@skill dsa.bit | Bit manipulation | dsa.math_number | 3 | 3
+notes: Bit manipulation works directly on the binary representation of integers using AND, OR, XOR, NOT and shifts. A left shift by k multiplies by 2^k and a right shift divides by 2^k, rounding toward negative infinity for signed values. To test bit i use (x >> i) & 1, to set it use x | (1 << i), to clear it use x & ~(1 << i) and to toggle it use x ^ (1 << i). XOR of a number with itself is zero and with zero is itself, which finds the single non-duplicated number in an array. The expression x & (x - 1) clears the lowest set bit, so repeating it counts set bits, and x & (x - 1) == 0 tests for a power of two when x is positive. Know that negative numbers use two's complement, and that bit masks can represent subsets of up to about 30 items.
+res: Hacker's Delight chapter 2; CP-Algorithms bit manipulation; Cracking the Coding Interview bit manipulation chapter
+m1: Believes XOR of a number with itself is the number
+m2: Believes right shift by one multiplies by two
+m3: Thinks x & (x - 1) sets the lowest bit instead of clearing it
+q: What is 5 ^ 5 (XOR)? || 0 || 5~m1 || 10~m1 || 1~m1
+q: Left shifting an integer by 3 positions multiplies it by || 8 || 3~m2 || 6~m2 || 1/8~m2
+q: x >> 1 for a positive integer x is the same as || integer division by 2 || multiplication by 2~m2 || adding 1~m2 || squaring~m2
+q: A single non-duplicated number in an array where every other number appears twice can be found by || XOR of all elements || sum of all elements~m1 || AND of all elements~m1 || sorting and summing~m1
+q: x & (x - 1) does what to the binary form of x? || clears the lowest set bit || sets the lowest bit~m3 || flips all bits~m3 || shifts x right by one~m2
+q: For positive x, x & (x - 1) == 0 means || x is a power of two || x is odd~m3 || x is zero only~m3 || x is a prime~m3
+@skill dsa.math_number | Number theory basics | dsa.complexity | 2 | 3
+notes: Interview number theory focuses on gcd, primes, modular arithmetic and simple counting. The Euclidean algorithm computes gcd(a, b) by repeating gcd(b, a mod b) until the remainder is zero, in O(log min(a, b)) steps, and lcm(a, b) equals a times b divided by gcd, ideally computed as a / gcd * b to avoid overflow. To test whether n is prime you only need to check divisors up to the square root of n, giving O(sqrt n); the Sieve of Eratosthenes lists all primes up to n in about O(n log log n). Modular arithmetic lets you keep numbers small: (a + b) mod m, (a * b) mod m and fast exponentiation by squaring in O(log n). Division under a modulus needs the modular inverse, so never just divide. Remember that 1 is not prime and 2 is the only even prime.
+res: Introduction to Algorithms (CLRS) chapter 31; CP-Algorithms number theory; Cracking the Coding Interview math chapter
+m1: Believes you must test all divisors up to n to check primality
+m2: Believes 1 is prime or that all primes are odd
+m3: Applies plain division under a modulus, such as (a / b) mod m = (a mod m) / (b mod m)
+q: gcd(48, 18) by the Euclidean algorithm is || 6 || 3~m1 || 12~m1 || 9~m1
+q: To test whether n is prime by trial division you need to check divisors up to || sqrt(n) || n~m1 || n / 2~m1 || log n~m1
+q: Which statement is true? || 2 is the only even prime || 1 is the smallest prime~m2 || all primes are odd~m2 || 9 is prime~m2
+q: lcm(a, b) equals || a * b / gcd(a, b) || a + b - gcd(a, b)~m1 || gcd(a, b) * gcd(a, b)~m1 || max(a, b)~m1
+q: Which is valid under a modulus m? || (a * b) mod m = ((a mod m) * (b mod m)) mod m || (a / b) mod m = (a mod m) / (b mod m)~m3 || (a - b) mod m = (a mod m) - (b mod m) always non-negative~m3 || (a ^ b) mod m = (a mod m) ^ b without reducing~m3
+q: Fast exponentiation computes x^n in || O(log n) multiplications || O(n) multiplications~m1 || O(n^2)~m1 || O(1)~m1
+@skill dsa.backtracking | Backtracking | dsa.recursion,dsa.stack | 3 | 5
+notes: Backtracking builds candidates step by step and abandons a path as soon as it cannot lead to a valid solution, undoing the last choice to try another. The template is: choose an option, recurse, then unchoose. It explores a decision tree depth first, so subsets of n items have 2^n leaves and permutations n! leaves; pruning invalid branches early is what makes it practical. Typical problems are generating subsets, permutations and combinations, N-Queens, sudoku and word search. Keep a current path and a result list, and copy the path when you add it to the results, otherwise later changes corrupt stored answers. Avoid duplicates by sorting and skipping equal neighbours at the same level. State the time complexity honestly as exponential, then explain the pruning that reduces it in practice.
+res: Introduction to Algorithms (CLRS) problem sets; Cracking the Coding Interview recursion chapter; NeetCode backtracking roadmap
+m1: Forgets to undo the choice after the recursive call
+m2: Stores a reference to the path list without copying it into results
+m3: Believes backtracking is polynomial time because of pruning
+q: The standard backtracking pattern is || choose, recurse, unchoose || recurse, return, never undo~m1 || sort, then binary search~m3 || split in half and merge~m3
+q: The number of subsets of an n-element set is || 2^n || n^2~m3 || n!~m3 || 2n~m3
+q: The number of permutations of n distinct items is || n! || 2^n~m3 || n^2~m3 || n * (n - 1) only~m3
+q: Adding the current path list directly to the results without copying causes || later changes to the path alter the stored results || faster code with no side effects~m2 || a compile error~m2 || the path becoming empty immediately~m2
+q: Pruning in backtracking means || abandoning a partial solution as soon as it cannot lead to a valid one || sorting the input~m3 || memoising results~m3 || running on multiple threads~m3
+q: If you forget to remove the last chosen element after recursion in subset generation, you get || wrong, ever-growing paths in later branches || the correct answer faster~m1 || only duplicates removed~m1 || an automatic fix by the language~m1
+@skill dsa.trees | Binary trees and traversals | dsa.recursion,dsa.stack,dsa.queue | 2 | 4
+notes: A binary tree node has at most two children, left and right. The height is the number of edges on the longest root-to-leaf path, a leaf has no children, and a tree of n nodes has n minus one edges. Depth-first traversals visit nodes recursively: preorder is root, left, right; inorder is left, root, right; postorder is left, right, root. Breadth-first or level-order traversal uses a queue and visits nodes level by level. All traversals take O(n) time; recursive ones use O(h) stack space where h is the height, which is O(n) for a skewed tree and O(log n) for a balanced one. Most tree problems are solved by defining what to compute for a node from its children's answers. Handle the null node as the base case. Be able to write all four traversals both recursively and iteratively.
+res: Introduction to Algorithms (CLRS) chapter 10; Cracking the Coding Interview trees and graphs; NeetCode trees roadmap
+m1: Mixes up preorder, inorder and postorder
+m2: Believes recursive traversal always uses O(log n) space
+m3: Uses a stack for level-order traversal instead of a queue
+q: Inorder traversal visits nodes in the order || left, root, right || root, left, right~m1 || left, right, root~m1 || right, root, left~m1
+q: Preorder traversal visits nodes in the order || root, left, right || left, root, right~m1 || left, right, root~m1 || level by level~m1
+q: Postorder traversal is useful for || processing children before the parent, such as deleting a tree || copying the tree top-down only~m1 || reading a BST in sorted order~m1 || level-by-level printing~m3
+q: Level-order traversal uses a || queue || stack~m3 || heap~m3 || hash map~m3
+q: Recursive DFS on a completely skewed tree of n nodes uses stack space || O(n) || O(log n)~m2 || O(1)~m2 || O(n^2)~m2
+q: A binary tree with n nodes has how many edges? || n - 1 || n~m1 || n + 1~m1 || 2n~m1
+@skill dsa.bst | Binary search trees | dsa.trees,dsa.binary_search | 3 | 4
+notes: In a binary search tree, every node's left subtree holds values smaller than the node and its right subtree holds larger values, applied recursively to the whole subtree, not just to the immediate children. This makes search, insert and delete O(h) where h is the height: O(log n) when balanced but O(n) for a degenerate tree built from sorted input. An inorder traversal of a valid BST gives the values in sorted order, which is the easiest way to validate one. Validate with min and max bounds passed down the recursion, because checking only each node against its direct children misses violations deeper down. Deleting a node with two children replaces it with its inorder successor, the smallest node in the right subtree. Self-balancing trees such as AVL and red-black trees keep the height at O(log n) with rotations.
+res: Introduction to Algorithms (CLRS) chapter 12; Cracking the Coding Interview BST chapter; Visualgo BST
+m1: Checks only the direct children when validating a BST
+m2: Believes BST operations are always O(log n)
+m3: Believes preorder of a BST is sorted
+q: Inorder traversal of a valid BST produces || values in sorted ascending order || values in descending order~m3 || level order~m3 || a random order~m3
+q: Worst-case search time in a BST built by inserting 1, 2, 3, ..., n in order is || O(n) || O(log n)~m2 || O(1)~m2 || O(n log n)~m2
+q: Which tree is NOT a valid BST: root 10, left child 5 with right child 12? || It is invalid, 12 is in the left subtree but larger than 10 || It is valid, 12 > 5~m1 || It is valid, all children are ordered~m1 || It cannot be decided~m1
+q: To validate a BST correctly you should || pass min and max bounds down the recursion || compare each node only with its parent~m1 || compare each node only with its children~m1 || count the nodes~m1
+q: When deleting a node with two children, replace it with || its inorder successor or predecessor || its left child only~m1 || the root~m1 || null~m1
+q: Self-balancing trees such as AVL trees guarantee operations in || O(log n) || O(n)~m2 || O(1)~m2 || O(n log n)~m2
+@skill dsa.tree_problems | Tree recursion patterns | dsa.trees,dsa.bst | 3 | 5
+notes: Many tree problems share one recursive shape: handle the null base case, ask the left and right subtrees for an answer, and combine them with the current node. Height is one plus the maximum of the child heights. Diameter is the longest path between any two nodes and is found by computing height while tracking the best sum of left and right heights at each node, not just at the root. The lowest common ancestor of two nodes in a general tree is the first node where the search finds one target in each subtree; in a BST you can walk down using the values. A tree is balanced if the heights of the two subtrees differ by at most one at every node. Path sum problems pass the remaining target down. Decide whether information flows down as parameters or up as return values, and avoid recomputing heights repeatedly inside the recursion.
+res: Cracking the Coding Interview trees chapter; NeetCode trees roadmap; LeetCode tree problem list
+m1: Computes the diameter only through the root
+m2: Believes the LCA of two nodes is always the root
+m3: Recomputes height at every node separately, causing O(n^2), without noticing
+q: Height of a null node is usually defined as || 0 nodes, or -1 edges, depending on convention || 1~m1 || infinity~m1 || the height of the root~m1
+q: Height of a node (in nodes) equals || 1 + max(height(left), height(right)) || height(left) + height(right)~m1 || min(height(left), height(right))~m1 || 1 + height(left) only~m1
+q: The diameter of a binary tree || may not pass through the root || always passes through the root~m1 || equals the height~m1 || equals the number of leaves~m1
+q: In a BST, the lowest common ancestor of nodes p and q can be found by || walking down: go left if both are smaller, right if both are larger, else the current node is the LCA || always returning the root~m2 || returning the larger of p and q~m2 || sorting the tree~m2
+q: Checking balance by calling height() at every node separately costs about || O(n^2) in the worst case || O(n)~m3 || O(log n)~m3 || O(1)~m3
+q: Which direction does information flow for a "remaining target" path-sum recursion? || downward as a parameter || upward as a return only~m1 || through global sorting~m1 || it does not flow~m1
+@skill dsa.trie | Tries | dsa.trees,dsa.hashing,dsa.strings | 3 | 3
+notes: A trie, or prefix tree, stores strings character by character along root-to-node paths, with a flag on nodes where a word ends. Insert, search and prefix lookup each take O(L) time where L is the length of the word, independent of how many words are stored. Each node holds children in an array of 26 or in a hash map, trading memory for speed. Tries excel at autocomplete, prefix counting, dictionary word search and longest common prefix. A hash set can test whole-word membership in average O(L) too, but it cannot answer prefix queries without scanning. The main cost is memory, because many nodes can be created for sparse data. Be careful to distinguish a prefix from a complete word using the end-of-word flag, so searching for app does not succeed merely because apple was inserted.
+res: Introduction to Algorithms (CLRS) problem sets; Cracking the Coding Interview tries; NeetCode tries roadmap
+m1: Believes search time in a trie depends on the number of stored words
+m2: Treats any prefix match as a full word match
+m3: Believes a hash set can answer prefix queries in O(1)
+q: Search for a word of length L in a trie costs || O(L) || O(number of words)~m1 || O(log n)~m1 || O(L^2)~m1
+q: After inserting only "apple", search("app") should return || false, since app is only a prefix || true, since app is a prefix~m2 || an error~m2 || the word apple~m2
+q: After inserting only "apple", startsWith("app") should return || true || false~m2 || null~m2 || an error~m2
+q: Which problem suits a trie best? || Autocomplete suggestions for a prefix || Sorting integers~m3 || Finding the median~m3 || Detecting a cycle in a linked list~m3
+q: Why is a hash set poor for prefix queries? || It cannot find all keys with a given prefix without scanning || It is slower than a trie for exact lookups in O(1)~m3 || It stores characters, not words~m3 || It always has collisions~m3
+q: The main drawback of a trie is || memory use from many nodes || slow insertion at O(n^2)~m1 || it cannot store long words~m1 || it needs sorted input~m1
+@skill dsa.graph_repr | Graph representations | dsa.hashing,dsa.arrays | 2 | 3
+notes: A graph is a set of vertices and edges, which may be directed or undirected and weighted or unweighted. The adjacency list stores for each vertex a list of its neighbours and takes O(V + E) space, which suits sparse graphs and makes iterating neighbours efficient. The adjacency matrix is a V by V grid taking O(V^2) space, but it answers whether an edge exists in O(1), which suits dense graphs. An undirected edge must be stored in both directions. Degree counts edges at a vertex; in a directed graph there are in-degree and out-degree. A graph with V vertices can have at most V(V-1)/2 undirected edges. Many interview inputs are implicit graphs, such as grids where neighbours are up, down, left and right, or words connected by one-letter changes. Decide the representation before writing traversal code.
+res: Introduction to Algorithms (CLRS) chapter 22; Cracking the Coding Interview graphs; MIT 6.006 graph lectures
+m1: Stores an undirected edge in only one direction
+m2: Believes an adjacency matrix uses O(V + E) space
+m3: Thinks adjacency lists check edge existence in O(1)
+q: Space used by an adjacency list is || O(V + E) || O(V^2)~m2 || O(E^2)~m2 || O(V)~m2
+q: Space used by an adjacency matrix is || O(V^2) || O(V + E)~m2 || O(E)~m2 || O(V log V)~m2
+q: In an adjacency list for an undirected edge between u and v you should || add v to u's list and u to v's list || add v to u's list only~m1 || add the edge once anywhere~m1 || store it in a matrix only~m1
+q: Checking whether an edge (u, v) exists is O(1) with || an adjacency matrix || an adjacency list always~m3 || an edge list always~m3 || a linked list of vertices~m3
+q: A sparse graph (E much smaller than V^2) is best stored as || an adjacency list || an adjacency matrix~m2 || a 3D array~m2 || a sorted string~m2
+q: The maximum number of edges in a simple undirected graph with V vertices is || V(V-1)/2 || V^2~m1 || V~m1 || 2V~m1
+@skill dsa.bfs | Breadth-first search | dsa.graph_repr,dsa.queue | 3 | 4
+notes: Breadth-first search explores a graph level by level from a source using a queue and a visited set. Mark a node visited when you enqueue it, not when you dequeue it, otherwise the same node can be queued many times. On an unweighted graph BFS finds the shortest path in number of edges, because it reaches every node by the fewest edges first. Time is O(V + E) with an adjacency list and space is O(V) for the queue and visited set. For a grid, treat each cell as a vertex and its four neighbours as edges, checking bounds. Track distance by processing the queue one level at a time or storing distances in an array. Use multi-source BFS by enqueueing all sources first, as in rotting oranges. BFS does not give shortest paths on weighted graphs; use Dijkstra there.
+res: Introduction to Algorithms (CLRS) chapter 22; Cracking the Coding Interview graphs; NeetCode graphs roadmap
+m1: Uses BFS for shortest paths on weighted graphs
+m2: Marks nodes visited only when dequeued, causing duplicates
+m3: Uses a stack instead of a queue and still calls it BFS
+q: BFS uses which data structure for the frontier? || a queue || a stack~m3 || a heap~m3 || a hash map~m3
+q: BFS time complexity with an adjacency list is || O(V + E) || O(V^2)~m1 || O(E^2)~m1 || O(V log V)~m1
+q: BFS finds the shortest path in terms of || number of edges in an unweighted graph || total weight in a weighted graph~m1 || fewest vertices in a directed acyclic weighted graph only~m1 || neither~m1
+q: To avoid enqueuing a node many times you should mark it visited || when you enqueue it || only after processing all its neighbours~m2 || when you dequeue it~m2 || never~m2
+q: Multi-source BFS (e.g. rotting oranges) starts by || enqueueing all source cells before the loop || running BFS separately from each source and adding results~m3 || using DFS from one source~m3 || sorting the sources~m3
+q: On a grid, BFS neighbours of a cell are normally || up, down, left, right, within bounds || only the cell to the right~m3 || all cells in the same row~m3 || random cells~m3
+@skill dsa.dfs | Depth-first search | dsa.graph_repr,dsa.recursion | 3 | 4
+notes: Depth-first search explores as far as possible along one path before backtracking, using recursion or an explicit stack, plus a visited set to avoid revisiting nodes and looping forever on cycles. With an adjacency list it runs in O(V + E) time and uses O(V) space, including the recursion stack, which can overflow on very deep graphs. DFS suits connected components, cycle detection, path existence, flood fill on grids, counting islands and topological sorting. In a directed graph a cycle exists when DFS meets a node that is still on the current recursion path, so track three states: unvisited, in progress and done. In an undirected graph a visited neighbour that is not the parent signals a cycle. DFS does not guarantee shortest paths. Be ready to write both recursive and iterative versions.
+res: Introduction to Algorithms (CLRS) chapter 22; Cracking the Coding Interview graphs; NeetCode graphs roadmap
+m1: Believes DFS finds shortest paths in unweighted graphs
+m2: Forgets the visited set and loops forever on cycles
+m3: Treats any previously visited neighbour in a directed graph as a cycle
+q: DFS time complexity on an adjacency list graph is || O(V + E) || O(V^2)~m1 || O(E log V)~m1 || O(2^V)~m1
+q: Can plain DFS be relied on to give the fewest-edge path in an unweighted graph? || No, BFS is needed for that || Yes, DFS always reaches the target by the shortest route first~m1 || Yes, if the graph has a visited set~m1 || Yes, but only on trees with more than one leaf~m1
+q: Without a visited set DFS on a graph with a cycle will || never terminate (infinite recursion) || finish faster~m2 || visit each node once~m2 || find the shortest cycle~m2
+q: In a directed graph a back edge, meaning a neighbour currently on the recursion path, indicates || a cycle || a connected component~m3 || a shortest path~m3 || a topological order~m3
+q: In a directed graph a neighbour that is already fully processed (done) means || not necessarily a cycle~m3 || always a cycle~m3 || an invalid graph~m3 || the end of the search~m3
+q: Counting islands in a grid with DFS flood fill: each unvisited land cell starts || one new island and marks all connected land visited || the algorithm over from scratch for every cell~m2 || a shortest path search~m1 || a sort~m1
+@skill dsa.topo | Topological sort | dsa.dfs,dsa.bfs | 3 | 4
+notes: A topological ordering of a directed acyclic graph lists vertices so that every edge goes from an earlier vertex to a later one. It exists only if the graph has no cycles, and detecting that no ordering exists is itself a typical question, as in course scheduling. Kahn's algorithm computes in-degrees, starts a queue with all zero in-degree vertices, repeatedly removes one, appends it to the order and decrements its neighbours' in-degrees, queueing those that reach zero. If the final order has fewer than V vertices the graph has a cycle. The DFS version adds a vertex to a list after all its descendants finish and reverses the list. Both run in O(V + E). The order is usually not unique. This is exactly the structure of skill prerequisites and build dependencies, where you must learn prerequisites first.
+res: Introduction to Algorithms (CLRS) chapter 22.4; Cracking the Coding Interview graphs; LeetCode course schedule problems
+m1: Believes topological sort works on graphs with cycles
+m2: Believes the topological order is always unique
+m3: Starts Kahn's algorithm with vertices of highest in-degree
+q: A topological ordering exists only if the directed graph || has no cycles || is connected~m1 || is a tree~m1 || has an even number of edges~m1
+q: Kahn's algorithm starts with vertices of || in-degree zero || out-degree zero~m3 || highest in-degree~m3 || any vertex at random~m3
+q: If Kahn's algorithm outputs fewer than V vertices then || the graph has a cycle || the graph is a tree~m1 || the order is unique~m2 || the graph is disconnected only~m1
+q: Time complexity of topological sort is || O(V + E) || O(V^2) always~m1 || O(E^2)~m1 || O(V log V)~m1
+q: A DAG with edges A->C and B->C has || more than one valid topological order || exactly one order~m2 || no valid order~m1 || only the order C, A, B~m1
+q: Topological sort models || tasks with prerequisites, learn dependencies first || shortest paths in weighted graphs~m1 || finding the median~m1 || sorting numbers~m1
+@skill dsa.union_find | Union-Find (disjoint sets) | dsa.graph_repr,dsa.trees | 3 | 4
+notes: Union-Find maintains a partition of elements into disjoint sets with two operations: find returns the representative of an element's set and union merges two sets. Each set is a tree stored in a parent array. Without optimisation the tree can become a long chain and find costs O(n). Path compression flattens the tree during find, and union by rank or size attaches the smaller tree under the larger one; together they give nearly constant amortised time per operation, the inverse Ackermann function. Always union the roots, not the original elements. Typical uses are counting connected components, detecting cycles in an undirected graph, Kruskal's minimum spanning tree and grouping accounts or equivalent items. Two elements are connected exactly when their finds return the same root. Union-Find handles edge additions well but not edge deletions.
+res: Introduction to Algorithms (CLRS) chapter 21; CP-Algorithms disjoint set union; NeetCode graphs roadmap
+m1: Unions the elements themselves instead of their roots
+m2: Believes find is always O(n) even with optimisations
+m3: Believes Union-Find efficiently supports deleting edges
+q: Two elements are in the same set exactly when || their find operations return the same root || their values are equal~m1 || their indices differ by one~m1 || they were never unioned~m1
+q: With path compression and union by rank, each operation costs about || nearly O(1) amortised || O(n)~m2 || O(n log n)~m2 || O(n^2)~m2
+q: Without any optimisation, find in the worst case costs || O(n), if the tree becomes a chain || O(1)~m2 || O(log log n)~m2 || O(n^2)~m2
+q: union(a, b) should link || the root of a's set to the root of b's set || a directly to b without finding roots~m1 || all elements of a to b one by one~m1 || nothing if a < b~m1
+q: Detecting a cycle in an undirected graph: when adding edge (u, v), a cycle exists if || find(u) equals find(v) || find(u) is not equal to find(v)~m1 || u < v~m1 || the graph has more than V edges only~m1
+q: Which statement about Union-Find is true? || It merges sets efficiently but cannot easily split them again || It efficiently supports deleting edges~m3 || It supports edge deletion in O(1)~m3 || It cannot merge sets after the first union~m3
+@skill dsa.shortest | Shortest paths and Dijkstra | dsa.heap,dsa.graph_repr,dsa.bfs | 4 | 5
+notes: Dijkstra's algorithm finds shortest paths from one source to all vertices in a graph with non-negative edge weights. Keep a distance array initialised to infinity except zero for the source, and a min-heap of vertex and distance pairs. Repeatedly pop the closest unfinalised vertex and relax its outgoing edges: if dist[u] + w is smaller than dist[v], update dist[v] and push it. With a binary heap and adjacency lists the time is O((V + E) log V). Skip stale heap entries whose distance is larger than the recorded one. Dijkstra fails with negative edges because a finalised vertex could later be improved; use Bellman-Ford, which runs in O(VE) and detects negative cycles. On unweighted graphs plain BFS is enough and faster. Floyd-Warshall solves all pairs in O(V^3).
+res: Introduction to Algorithms (CLRS) chapter 24; MIT 6.006 shortest path lectures; CP-Algorithms Dijkstra
+m1: Uses Dijkstra with negative edge weights
+m2: Believes BFS gives shortest paths in weighted graphs
+m3: Believes Dijkstra with a binary heap is O(V^2) always or ignores the log factor
+q: Dijkstra's algorithm requires edge weights to be || non-negative || all equal~m1 || integers only~m1 || positive and distinct~m1
+q: Time complexity of Dijkstra with a binary heap and adjacency lists is || O((V + E) log V) || O(V + E)~m3 || O(V^3)~m3 || O(E)~m3
+q: For shortest paths with negative edges (but no negative cycle) use || Bellman-Ford || Dijkstra~m1 || BFS~m2 || Kruskal~m1
+q: On an unweighted graph the simplest correct shortest-path algorithm is || BFS || Dijkstra only~m1 || DFS~m2 || Bellman-Ford only~m1
+q: "Relaxing" edge (u, v) with weight w means || if dist[u] + w < dist[v], update dist[v] || always setting dist[v] = w~m3 || removing the edge~m3 || sorting the neighbours~m3
+q: Why skip stale entries popped from the heap? || Their distance is greater than the best known distance || They are negative~m3 || They are duplicates of the source~m3 || The heap is corrupt~m3
+@skill dsa.mst | Minimum spanning trees | dsa.union_find,dsa.shortest | 4 | 4
+notes: A spanning tree of a connected undirected graph with V vertices uses exactly V minus one edges, connects every vertex and has no cycle; a minimum spanning tree has the smallest possible total weight. Kruskal's algorithm sorts all edges by weight and adds each edge if it connects two different components, checked with Union-Find, in O(E log E). Prim's algorithm grows a tree from one vertex, repeatedly adding the cheapest edge leaving the tree using a min-heap, in O((V + E) log V). Both rely on the cut property: the lightest edge crossing any cut belongs to some MST. If edge weights are distinct the MST is unique. An MST minimises total weight, not the path between two given vertices, so it is not the same as a shortest-path tree. A disconnected graph has a minimum spanning forest instead.
+res: Introduction to Algorithms (CLRS) chapter 23; MIT 6.006 MST lecture; CP-Algorithms MST
+m1: Confuses an MST with a shortest-path tree
+m2: Believes a spanning tree can have a cycle or any number of edges
+m3: Believes Kruskal adds every edge in sorted order without cycle checks
+q: A spanning tree of a connected graph with V vertices has exactly || V - 1 edges || V edges~m2 || V + 1 edges~m2 || 2V edges~m2
+q: Kruskal's algorithm adds the next lightest edge only if it || connects two different components || is the heaviest edge~m3 || creates a cycle~m3 || touches vertex 0~m3
+q: Which data structure makes Kruskal's cycle check fast? || Union-Find || Queue~m3 || Stack~m3 || Trie~m3
+q: The path between two vertices in the MST || is not necessarily the shortest path in the graph || is always the shortest path~m1 || is always the longest path~m1 || does not exist~m1
+q: Prim's algorithm repeatedly adds || the cheapest edge leaving the current tree || the cheapest edge anywhere in the graph~m3 || the heaviest edge~m3 || a random edge~m3
+q: Kruskal's time with sorting dominated cost is || O(E log E) || O(V^3)~m3 || O(E)~m3 || O(V)~m3
+@skill dsa.dp_intro | Dynamic programming fundamentals | dsa.recursion,dsa.hashing | 3 | 5
+notes: Dynamic programming solves problems whose solution can be built from solutions to overlapping subproblems with optimal substructure. Naive recursion repeats the same subproblems exponentially often; memoization caches each result the first time, and tabulation fills a table bottom up in dependency order. Either way the time becomes the number of distinct states times the work per state. The method is to define the state precisely, write the recurrence relating a state to smaller states, set base cases, and choose the iteration order. Fibonacci reduces from O(2^n) to O(n). Often a table can be compressed, for example keeping only the last two values for O(1) space. Dynamic programming differs from divide and conquer because subproblems overlap, and from greedy because it considers all choices of the recurrence rather than committing to one. Check by testing small cases by hand.
+res: Introduction to Algorithms (CLRS) chapter 15; MIT 6.006 dynamic programming lectures; Errichto DP playlist
+m1: Believes DP needs no overlapping subproblems
+m2: Believes memoization does not change time complexity
+m3: Forgets base cases or defines the state vaguely
+q: Memoized Fibonacci runs in || O(n) || O(2^n)~m2 || O(log n)~m2 || O(n^2)~m2
+q: DP is applicable when a problem has || overlapping subproblems and optimal substructure || only independent subproblems~m1 || no recursive structure~m1 || sorted input~m1
+q: Time of a DP solution is typically || number of states times work per state || always O(n)~m2 || always O(n^2)~m2 || the number of recursive calls without caching~m2
+q: Tabulation fills the table || bottom up in an order that respects dependencies || in random order~m3 || top down from the answer only~m3 || using only the last cell~m3
+q: A missing base case in the recurrence causes || wrong answers or infinite recursion || faster code~m3 || automatic correction~m3 || nothing at all~m3
+q: Fibonacci in O(1) space is possible by || keeping only the previous two values || storing a full table~m1 || recursion without caching~m2 || sorting~m1
+@skill dsa.dp_1d | One-dimensional DP | dsa.dp_intro | 3 | 5
+notes: One-dimensional dynamic programming uses a single array where dp[i] depends on earlier entries. Classic problems include climbing stairs, where dp[i] equals dp[i-1] plus dp[i-2]; house robber, where dp[i] is the larger of skipping house i or taking it plus dp[i-2]; coin change for the minimum number of coins, where dp[a] equals one plus the minimum of dp[a - coin] over all coins; and longest increasing subsequence in O(n^2) or O(n log n) with binary search. State the meaning of dp[i] in one precise sentence, for example the best value using the first i items, then derive the recurrence. Initialise unreachable states with infinity and check for them before adding one. Often only the last few values are needed, reducing space to O(1). Compare with greedy to see when a greedy choice fails, such as coin change with unusual denominations.
+res: Introduction to Algorithms (CLRS) chapter 15; NeetCode 1-D dynamic programming roadmap; LeetCode DP study plan
+m1: Uses greedy largest-coin-first for coin change with arbitrary denominations
+m2: Starts coin change dp with zeros instead of infinity for unreachable amounts
+m3: Mixes up the house robber recurrence (adds adjacent houses)
+q: Climbing stairs with steps of 1 or 2: ways(n) equals || ways(n-1) + ways(n-2) || ways(n-1) * ways(n-2)~m3 || n^2~m3 || ways(n-1) only~m3
+q: House robber (no two adjacent houses): dp[i] equals || max(dp[i-1], dp[i-2] + nums[i]) || dp[i-1] + nums[i]~m3 || dp[i-1] + dp[i-2]~m3 || min(dp[i-1], dp[i-2])~m3
+q: Minimum coins for amount 6 with coins {1, 3, 4} is || 2 (3 + 3) || 3 (4 + 1 + 1), as greedy gives~m1 || 6~m1 || 1~m1
+q: In coin change DP, unreachable amounts should be initialised to || infinity (a large number) || 0~m2 || -1 and then added to~m2 || the amount itself~m2
+q: Coin change DP: dp[a] equals || 1 + min over coins of dp[a - coin] || max over coins of dp[a - coin]~m3 || sum of all dp[a - coin]~m3 || dp[a - 1] only~m1
+q: Longest increasing subsequence with the O(n^2) DP has dp[i] meaning || length of the LIS ending at index i || length of the LIS in the first i elements only~m3 || the value at index i~m3 || the number of elements smaller than nums[i]~m3
+@skill dsa.dp_2d | Two-dimensional DP | dsa.dp_1d | 4 | 6
+notes: Two-dimensional dynamic programming has states described by two indices, such as positions in two strings or an item index and a capacity. For longest common subsequence, dp[i][j] is the LCS length of the first i characters of one string and the first j of the other: if the characters match it is dp[i-1][j-1] plus one, otherwise the maximum of dp[i-1][j] and dp[i][j-1]. Edit distance is similar with three options: insert, delete and replace. The 0/1 knapsack has dp[i][w] as the best value using the first i items with capacity w, choosing to skip or take item i; its time is O(nW), which is pseudo-polynomial. Grid path counting uses dp[r][c] equals the sum from above and left. Fill the table in an order that respects dependencies, and compress to one row when only the previous row is needed. Subsequences need not be contiguous, unlike substrings.
+res: Introduction to Algorithms (CLRS) chapter 15; MIT 6.006 DP lectures; NeetCode 2-D dynamic programming roadmap
+m1: Confuses a subsequence with a substring
+m2: Uses the wrong LCS recurrence on a mismatch (resets to zero)
+m3: Believes the 0/1 knapsack DP is polynomial in the input size
+q: On a character match, LCS dp[i][j] equals || dp[i-1][j-1] + 1 || max(dp[i-1][j], dp[i][j-1])~m2 || 0~m2 || dp[i-1][j] + dp[i][j-1]~m2
+q: On a mismatch, LCS dp[i][j] equals || max(dp[i-1][j], dp[i][j-1]) || 0~m2 || dp[i-1][j-1]~m2 || dp[i-1][j-1] + 1~m2
+q: A subsequence differs from a substring because || it need not be contiguous || it must be sorted~m1 || it must be shorter~m1 || it is always a palindrome~m1
+q: Time complexity of the 0/1 knapsack DP with n items and capacity W is || O(nW) || O(n log W)~m3 || O(n + W)~m3 || O(2^n) always~m3
+q: Number of paths in an R by C grid moving only right or down: dp[r][c] equals || dp[r-1][c] + dp[r][c-1] || dp[r-1][c] * dp[r][c-1]~m2 || max(dp[r-1][c], dp[r][c-1])~m2 || dp[r-1][c-1]~m2
+q: Edit distance considers the operations || insert, delete and replace || only replace~m1 || only insert~m1 || sort and merge~m1
+@skill dsa.greedy | Greedy algorithms | dsa.sorting_adv,dsa.dp_intro | 3 | 4
+notes: A greedy algorithm builds a solution by repeatedly taking the locally best choice and never reconsidering it. It works only when the problem has the greedy-choice property and optimal substructure, which you must justify with an exchange argument: show that any optimal solution can be transformed to include the greedy choice without getting worse. Classic correct examples are activity selection by earliest finish time, fractional knapsack by value per weight, Huffman coding, and jump game reachability. Classic failures include 0/1 knapsack and coin change with arbitrary denominations, where taking the largest coin first can miss the optimum, and these need dynamic programming. Sorting usually comes first, so many greedy solutions cost O(n log n). When unsure, test the greedy rule against small counterexamples or compare with brute force before trusting it.
+res: Introduction to Algorithms (CLRS) chapter 16; MIT 6.046 greedy lectures; NeetCode greedy roadmap
+m1: Believes greedy always gives the optimal answer
+m2: Sorts activity selection by start time instead of finish time
+m3: Applies greedy value-per-weight to 0/1 knapsack and expects optimal results
+q: Activity selection (maximum number of non-overlapping intervals) is solved greedily by sorting by || earliest finish time || earliest start time~m2 || shortest duration~m2 || latest finish time~m2
+q: Greedy by value per weight is optimal for || fractional knapsack || 0/1 knapsack~m3 || coin change with arbitrary coins~m1 || longest common subsequence~m1
+q: Coins {1, 3, 4}, amount 6: greedy largest-first gives || 3 coins (4, 1, 1) while optimal is 2 (3, 3) || the optimal 2 coins~m1 || 1 coin~m1 || it fails with an error~m1
+q: To justify a greedy algorithm you typically use || an exchange argument || a random test only~m1 || the size of the input~m1 || recursion depth~m1
+q: A typical greedy solution first || sorts by a key then makes local choices || builds a full DP table~m1 || builds a trie~m1 || runs BFS~m1
+q: When unsure whether a greedy rule is correct you should || test it against small counterexamples or a brute force || assume it is correct if it passes the sample~m1 || switch to a hash map~m1 || add more loops~m1
+@skill dsa.intervals | Interval problems | dsa.sorting_adv,dsa.greedy,dsa.heap | 3 | 4
+notes: Interval problems represent ranges as start and end pairs and usually start by sorting by start time. To merge overlapping intervals, sort, then keep a current interval and extend its end to the maximum when the next start is at most the current end; otherwise emit it and start a new one. Two intervals overlap when each starts before the other ends, and you must decide whether touching endpoints count as overlap. To insert a new interval into a sorted list, copy intervals ending before it, merge those overlapping it, then copy the rest. Minimum meeting rooms is the maximum number of simultaneous intervals, found with sorted start and end arrays or a min-heap of end times. Removing the fewest intervals to eliminate overlap is the greedy activity selection by earliest end. Sorting dominates, so these run in O(n log n).
+res: LeetCode intervals study plan; NeetCode intervals roadmap; Cracking the Coding Interview sorting and searching
+m1: Forgets to sort intervals before merging
+m2: When merging sets the end to the next interval's end instead of the maximum
+m3: Believes minimum meeting rooms equals the number of intervals
+q: The first step for merging overlapping intervals is usually to || sort the intervals by start time || sort them by length~m1 || reverse them~m1 || hash them~m1
+q: Merging [1,5] and [2,3] gives || [1,5] || [1,3]~m2 || [2,5]~m2 || [1,2]~m2
+q: When merging, the new end should be || max(current end, next end) || next end always~m2 || min of the ends~m2 || current start~m2
+q: Minimum meeting rooms needed equals || the maximum number of overlapping intervals at any time || the number of intervals~m3 || the longest interval~m3 || the number of distinct start times~m3
+q: Time complexity of merging n intervals including sorting is || O(n log n) || O(n)~m1 || O(n^2)~m1 || O(log n)~m1
+q: Which pair overlaps if touching endpoints do NOT count as overlap? || [1,5] and [4,8] || [1,3] and [3,6]~m1 || [1,2] and [2,3]~m1 || [5,6] and [7,8]~m1

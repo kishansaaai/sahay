@@ -1,0 +1,421 @@
+# ML engineering. Authoring format documented in scripts/build_content.py
+@skill ml.data_eda | Tabular data and exploratory analysis | - | 1 | 3
+notes: Most ML work starts with tabular data: rows are examples, columns are features, and one column is the target to predict. Before modelling, explore the data. Check the shape, data types, missing values, duplicates, ranges and class balance. Summarise numeric columns with mean, median, standard deviation and quantiles, and look at distributions with histograms and box plots. The mean is sensitive to outliers while the median is robust. Look at relationships with scatter plots and correlation, remembering that correlation measures linear association and does not prove causation. Look for impossible values, such as negative ages, and for suspicious columns that leak the target. Keep a clear record of every cleaning step so it can be repeated on new data. Good exploration prevents wasted effort on models built over broken data.
+res: Python for Data Analysis (Wes McKinney); pandas documentation user guide; Kaggle Learn Data Cleaning
+m1: Believes correlation proves causation
+m2: Believes the mean is robust to outliers
+m3: Skips exploration and goes straight to model training
+q: In a dataset each row usually represents || one example or observation || one feature~m3 || the target column~m3 || a model~m3
+q: A single huge outlier will affect which statistic most? || the mean || the median~m2 || the mode~m2 || the count of rows~m2
+q: Ice-cream sales and drowning deaths are positively correlated. The right conclusion is || correlation alone does not show that one causes the other || ice cream causes drowning~m1 || drowning causes ice-cream sales~m1 || the data must be wrong~m1
+q: Which is a sensible first step with a new dataset? || inspect shape, types, missing values and distributions || train a deep network immediately~m3 || delete all rows with any missing value~m3 || normalise before looking at the data~m3
+q: A person with age = -5 in the data is most likely || a data quality error to investigate || a valid unusual case~m3 || a feature to keep as is~m3 || the target~m3
+q: For skewed data with outliers, a better summary of the typical value is the || median || maximum~m2 || sum~m2 || variance~m2
+@skill ml.stats_basics | Probability and statistics basics | - | 2 | 4
+notes: Machine learning rests on probability. A probability lies between 0 and 1 and the probabilities of all outcomes sum to 1. Conditional probability P(A given B) is the chance of A when B is known to have happened, and Bayes' rule links it to the reverse: P(A given B) equals P(B given A) times P(A) divided by P(B). Two events are independent when P(A and B) equals P(A) times P(B). The expected value is the probability-weighted average, and variance measures spread around the mean; the standard deviation is its square root. A normal distribution is described by its mean and standard deviation, with about 68 percent of values within one standard deviation. The law of large numbers says sample averages approach the true mean. A small sample can mislead, so report uncertainty rather than a single number.
+res: Pattern Recognition and Machine Learning (Bishop) chapter 1; Khan Academy statistics and probability; StatQuest YouTube channel
+m1: Believes P(A given B) equals P(B given A)
+m2: Believes variance is measured in the same units as the data
+m3: Believes independent events must be mutually exclusive
+q: Bayes' rule says P(A | B) equals || P(B | A) * P(A) / P(B) || P(B | A)~m1 || P(A) * P(B)~m3 || P(A) + P(B)~m3
+q: If events A and B are independent then P(A and B) equals || P(A) * P(B) || P(A) + P(B)~m3 || 0~m3 || P(A | B) / P(B)~m1
+q: A test is 99% accurate for a rare disease with 0.1% prevalence. A positive result means the chance of disease is || much lower than 99%, because the disease is rare || 99%~m1 || 100%~m1 || 0.1%~m1
+q: The standard deviation is || the square root of the variance, in the data's units || the variance~m2 || the mean divided by n~m2 || always smaller than 1~m2
+q: In a normal distribution about how much of the data lies within one standard deviation of the mean? || about 68% || about 50%~m3 || about 95%~m3 || about 99.9%~m3
+q: Two fair coin flips are independent. Are they mutually exclusive? || No, both can be heads || Yes, because they are independent~m3 || Yes, one flip rules out the other~m3 || Only if the coin is biased~m3
+@skill ml.linear_algebra | Linear algebra for ML | - | 2 | 4
+notes: Data and parameters in machine learning are vectors and matrices. A vector is a list of numbers and the dot product of two vectors multiplies matching entries and sums them, which measures alignment and is zero when they are perpendicular. A matrix times a vector applies a linear transformation, and multiplying an m by n matrix by an n by p matrix gives an m by p matrix; the inner dimensions must match and matrix multiplication is not commutative. The transpose flips rows and columns. The norm measures length, and the L2 norm is the square root of the sum of squares. Cosine similarity is the dot product divided by the product of norms. Batched operations with matrices make neural networks efficient, because one matrix multiplication computes all examples and neurons at once. Shapes are the most common source of bugs, so check them first.
+res: Mathematics for Machine Learning (Deisenroth) chapter 2; 3Blue1Brown Essence of Linear Algebra; NumPy documentation broadcasting
+m1: Believes matrix multiplication is commutative
+m2: Gets resulting shapes wrong when multiplying matrices
+m3: Confuses the dot product with element-wise multiplication
+q: Multiplying a 3x4 matrix by a 4x2 matrix gives a matrix of shape || 3x2 || 4x4~m2 || 3x4~m2 || 2x3~m2
+q: Is A times B always equal to B times A for matrices? || No, matrix multiplication is generally not commutative || Yes, always~m1 || Yes if both are square~m1 || Yes if the entries are positive~m1
+q: The dot product of [1, 2, 3] and [4, 5, 6] is || 32 || [4, 10, 18]~m3 || 21~m3 || 15~m3
+q: The dot product of two perpendicular vectors is || 0 || 1~m3 || their lengths multiplied~m3 || -1~m3
+q: The L2 norm of the vector [3, 4] is || 5 || 7~m3 || 12~m3 || 25~m3
+q: Cosine similarity between two vectors is || their dot product divided by the product of their norms || the sum of their entries~m3 || the difference of their lengths~m3 || their element-wise product~m3
+@skill ml.train_test | Train, validation and test splits | ml.data_eda | 1 | 3
+notes: To estimate how well a model will perform on new data you must evaluate it on examples it never trained on. Split the data into a training set to fit parameters, a validation set to choose hyperparameters and compare models, and a test set used once at the very end for the final unbiased estimate. A common split is 70, 15, 15 or 80, 10, 10 percent. Data leakage happens when information from outside the training set sneaks in, for example scaling with statistics computed on all data before splitting, or having the same patient or duplicate rows in both train and test. For time series, split by time so you never train on the future. For classification, stratify so class proportions are similar in every split. Repeatedly tuning on the test set quietly overfits to it, so it stops being a fair estimate.
+res: Hands-On Machine Learning (Geron) chapter 2; scikit-learn model selection guide; Google ML crash course data splits
+m1: Evaluates the model on the training data and reports that accuracy
+m2: Fits the scaler or imputer on the whole dataset before splitting
+m3: Randomly shuffles time-series data before splitting
+q: The test set should be used || once, at the end, for the final estimate || repeatedly to tune hyperparameters~m1 || for training~m1 || to fit the scaler~m2
+q: Accuracy measured on the training data is || usually optimistic and not a good estimate of new-data performance || the best estimate of new-data performance~m1 || always equal to test accuracy~m1 || meaningless for any purpose~m1
+q: Which causes data leakage? || computing normalisation statistics on all data before splitting || fitting the scaler on the training data only~m2 || using a separate test set~m2 || stratifying the split~m2
+q: For a time series forecasting task the split should be || chronological: train on the past, test on the future || random shuffling~m3 || reversed in time~m3 || by alphabetical order~m3
+q: The validation set is used to || choose hyperparameters and compare models || give the final unbiased score~m1 || replace the training set~m1 || store the model~m1
+q: Stratified splitting means || keeping class proportions similar across splits || splitting by feature scale~m1 || removing minority classes~m1 || using the test set twice~m1
+@skill ml.metrics_cls | Classification metrics | ml.train_test,ml.stats_basics | 2 | 4
+notes: Accuracy is the share of correct predictions but is misleading with imbalanced classes: a model that always predicts the majority class can score 99 percent while being useless. The confusion matrix counts true positives, false positives, true negatives and false negatives. Precision is true positives divided by predicted positives, answering how many flagged items were right. Recall is true positives divided by actual positives, answering how many real positives were found. F1 is the harmonic mean of precision and recall. Raising the decision threshold usually increases precision and lowers recall. The ROC curve plots true positive rate against false positive rate across thresholds and AUC summarises it, where 0.5 is random guessing and 1.0 is perfect. Choose the metric from the cost of mistakes, such as high recall for disease screening.
+res: Hands-On Machine Learning (Geron) chapter 3; scikit-learn metrics documentation; Google ML crash course classification
+m1: Believes high accuracy always means a good model
+m2: Swaps the definitions of precision and recall
+m3: Believes raising the threshold increases recall
+q: A model predicts "not fraud" for every transaction in a dataset with 1% fraud. Its accuracy is || 99% and it is useless || 1%~m1 || 50%~m1 || 100%~m1
+q: Precision equals || TP / (TP + FP) || TP / (TP + FN)~m2 || TN / (TN + FP)~m2 || (TP + TN) / total~m1
+q: Recall equals || TP / (TP + FN) || TP / (TP + FP)~m2 || FP / (FP + TN)~m2 || TN / (TN + FN)~m2
+q: Raising the classification threshold generally || increases precision and lowers recall || increases recall and lowers precision~m3 || increases both~m3 || changes nothing~m3
+q: An ROC AUC of 0.5 means || no better than random guessing || perfect classification~m1 || always predicts positive~m1 || the model is calibrated~m1
+q: For screening a serious disease where missing a case is costly you want || high recall || high precision only~m2 || high accuracy only~m1 || low recall~m2
+@skill ml.metrics_reg | Regression metrics | ml.train_test,ml.stats_basics | 2 | 3
+notes: Regression predicts a continuous number, so we measure the size of the error. Mean absolute error averages the absolute differences and is in the target's units and robust to outliers. Mean squared error averages the squared differences, penalising large errors heavily, and its square root RMSE returns to the target's units. R squared compares the model with always predicting the mean: 1 is perfect, 0 is no better than the mean, and it can be negative on new data for a bad model. A residual is the actual value minus the prediction, and a residual plot with visible patterns signals a missing relationship. Compare errors against a naive baseline such as predicting the average. Choose MAE when all errors matter equally and MSE or RMSE when large mistakes are especially costly.
+res: Hands-On Machine Learning (Geron) chapter 4; scikit-learn regression metrics; StatQuest R-squared
+m1: Believes R squared cannot be negative
+m2: Believes MSE is in the same units as the target
+m3: Believes MAE penalises large errors more than MSE does
+q: RMSE is measured in || the same units as the target || squared units of the target~m2 || percent~m2 || no units~m2
+q: Which metric penalises large errors most strongly? || MSE || MAE~m3 || median error~m3 || count of errors~m3
+q: R squared = 0 means the model || predicts no better than the mean of the target || is perfect~m1 || always errs by 0~m1 || cannot be computed~m1
+q: Can R squared be negative on a test set? || Yes, if the model is worse than predicting the mean || No, it is always between 0 and 1~m1 || Only with more than 10 features~m1 || Only for classification~m1
+q: A residual is || actual value minus predicted value || predicted value squared~m2 || the feature mean~m2 || the number of errors~m2
+q: A useful baseline for regression is || always predicting the mean of the training targets || always predicting zero for any target~m3 || predicting the test mean~m3 || a deeper model~m3
+@skill ml.preprocessing | Preprocessing: scaling, encoding, missing values | ml.data_eda,ml.train_test | 2 | 4
+notes: Models need clean numeric input. Missing values can be dropped, filled with the mean or median, or flagged with an indicator column; the fill value must be learned from training data only. Feature scaling matters for distance-based and gradient-based methods: standardisation subtracts the mean and divides by the standard deviation, while min-max scaling maps values into a fixed range. Tree-based models are mostly insensitive to scaling. Categorical features need encoding: one-hot encoding creates a binary column per category and suits nominal data, while ordinal encoding keeps an order and suits ranked categories. Giving an unordered category integer codes can mislead a linear model into seeing an order. Handle unseen categories at prediction time gracefully. Wrap all steps in a pipeline fitted on training data and applied identically to validation, test and production data.
+res: Hands-On Machine Learning (Geron) chapter 2; scikit-learn preprocessing guide; Kaggle Learn Intermediate Machine Learning
+m1: Fits scaling statistics on the test data
+m2: Encodes unordered categories as integers for a linear model
+m3: Believes tree models need feature scaling to work
+q: Standardisation transforms a feature to || zero mean and unit standard deviation || values between 0 and 1~m1 || integer codes~m1 || only positive numbers~m1
+q: Which models are most affected by feature scale? || k-nearest neighbours and gradient-descent models || decision trees~m3 || random forests~m3 || none of them~m3
+q: Colour with values red, green and blue (no order) is best encoded for a linear model with || one-hot encoding || red=1, green=2, blue=3~m2 || red=0, green=100, blue=1~m2 || deleting the column~m2
+q: Mean imputation for missing values should use || the mean of the training data only || the mean of the test data~m1 || the mean of all data before splitting~m1 || zero always~m1
+q: Why use a preprocessing pipeline? || to apply identical, training-fitted steps to new data || to make the model larger~m3 || to skip validation~m3 || to scale the target only~m3
+q: Min-max scaling is sensitive to || outliers, which stretch the range || the number of rows~m3 || the column name~m3 || nothing at all~m3
+@skill ml.linear_reg | Linear regression | ml.linear_algebra,ml.metrics_reg | 2 | 4
+notes: Linear regression models the target as a weighted sum of features plus a bias: y equals w times x plus b. Training chooses weights that minimise the mean squared error between predictions and targets. The closed-form solution uses the normal equation, while gradient descent finds it iteratively and scales to large data. Each weight shows how much the prediction changes per unit increase of its feature with the others held fixed, which makes the model interpretable. The model assumes a linear relationship; if the relationship is curved you can add polynomial features. It is sensitive to outliers because errors are squared, and to correlated features, which make weights unstable. Evaluate on held-out data and inspect residuals. With many features relative to examples it overfits, which regularisation addresses. Linear regression is the baseline against which more complex models should be compared.
+res: Hands-On Machine Learning (Geron) chapter 4; An Introduction to Statistical Learning chapter 3; Andrew Ng Machine Learning Specialization
+m1: Believes linear regression can only fit straight lines even with polynomial features
+m2: Believes the model minimises the sum of absolute errors
+m3: Believes a large weight always means an important feature regardless of feature scale
+q: Linear regression chooses weights that minimise || the mean squared error || the number of features~m2 || the accuracy~m2 || the number of rows~m2
+q: In y = 3x + 5, increasing x by 1 changes the prediction by || 3 || 5~m3 || 8~m3 || 15~m3
+q: To fit a curved relationship with a linear model you can || add polynomial features such as x squared || switch to accuracy~m1 || remove the bias~m1 || it is impossible~m1
+q: Outliers affect linear regression strongly because || errors are squared || it ignores large values~m2 || it uses the median~m2 || it normalises automatically~m2
+q: Comparing weights of features on very different scales to judge importance is || misleading unless features are standardised || always valid~m3 || only valid for the bias~m3 || only valid for categorical features~m3
+q: The bias (intercept) term represents || the prediction when all features are zero || the learning rate~m3 || the error~m3 || the number of weights~m3
+@skill ml.gradient_descent | Gradient descent | ml.linear_algebra,ml.linear_reg | 3 | 5
+notes: Gradient descent minimises a loss function by repeatedly moving the parameters a small step in the direction opposite to the gradient, the direction of steepest increase: w becomes w minus the learning rate times the gradient. The learning rate controls the step size. Too large and the loss oscillates or diverges; too small and training is painfully slow. Batch gradient descent uses all examples per step, stochastic gradient descent uses one, and mini-batch uses a small group, which balances noise and speed and is the standard for deep learning. For convex losses such as linear regression the minimum is global; for neural networks the loss surface has many saddle points and local minima. Feature scaling makes the loss surface rounder and converges faster. Monitor the training loss curve, and stop or reduce the learning rate when it plateaus or becomes unstable.
+res: Hands-On Machine Learning (Geron) chapter 4; Deep Learning (Goodfellow) chapter 4 and 8; Andrew Ng Machine Learning Specialization week 1
+m1: Moves in the direction of the gradient instead of against it
+m2: Believes a larger learning rate always converges faster
+m3: Believes mini-batch means using one example per step
+q: The gradient descent update is || w = w - learning_rate * gradient || w = w + learning_rate * gradient~m1 || w = learning_rate / gradient~m1 || w = gradient~m1
+q: If the learning rate is too large, training may || oscillate or diverge || always converge fastest~m2 || stop immediately~m2 || become more accurate~m2
+q: If the learning rate is too small, training || is very slow but usually stable || diverges~m2 || skips the minimum~m2 || is impossible~m2
+q: Mini-batch gradient descent uses || a small group of examples per step || exactly one example~m3 || the whole dataset~m3 || no examples~m3
+q: Why does feature scaling help gradient descent? || It makes the loss surface rounder so convergence is faster || It increases the learning rate~m2 || It removes the need for a loss~m2 || It changes the labels~m2
+q: Stochastic gradient descent uses || one example per update || the whole dataset per update~m3 || no gradients~m1 || only the largest example~m3
+@skill ml.logistic | Logistic regression | ml.linear_reg,ml.gradient_descent,ml.metrics_cls | 3 | 4
+notes: Logistic regression is a linear classifier. It computes a weighted sum of the features and passes it through the sigmoid function, which squashes any real number into the range 0 to 1 and is interpreted as the probability of the positive class. A threshold, commonly 0.5, converts the probability to a class label and can be moved to trade precision against recall. The decision boundary is linear in the features. Training minimises the cross-entropy, or log loss, which punishes confident wrong predictions very strongly, using gradient descent. The model is called regression for historical reasons but it solves classification. For more than two classes use softmax, which turns scores into probabilities that sum to one. Weights can be read as changes in log-odds. Regularisation is usually added, and features should be scaled for stable training.
+res: Hands-On Machine Learning (Geron) chapter 4; An Introduction to Statistical Learning chapter 4; StatQuest logistic regression
+m1: Believes logistic regression predicts a continuous value like linear regression
+m2: Believes the sigmoid output can exceed 1
+m3: Believes it uses mean squared error as its standard loss
+q: The sigmoid function outputs values || between 0 and 1 || between -1 and 1~m2 || any real number~m2 || only 0 or 1~m2
+q: Logistic regression is used mainly for || classification || predicting house prices as a continuous value~m1 || clustering~m1 || dimensionality reduction~m1
+q: The usual training loss for logistic regression is || cross-entropy (log loss) || mean squared error~m3 || number of features~m3 || R squared~m3
+q: To increase precision (fewer false positives) you can || raise the probability threshold || lower the probability threshold~m1 || remove the sigmoid~m2 || use mean squared error~m3
+q: For multi-class problems logistic regression generalises with || softmax || ReLU~m2 || a bigger learning rate~m2 || mean absolute error~m3
+q: The decision boundary of plain logistic regression is || linear in the features || always circular~m1 || a tree~m1 || a random curve~m1
+@skill ml.regularization | Regularization (L1 and L2) | ml.linear_reg,ml.gradient_descent | 3 | 3
+notes: Regularisation reduces overfitting by adding a penalty on the size of the weights to the loss, discouraging the model from fitting noise. L2 regularisation, used in ridge regression, adds the sum of squared weights, shrinking all weights smoothly toward zero but rarely making them exactly zero. L1 regularisation, used in lasso, adds the sum of absolute weights and tends to drive some weights exactly to zero, which performs automatic feature selection. The strength is a hyperparameter, often called lambda or alpha: larger values mean simpler models that risk underfitting, and a value of zero means no regularisation. Choose it with cross-validation. Standardise features first, otherwise the penalty treats features unfairly. Other forms include dropout and early stopping in neural networks, and data augmentation. Regularisation trades a little bias for a larger reduction in variance.
+res: An Introduction to Statistical Learning chapter 6; Hands-On Machine Learning (Geron) chapter 4; StatQuest ridge and lasso
+m1: Believes L2 regularisation sets many weights exactly to zero
+m2: Believes a larger regularisation strength always improves test performance
+m3: Believes regularisation increases the model's variance
+q: Which regularisation tends to produce exactly-zero weights? || L1 (lasso) || L2 (ridge)~m1 || neither~m1 || both equally~m1
+q: L2 regularisation adds a penalty proportional to || the sum of squared weights || the sum of absolute weights~m1 || the number of rows~m1 || the learning rate~m1
+q: Increasing the regularisation strength too much leads to || underfitting || overfitting~m2 || perfect accuracy~m2 || no change~m2
+q: Regularisation mainly helps reduce || variance and overfitting || bias to zero~m3 || the number of rows~m3 || training time~m3
+q: The regularisation strength is best chosen using || cross-validation or a validation set || the test set repeatedly~m2 || a fixed value of 1000~m2 || the training loss only~m2
+q: Why standardise features before using ridge or lasso? || so the penalty treats features on different scales fairly || to make labels binary~m2 || to remove the bias~m2 || to increase the learning rate~m2
+@skill ml.bias_variance | Bias, variance and overfitting | ml.train_test,ml.regularization | 3 | 4
+notes: Prediction error splits into bias, variance and irreducible noise. High bias means the model is too simple to capture the pattern, so it underfits: both training and validation errors are high. High variance means the model is too flexible and fits noise in the training data, so it overfits: training error is low but validation error is much higher. Learning curves that plot errors against training size or complexity show which problem you have. To reduce bias use a richer model or better features; to reduce variance get more data, regularise, simplify the model or use ensembling. Adding more data helps variance problems much more than bias problems. A large gap between training and validation scores signals overfitting. Noise in the labels sets a floor that no model can beat. Aim for the sweet spot, not the lowest training error.
+res: An Introduction to Statistical Learning chapter 2; Hands-On Machine Learning (Geron) chapter 4; Andrew Ng ML Yearning
+m1: Believes lower training error always means a better model
+m2: Believes more data fixes underfitting caused by too simple a model
+m3: Confuses high bias with overfitting
+q: Low training error but much higher validation error indicates || overfitting (high variance) || underfitting (high bias)~m3 || a perfect model~m1 || label noise only~m1
+q: High training error and high validation error indicates || underfitting (high bias) || overfitting~m3 || data leakage~m3 || a perfect fit~m1
+q: Which action most directly reduces overfitting? || add regularisation or more training data || make the model more complex~m1 || train for longer with no checks~m1 || remove the validation set~m1
+q: A linear model on clearly curved data mostly suffers from || high bias || high variance~m3 || data leakage~m3 || too much data~m3
+q: Collecting more data helps most when || the model has high variance || the model is too simple (high bias)~m2 || the labels are random~m2 || the features are missing~m2
+q: Irreducible error is || noise in the data that no model can remove || the validation gap~m3 || the bias of the model~m3 || the number of features~m3
+@skill ml.cross_validation | Cross-validation and hyperparameter tuning | ml.bias_variance | 3 | 4
+notes: Cross-validation estimates generalisation more reliably than a single split. In k-fold cross-validation the training data is divided into k folds; each fold takes a turn as the validation set while the model trains on the other k minus one folds, and the k scores are averaged. This costs k times as many trainings but uses data efficiently and shows variability across folds. Stratified folds keep class proportions, and grouped or time-aware folds avoid leakage across related rows. Hyperparameters, such as regularisation strength, tree depth or learning rate, are settings chosen before training, unlike parameters, which are learned. Grid search tries every combination, random search samples combinations and is often more efficient, and Bayesian methods guide the search. Tune with cross-validation on training data, then evaluate once on the untouched test set. Nested cross-validation gives an unbiased estimate when tuning and evaluating together.
+res: Hands-On Machine Learning (Geron) chapter 2; scikit-learn cross-validation guide; An Introduction to Statistical Learning chapter 5
+m1: Believes cross-validation scores can be computed with the test set mixed in
+m2: Confuses hyperparameters with learned parameters
+m3: Believes grid search is always more efficient than random search
+q: In 5-fold cross-validation each example is used for validation || exactly once || five times~m1 || never~m1 || twice~m1
+q: How many models are trained in 5-fold cross-validation for one setting? || 5 || 1~m1 || 25~m1 || 10~m1
+q: Which is a hyperparameter? || the maximum depth of a tree || the weights of a linear model~m2 || the learned bias~m2 || the predicted label~m2
+q: Hyperparameters should be tuned using || cross-validation on the training data || the test set~m1 || random guessing without evaluation~m1 || the training loss only~m1
+q: Random search is often preferred to grid search when || many hyperparameters exist and only a few matter || there is only one hyperparameter~m3 || the dataset is tiny~m3 || grid search is cheaper always~m3
+q: For time-series data, cross-validation folds should || respect time order, training on the past || be randomly shuffled~m1 || use the future to train~m1 || ignore order~m1
+@skill ml.knn | k-nearest neighbours and distance | ml.preprocessing,ml.linear_algebra | 2 | 3
+notes: The k-nearest neighbours algorithm classifies a new point by finding the k closest training points under a distance measure and taking a majority vote, or averages their targets for regression. There is no training phase beyond storing the data, so it is called lazy, but prediction is slow on large datasets because it computes distances to every stored point unless an index structure is used. The most common distance is Euclidean, with Manhattan and cosine as alternatives. Because distances add up differences across features, features must be scaled, otherwise a feature with a large range dominates. A small k gives noisy, flexible boundaries that overfit, while a large k smooths too much and underfits; choose k by cross-validation and prefer an odd value for binary voting. In high dimensions distances become less meaningful, known as the curse of dimensionality.
+res: Hands-On Machine Learning (Geron) chapter 1; An Introduction to Statistical Learning chapter 2; scikit-learn nearest neighbours guide
+m1: Believes k-NN does not need feature scaling
+m2: Believes a very small k reduces overfitting
+m3: Believes k-NN prediction is faster than training a neural network on large data
+q: k-NN classifies a point by || majority vote among its k nearest neighbours || fitting a line through all points~m3 || computing a sigmoid~m3 || splitting on a feature~m3
+q: A very small k (such as 1) tends to || overfit, with a noisy boundary || underfit~m2 || ignore all data~m2 || guarantee the best accuracy~m2
+q: Feature scaling matters for k-NN because || distances are dominated by large-range features otherwise || k-NN has no distance~m1 || it changes the labels~m1 || it speeds up training only~m1
+q: A very large k tends to || oversmooth and underfit || overfit~m2 || ignore the distance measure~m2 || give perfect training accuracy~m2
+q: Prediction cost of plain k-NN on n training points is about || O(n) distance computations per query || O(1)~m3 || O(log log n)~m3 || zero~m3
+q: The curse of dimensionality for k-NN means || distances become less informative in very high dimensions || k must equal the dimension~m3 || training takes longer~m3 || labels are lost~m3
+@skill ml.trees | Decision trees | ml.metrics_cls,ml.bias_variance | 3 | 3
+notes: A decision tree predicts by asking a sequence of yes-no questions about features, splitting the data into purer and purer groups until it reaches leaves that give a prediction. At each node the algorithm picks the split that most reduces impurity, measured for classification by Gini impurity or entropy and for regression by variance. Trees need no feature scaling, handle mixed feature types and are easy to interpret as rules. An unrestricted tree keeps splitting until it memorises the training data, so it overfits badly with high variance. Control complexity with maximum depth, minimum samples per leaf and pruning. Small changes in the data can produce a very different tree, so single trees are unstable. Trees split on axis-parallel thresholds, so they approximate diagonal boundaries with staircases. They are the building block of random forests and boosting.
+res: Hands-On Machine Learning (Geron) chapter 6; An Introduction to Statistical Learning chapter 8; StatQuest decision trees
+m1: Believes decision trees need feature scaling
+m2: Believes an unrestricted deep tree generalises best
+m3: Believes a pure leaf means high Gini impurity
+q: Decision trees choose a split by || the largest reduction in impurity || random choice~m1 || the largest feature value~m1 || the alphabetical order of features~m1
+q: An unrestricted decision tree trained until all leaves are pure will usually || overfit the training data || underfit~m2 || have high bias and low variance~m2 || ignore the training data~m2
+q: A pure leaf (all one class) has Gini impurity || 0 || 1~m3 || 0.5~m3 || infinite~m3
+q: Which controls tree overfitting? || limit maximum depth or minimum samples per leaf || increase the depth indefinitely~m2 || scale the features~m1 || use more splits~m2
+q: Do decision trees need standardised features? || No, splits depend on thresholds, not scale || Yes, always~m1 || Only for categorical features~m1 || Only for the target~m1
+q: A single decision tree is considered || unstable, since small data changes can change the tree || very stable~m2 || impossible to interpret~m2 || only for regression~m2
+@skill ml.ensembles | Random forests and gradient boosting | ml.trees,ml.cross_validation | 4 | 4
+notes: Ensembles combine many models to beat any single one. A random forest trains many deep decision trees in parallel, each on a bootstrap sample of the rows and a random subset of features at each split, then averages their predictions or takes a majority vote; averaging many decorrelated high-variance trees reduces variance. Gradient boosting builds trees sequentially, each new shallow tree fitted to the remaining errors of the current ensemble, so it mainly reduces bias; popular libraries are XGBoost, LightGBM and CatBoost. Boosting is often the strongest method on tabular data but is more sensitive to hyperparameters such as learning rate, tree count and depth, and can overfit if run too long, so use early stopping on a validation set. Random forests are harder to overfit, offer out-of-bag error estimates and give feature importances, which can be biased toward high-cardinality features.
+res: Hands-On Machine Learning (Geron) chapter 7; An Introduction to Statistical Learning chapter 8; XGBoost documentation
+m1: Believes random forest trees are trained sequentially, each fixing the previous errors
+m2: Believes boosting cannot overfit
+m3: Believes bagging mainly reduces bias
+q: A random forest reduces error mainly by || averaging many decorrelated trees to lower variance || building one very deep tree~m3 || scaling features~m3 || boosting errors sequentially~m1
+q: In gradient boosting each new tree is trained to || predict the residual errors of the current ensemble || reproduce the previous tree~m1 || be independent of previous trees~m1 || reduce the number of features~m1
+q: Random forest trees are || trained independently on bootstrap samples || trained one after another on residuals~m1 || identical~m1 || shallow stumps only~m1
+q: To reduce overfitting in gradient boosting you can || use early stopping and a smaller learning rate || add trees indefinitely~m2 || remove the validation set~m2 || use only one tree~m2
+q: Boosting generally can overfit if || too many trees are added without validation || the learning rate is exactly 0~m2 || trees are shallow~m2 || never~m2
+q: Out-of-bag error in a random forest is || an estimate from samples not in each tree's bootstrap || the training error~m3 || the test error computed on the test set~m3 || the number of trees~m3
+@skill ml.svm | Support vector machines and kernels | ml.logistic,ml.regularization | 4 | 4
+notes: A support vector machine finds the separating hyperplane with the largest margin, the widest gap between the two classes. Only the points closest to the boundary, the support vectors, determine it. When classes overlap, a soft margin allows some violations, controlled by the parameter C: large C punishes violations heavily and risks overfitting, while small C allows a wider margin and a simpler model. The kernel trick lets an SVM learn nonlinear boundaries by computing similarities as if the data had been mapped into a higher-dimensional space; the RBF kernel with its gamma parameter is the usual choice, where a large gamma gives a very wiggly boundary that overfits. SVMs need scaled features, scale poorly to hundreds of thousands of examples and do not natively output probabilities. They work well on medium-sized, high-dimensional data.
+res: Hands-On Machine Learning (Geron) chapter 5; An Introduction to Statistical Learning chapter 9; StatQuest support vector machines
+m1: Believes every training point affects the SVM boundary equally
+m2: Believes a larger C always generalises better
+m3: Believes SVMs do not need feature scaling
+q: An SVM chooses the hyperplane that || maximises the margin between classes || minimises the number of features~m1 || passes through the origin always~m1 || is vertical~m1
+q: Support vectors are || the training points closest to the decision boundary || all training points~m1 || the test points~m1 || the features~m1
+q: A very large C in a soft-margin SVM tends to || fit the training data tightly and risk overfitting || underfit with a very wide margin~m2 || ignore the training errors~m2 || guarantee better test accuracy~m2
+q: The kernel trick allows an SVM to || learn nonlinear boundaries without explicitly mapping features || run without data~m3 || skip the margin~m3 || avoid scaling~m3
+q: Before training an RBF-kernel SVM you should || scale the features || leave features unscaled~m3 || remove the target~m3 || sort the rows~m3
+q: A very large gamma in an RBF kernel tends to || create a wiggly, overfit boundary || a straight boundary~m2 || no boundary~m2 || a wider margin always~m2
+@skill ml.clustering | Clustering and k-means | ml.knn,ml.preprocessing | 3 | 3
+notes: Clustering groups unlabeled data so that points in the same cluster are more similar to each other than to points in other clusters. The k-means algorithm picks k initial centroids, assigns each point to the nearest centroid, recomputes each centroid as the mean of its points and repeats until assignments stop changing. It minimises the within-cluster sum of squared distances, always converges but possibly to a local minimum, so run it several times with different initialisations, as k-means++ does smartly. You must choose k in advance; the elbow method on the inertia curve and the silhouette score help. K-means assumes roughly spherical, similarly sized clusters and is affected by feature scale and outliers. Alternatives are hierarchical clustering and DBSCAN, which finds arbitrary-shaped clusters and flags noise points. Because there are no labels, validating clusters needs judgement.
+res: Hands-On Machine Learning (Geron) chapter 9; An Introduction to Statistical Learning chapter 12; scikit-learn clustering guide
+m1: Believes k-means needs labeled data
+m2: Believes k-means always finds the global optimum
+m3: Believes k-means is unaffected by feature scale
+q: K-means is an example of || unsupervised learning || supervised classification~m1 || reinforcement learning~m1 || regression~m1
+q: In k-means each iteration || assigns points to the nearest centroid and recomputes centroids || trains a neural network~m1 || labels the points with true classes~m1 || sorts the points~m1
+q: Running k-means once with random initial centroids || may end in a local minimum, so repeat with several starts || always gives the global optimum~m2 || is impossible~m2 || needs labels~m2
+q: Which helps to choose k? || the elbow method or silhouette score || the test accuracy~m1 || the learning rate~m1 || the label count of the test set~m1
+q: Unscaled features in k-means || let large-range features dominate distances || have no effect~m3 || reduce k automatically~m3 || are ignored~m3
+q: Which algorithm can find arbitrary-shaped clusters and mark noise points? || DBSCAN || k-means~m2 || linear regression~m2 || PCA~m2
+@skill ml.pca | Dimensionality reduction with PCA | ml.linear_algebra,ml.preprocessing | 4 | 4
+notes: Principal component analysis finds new orthogonal axes, the principal components, ordered by how much of the data's variance each captures. The first component points in the direction of greatest spread, the second is perpendicular to it with the next greatest spread, and so on. Projecting the data onto the top components gives a lower-dimensional representation that keeps most of the information, useful for visualisation, noise reduction and speeding up models. Centre the data first and scale features so that large-range features do not dominate. The explained variance ratio shows how much each component keeps, and you can choose enough components to reach, say, 95 percent. PCA is linear and unsupervised: it ignores the target, so the top variance directions are not guaranteed to be the most predictive. Components are combinations of features, so interpretation is harder. Fit it on training data only.
+res: Hands-On Machine Learning (Geron) chapter 8; An Introduction to Statistical Learning chapter 12; StatQuest PCA
+m1: Believes PCA uses the target labels
+m2: Believes principal components are original features
+m3: Skips centring or scaling and fits PCA on all data including test
+q: The first principal component is the direction of || maximum variance in the data || minimum variance~m1 || the target label~m1 || the first feature~m2
+q: PCA is || unsupervised, using only the features || supervised, using labels~m1 || a classification model~m1 || a clustering algorithm only~m1
+q: Principal components are || linear combinations of the original features || the original features~m2 || the labels~m2 || random numbers~m2
+q: Explained variance ratio tells you || the share of total variance each component keeps || the accuracy of the model~m1 || the number of classes~m1 || the learning rate~m1
+q: Before PCA you should || centre and usually scale the features, fitting on training data only || fit on the test set~m3 || remove the target and scale test only~m3 || not preprocess~m3
+q: A limitation of PCA is that || the top-variance directions may not be the most predictive || it needs labels~m1 || it cannot reduce dimensions~m1 || it only works on text~m1
+@skill ml.feature_eng | Feature engineering and selection | ml.preprocessing,ml.trees | 3 | 4
+notes: Feature engineering creates inputs that make the pattern easier for a model to learn, often improving results more than switching algorithms. Examples are ratios, differences, interaction terms, polynomial terms, log transforms for skewed data, bins for continuous values, date parts such as day of week, text counts or embeddings, and aggregates over groups. Domain knowledge guides the best features. Target encoding replaces a category by the mean target of that category and is powerful but leaks the target unless computed within cross-validation folds. Feature selection removes useless or redundant features using filters such as correlation, wrapper methods like recursive elimination, or model-based importance and L1 penalties; this reduces overfitting, cost and latency. Features must be available at prediction time with the same definition as in training, otherwise the model fails in production. Check every new feature for leakage.
+res: Feature Engineering for Machine Learning (Zheng and Casari); Kaggle Learn Feature Engineering; scikit-learn feature selection guide
+m1: Believes more features always improve a model
+m2: Uses a feature that is not available at prediction time
+m3: Computes target encoding on all data without folds
+q: Which is a leaking feature when predicting loan default at application time? || a column recording whether the loan was later written off || the applicant's income~m2 || the loan amount requested~m2 || the applicant's age~m2
+q: Adding many irrelevant features can || increase overfitting and cost || always improve accuracy~m1 || have no effect ever~m1 || reduce variance~m1
+q: A log transform is often useful for || right-skewed positive features || labels~m3 || categorical text~m3 || binary flags~m3
+q: Target encoding must be computed || within training folds to avoid leakage || on the whole dataset including test~m3 || after seeing the test labels~m3 || at random~m3
+q: A feature must be || available at prediction time and defined the same way as in training || computed from the future~m2 || the same as the label~m2 || always categorical~m2
+q: Feature selection can help by || reducing overfitting and inference cost || increasing variance~m1 || removing labels~m1 || making data leakage~m1
+@skill ml.imbalanced | Class imbalance | ml.metrics_cls,ml.feature_eng | 3 | 3
+notes: In many problems, such as fraud, disease or defect detection, the positive class is rare. A classifier trained naively tends to favour the majority class and accuracy hides the failure, so rely on precision, recall, F1 or the precision-recall curve, which is more informative than ROC under heavy imbalance. Remedies work at the data level or the algorithm level. Data-level methods are random oversampling of the minority, undersampling of the majority, and synthetic oversampling such as SMOTE. Algorithm-level methods are class weights that make minority errors cost more, threshold tuning, and anomaly detection when positives are extremely rare. Always resample only the training data after splitting; resampling before the split leaks duplicates into the validation set and inflates scores. Keep the test set with its natural distribution so the metrics reflect reality. Collecting more minority examples is best.
+res: Hands-On Machine Learning (Geron) chapter 3; imbalanced-learn documentation; Google ML crash course imbalanced data
+m1: Believes accuracy is a good metric for imbalanced data
+m2: Oversamples before splitting, leaking duplicates into validation
+m3: Believes undersampling never loses information
+q: Which metric is more informative for a very rare positive class? || precision-recall (F1) || accuracy~m1 || number of rows~m1 || mean squared error~m1
+q: Oversampling for class imbalance should be applied || only to the training data after splitting || before splitting on all data~m2 || to the test set~m2 || to the validation labels~m2
+q: Class weights in a loss function || make errors on the minority class more costly || remove the majority class~m3 || change the labels~m3 || reduce the number of features~m3
+q: Random undersampling of the majority class || discards data, possibly losing useful information || never loses information~m3 || adds synthetic samples~m3 || increases the test size~m3
+q: SMOTE creates || synthetic minority examples by interpolating neighbours || copies of the majority class~m3 || new labels~m3 || test data~m2
+q: The test set for an imbalanced problem should || keep the natural class distribution || be oversampled to be balanced~m2 || contain only positives~m2 || be dropped~m2
+@skill ml.nn_basics | Neural network basics | ml.logistic,ml.gradient_descent | 3 | 5
+notes: A neural network stacks layers of neurons, each computing a weighted sum of its inputs plus a bias and passing it through a nonlinear activation function. Without the nonlinearity, stacked layers collapse into a single linear map, so activations such as ReLU, which outputs the larger of zero and its input, sigmoid and tanh are essential. Hidden layers learn intermediate features, and an output layer gives predictions: sigmoid for binary probabilities, softmax for multiple classes and a linear output for regression. The universal approximation theorem says a wide enough network can approximate any reasonable function, but it does not say that gradient descent will find the weights. Initialise weights with small random values, not all zeros, so neurons learn different things. Depth adds representational power but also training difficulty. Choose the loss to match the task: cross-entropy for classification and squared error for regression.
+res: Deep Learning (Goodfellow) chapter 6; Neural Networks and Deep Learning (Nielsen); fast.ai Practical Deep Learning part 1
+m1: Believes a network without activation functions can learn nonlinear patterns
+m2: Initialises all weights to zero
+m3: Uses softmax for a regression output
+q: Why are nonlinear activation functions needed? || without them stacked layers reduce to a single linear map || to make training slower~m1 || to remove the bias~m1 || to reduce the dataset~m1
+q: ReLU outputs || max(0, x) || 1 / (1 + e^-x)~m3 || x squared~m3 || always 1~m3
+q: Initialising all weights to exactly zero is a problem because || neurons in a layer receive identical updates and stay the same || it makes the loss infinite~m2 || it removes the activation~m2 || it speeds up training~m2
+q: For a multi-class classification output layer use || softmax || ReLU~m3 || no activation with MSE~m3 || identity~m3
+q: For a regression output layer you typically use || a linear (identity) output || softmax~m3 || sigmoid always~m3 || argmax~m3
+q: A network with 3 layers but only linear activations is equivalent to || a single linear model || a deep nonlinear model~m1 || a decision tree~m1 || a random forest~m1
+@skill ml.backprop | Backpropagation | ml.nn_basics,ml.linear_algebra | 4 | 5
+notes: Backpropagation computes the gradient of the loss with respect to every weight efficiently using the chain rule. First the forward pass computes activations layer by layer and stores them; then the backward pass starts from the loss, computes the gradient with respect to the output, and propagates it backward, multiplying local derivatives at each layer to get gradients for the weights and the inputs of the previous layer. This reuses intermediate results, so the cost is about twice that of the forward pass rather than recomputing each derivative separately. Frameworks implement this as automatic differentiation over a computational graph. Gradients can vanish when many small derivatives multiply, as with sigmoid and tanh in deep networks, or explode when derivatives are large; ReLU, careful initialisation, residual connections and gradient clipping help. Backpropagation computes gradients only; an optimiser then uses them to update weights.
+res: Deep Learning (Goodfellow) chapter 6.5; Neural Networks and Deep Learning (Nielsen) chapter 2; Karpathy micrograd lecture
+m1: Believes backpropagation is the optimiser that updates weights
+m2: Believes the backward pass starts at the input layer
+m3: Believes vanishing gradients occur because gradients are too large
+q: Backpropagation computes || gradients of the loss with respect to the weights || the weights directly~m1 || the training data~m1 || the learning rate~m1
+q: Backpropagation relies on || the chain rule || the central limit theorem~m1 || the pigeonhole principle~m1 || Bayes' rule~m1
+q: The backward pass starts from || the loss at the output layer || the input layer~m2 || the first hidden layer~m2 || a random layer~m2
+q: Vanishing gradients occur when || many small derivatives multiply, making gradients tiny || gradients become huge~m3 || the loss is zero~m3 || weights are exactly one~m3
+q: Which helps against vanishing gradients? || ReLU activations and residual connections || more sigmoid layers~m3 || zero initialisation~m3 || removing the loss~m3
+q: After gradients are computed, weights are updated by || an optimiser such as SGD or Adam || backpropagation itself~m1 || the forward pass~m1 || the activation function~m1
+@skill ml.optimizers | Optimizers and training practice | ml.backprop,ml.cross_validation | 4 | 4
+notes: Optimisers decide how gradients become weight updates. Plain stochastic gradient descent uses a fixed learning rate; momentum accumulates a velocity of past gradients to smooth noise and speed up along consistent directions; RMSProp and Adam adapt a per-parameter step size using running estimates of gradient magnitude, and Adam also uses momentum, making it a strong default that needs less tuning. The learning rate is the single most important hyperparameter, and schedules such as warm-up followed by cosine or step decay often help. Batch size affects gradient noise, speed and memory: larger batches are efficient on hardware but may generalise slightly worse without learning rate adjustments. Use early stopping on validation loss, dropout and weight decay against overfitting, and gradient clipping against exploding gradients. Track training and validation curves, set random seeds for reproducibility, and overfit a tiny batch first to catch bugs.
+res: Deep Learning (Goodfellow) chapter 8; Hands-On Machine Learning (Geron) chapter 11; Karpathy A Recipe for Training Neural Networks
+m1: Believes Adam makes learning rate tuning unnecessary
+m2: Believes validation loss rising while training loss falls means training is going well
+m3: Believes larger batch size always improves generalisation
+q: Adam differs from plain SGD by || adapting per-parameter step sizes and using momentum || using no gradients~m1 || using a fixed step for all parameters only~m1 || removing the loss~m1
+q: Training loss decreasing while validation loss increases signals || overfitting || a perfect model~m2 || underfitting~m2 || a bug in the validation data only~m2
+q: Early stopping means || stopping training when validation loss stops improving || stopping at epoch 1~m2 || removing the validation set~m2 || stopping when training loss is zero~m2
+q: Gradient clipping is used to || prevent exploding gradients || prevent vanishing gradients~m1 || speed up inference~m1 || reduce the number of layers~m1
+q: A good first debugging check is to || overfit a tiny batch to near-zero loss || train on the test set~m3 || change all hyperparameters at once~m3 || skip validation~m3
+q: A learning rate warm-up || starts with a small learning rate and increases it gradually || starts at the highest rate and stops~m1 || removes the optimiser~m1 || disables momentum~m1
+@skill ml.cnn | Convolutional neural networks | ml.backprop,ml.preprocessing | 4 | 5
+notes: Convolutional neural networks process grid-like data such as images. A convolution layer slides small learnable filters over the input, computing dot products, so the same weights are reused at every position. This weight sharing gives far fewer parameters than a fully connected layer and builds in translation equivariance, meaning a pattern is detected wherever it appears. Early layers learn edges and textures, deeper layers learn parts and objects. Stride controls how far the filter moves, padding keeps the spatial size, and pooling layers downsample, for example by taking the maximum in each small window. The output size of a convolution is the input size minus the filter size plus twice the padding, divided by the stride, plus one. A typical network alternates convolution, activation and pooling, then ends with dense layers. Data augmentation such as flips and crops reduces overfitting. Batch normalisation stabilises training.
+res: Deep Learning (Goodfellow) chapter 9; CS231n Convolutional Networks notes; fast.ai Practical Deep Learning
+m1: Believes each position in a convolution layer has its own separate weights
+m2: Gets the output size formula wrong
+m3: Believes pooling adds learnable parameters
+q: In a convolutional layer the same filter weights are || reused at every spatial position || different at every position~m1 || fixed to zero~m1 || randomly resampled at each step~m1
+q: Compared with a fully connected layer on an image, a convolution layer has || far fewer parameters || more parameters~m1 || identical parameters~m1 || no parameters~m1
+q: A 32x32 input, 5x5 filter, stride 1, no padding gives an output of width || 28 || 32~m2 || 27~m2 || 5~m2
+q: Max pooling || downsamples by taking the maximum in each window, with no learnable weights || adds many learnable weights~m3 || increases resolution~m3 || normalises labels~m3
+q: Early layers of a CNN typically learn || simple features like edges and textures || object categories~m2 || class labels~m2 || the loss~m2
+q: Data augmentation such as random flips helps by || reducing overfitting through more varied examples || increasing the test set~m3 || removing the need for labels~m3 || speeding up the convolution~m3
+@skill ml.rnn_seq | Sequence models and RNNs | ml.nn_basics,ml.backprop | 4 | 4
+notes: Sequential data such as text, speech and sensor streams has order and variable length. A recurrent neural network processes one element at a time and carries a hidden state that summarises what it has seen so far, applying the same weights at every step. Training unrolls the network through time and uses backpropagation through time, where gradients pass through many multiplications and vanish or explode, making long-range dependencies hard to learn. LSTM and GRU cells add gates that control what to remember, forget and output, which eases the vanishing gradient problem. RNNs process sequentially, so they cannot be parallelised across time steps, which makes training slow compared with transformers. Sequences are padded and masked into batches. Tasks include language modelling, translation and tagging. Bidirectional RNNs read both directions when the whole sequence is available. Transformers have largely replaced RNNs for large language tasks.
+res: Deep Learning (Goodfellow) chapter 10; Colah's Understanding LSTM Networks; Dive into Deep Learning recurrent networks
+m1: Believes RNNs can be trained fully in parallel across time steps
+m2: Believes a plain RNN handles very long dependencies well
+m3: Believes an RNN uses different weights at each time step
+q: An RNN's hidden state || summarises the sequence processed so far || is the output label~m3 || is the learning rate~m3 || is discarded each step~m3
+q: A vanilla RNN across many time steps tends to suffer from || vanishing or exploding gradients || no gradients at all~m2 || perfect memory~m2 || fewer parameters than input~m2
+q: LSTM gates are designed to || control what is remembered and forgotten to ease long dependencies || remove the hidden state~m2 || add more weights per step only~m2 || parallelise time steps~m1
+q: An RNN uses || the same weights at every time step || new weights at every step~m3 || no weights~m3 || only biases~m3
+q: Why is RNN training slow compared with transformers? || time steps must be processed sequentially || it has no gradients~m1 || it needs no GPU~m1 || it has more attention~m1
+q: Padding in sequence batches is used to || make sequences the same length, with masking to ignore padding || increase the vocabulary~m3 || remove long sequences~m3 || normalise labels~m3
+@skill ml.attention | Attention and transformers | ml.rnn_seq,ml.linear_algebra | 5 | 6
+notes: Attention lets a model weigh how relevant each position in a sequence is when computing the representation of the current position. In scaled dot-product attention each token is projected into a query, key and value; attention scores are query-key dot products divided by the square root of the key dimension, passed through softmax to give weights summing to one, and the output is the weighted sum of values. Self-attention applies this within one sequence, so every token can look at every other token directly, giving short paths for long-range dependencies. Multi-head attention runs several attentions in parallel to capture different relations. Transformers combine attention, feed-forward layers, residual connections and layer normalisation, and add positional information since attention alone ignores order. Because all positions are processed in parallel, training is fast on GPUs. Attention cost grows quadratically with sequence length. Decoder models use a causal mask so tokens cannot see future tokens.
+res: Attention Is All You Need (Vaswani et al.); The Illustrated Transformer (Jay Alammar); Dive into Deep Learning attention chapter
+m1: Believes self-attention automatically knows word order without positional information
+m2: Believes attention cost is linear in sequence length
+m3: Believes attention weights need not sum to one
+q: Attention weights come from || a softmax over scaled query-key scores || the labels~m3 || random numbers~m3 || the learning rate~m3
+q: The output of attention for a token is || a weighted sum of value vectors || the sum of all keys~m3 || the query itself~m3 || the maximum score~m3
+q: Without positional encodings a transformer || cannot tell the order of tokens || knows the order perfectly~m1 || ignores the tokens~m1 || becomes an RNN~m1
+q: Self-attention compute and memory cost grows with sequence length n as roughly || O(n^2) || O(n)~m2 || O(log n)~m2 || O(1)~m2
+q: A causal mask in a decoder prevents || tokens from attending to future tokens || tokens from attending to past tokens~m3 || the use of softmax~m3 || the use of residuals~m3
+q: Dividing scores by the square root of the key dimension || keeps scores in a range where softmax gradients are healthy || changes the labels~m3 || removes the need for softmax~m3 || adds positional information~m1
+@skill ml.llm_basics | LLM basics: tokens, context and sampling | ml.attention | 4 | 5
+notes: A large language model is a transformer trained to predict the next token. Text is split into tokens, which are pieces of words from a learned vocabulary, so token counts differ from word counts and non-English text often needs more tokens. The model sees at most a fixed context window of tokens, including prompt and output, and the KV cache stores past keys and values so each new token costs less to generate. Generation is autoregressive: it samples one token, appends it and repeats. Temperature rescales the output distribution: low values make output more deterministic, high values more varied. Top-k and top-p sampling restrict choices to likely tokens. Models can hallucinate fluent but false statements, so ground answers in provided notes and validate structured output. Prompt processing, called prefill, is usually faster per token than decoding. Smaller models are faster and fit in less memory but are less capable.
+res: Illustrated GPT-2 (Jay Alammar); Hugging Face NLP Course; Llama 3 model card
+m1: Believes tokens are always whole words
+m2: Believes higher temperature makes output more deterministic
+m3: Believes an LLM stores verified facts and cannot hallucinate
+q: A token in an LLM is || a piece of text from the model's vocabulary, often part of a word || always exactly one word~m1 || always one character~m1 || a sentence~m1
+q: Lower temperature makes the output || more deterministic || more random~m2 || longer~m2 || unrelated~m2
+q: The context window limits || the total tokens of prompt plus generated output the model can attend to || the number of layers~m1 || the training data size~m3 || the vocabulary~m1
+q: Why use a KV cache during generation? || to avoid recomputing keys and values for earlier tokens || to increase the vocabulary~m3 || to remove attention~m3 || to reduce the model parameters~m3
+q: Hallucination means || fluent output that is false or ungrounded || a hardware fault~m3 || slow decoding~m3 || a tokenisation error only~m3
+q: For tasks needing exact JSON the best practice is to || validate the output and retry or fall back || trust the model without checks~m3 || raise the temperature~m2 || remove the schema~m3
+@skill ml.transfer | Transfer learning and fine-tuning | ml.llm_basics,ml.optimizers | 4 | 5
+notes: Transfer learning reuses a model trained on a large dataset as the starting point for a new task, so you need far less data and compute. Options range from using the pretrained model as a frozen feature extractor, to fine-tuning only the last layers, to fine-tuning everything with a small learning rate. Full fine-tuning of a large language model updates every weight and needs a lot of memory. Parameter-efficient methods such as LoRA freeze the base weights and train small low-rank adapter matrices added to selected layers, cutting trainable parameters by orders of magnitude; the adapter can later be merged into the base weights so inference has no extra cost. Fine-tuning data quality matters more than quantity, and the data must be licensed and reviewed for that use. Beware of catastrophic forgetting, where tuning on a narrow task degrades general ability, and evaluate against the base model on a fixed test set. The base model's licence applies to the tuned version.
+res: LoRA paper (Hu et al.); Hugging Face PEFT documentation; Hands-On Machine Learning (Geron) chapter 14
+m1: Believes fine-tuning always requires updating all weights
+m2: Believes a LoRA adapter always adds inference latency even after merging
+m3: Believes more low-quality fine-tuning data is always better than less high-quality data
+q: LoRA fine-tuning || trains small low-rank adapter matrices while freezing base weights || updates every weight of the base model~m1 || removes layers~m1 || trains only the tokenizer~m1
+q: After merging, a LoRA adapter || adds no extra inference cost || doubles inference time~m2 || must be loaded separately forever~m2 || deletes the base model~m2
+q: Fine-tuning data quality matters because || noisy or unlicensed data can harm the model and create legal risk || only the amount of data matters~m3 || quality has no effect~m3 || the model ignores data~m3
+q: Catastrophic forgetting means || tuning on a narrow task can degrade previously learned abilities || the model forgets its tokenizer only~m1 || weights become zero~m1 || the GPU memory is lost~m1
+q: A frozen pretrained model used as a feature extractor || does not update the pretrained weights || updates all weights~m1 || is trained from random initial weights~m1 || cannot be used on new data~m1
+q: When fine-tuning you should evaluate by || comparing to the base model on a fixed held-out set || trusting training loss alone~m3 || removing the test set~m3 || only reading a few outputs~m3
+@skill ml.quantization | Quantization and model compression | ml.nn_basics,ml.llm_basics | 4 | 4
+notes: Quantization stores weights, and sometimes activations, with fewer bits than 32-bit floats, for example 8-bit or 4-bit integers, shrinking model size and memory traffic and often speeding up inference on hardware with fast integer arithmetic. A scale factor, and sometimes a zero point, maps integers back to real values. Weight-only quantization keeps activations in higher precision; quantizing both weights and activations, such as 4-bit weights with 8-bit activations, can be faster still. Post-training quantization converts a trained model with little or no retraining, while quantization-aware training simulates low precision during training to recover accuracy. Lower precision saves memory roughly proportionally: a 1 billion parameter model needs about 4 GB in 32-bit and about 0.5 GB in 4-bit, plus overhead for the KV cache and activations. Quantization introduces error, so measure quality on your tasks. Other compression methods are pruning, distillation and smaller architectures.
+res: Hugging Face quantization guide; ExecuTorch documentation quantization; A White Paper on Neural Network Quantization (Nagel et al.)
+m1: Believes 4-bit quantization makes a model run at exactly the same quality with certainty
+m2: Believes 4-bit weights use the same memory as 8-bit weights
+m3: Believes quantization changes the number of parameters
+q: Quantizing weights from 32-bit floats to 8-bit integers reduces weight memory by about || 4x || 2x~m2 || 8x~m2 || not at all~m2
+q: Roughly how much memory do the weights of a 1B-parameter model need at 4 bits? || about 0.5 GB || about 4 GB~m2 || about 8 GB~m2 || about 50 MB~m2
+q: Quantization mainly || stores numbers with fewer bits, trading some accuracy for size and speed || removes parameters~m3 || adds layers~m3 || changes the labels~m3
+q: Why evaluate a quantized model? || it introduces error that can reduce quality || it can never reduce quality~m1 || accuracy is always unchanged~m1 || evaluation is not needed~m1
+q: Quantization-aware training || simulates low precision during training to keep accuracy || is the same as pruning~m3 || happens only on the phone~m3 || removes the optimiser~m3
+q: Distillation compresses a model by || training a small student to imitate a larger teacher || removing bits from weights~m3 || deleting the tokenizer~m3 || freezing the data~m3
+@skill ml.pipelines | ML pipelines and reproducibility | ml.preprocessing,ml.cross_validation | 3 | 3
+notes: A machine learning pipeline chains data loading, cleaning, feature creation, training, evaluation and export as repeatable steps, so any result can be regenerated from the same inputs. Reproducibility requires fixed random seeds, recorded library versions, versioned data and code, and a single command or script that runs the whole flow. Keep configuration such as hyperparameters in files, not scattered in code, and log each run's parameters, metrics and artefacts with an experiment tracker or even a simple results file with the commit hash. Notebooks are fine for exploration but fragile for production; move stable logic into tested modules. Fitting preprocessing inside the pipeline on training folds only prevents leakage and ensures identical transformations at prediction time. Unit tests for data validation, shapes and metric functions catch bugs early. Small seed changes can alter results, so report averages over several seeds with variability, not one lucky run.
+res: Hands-On Machine Learning (Geron) chapter 2; MLflow documentation; Made With ML course on pipelines
+m1: Believes setting a seed once guarantees identical results across different library versions and hardware
+m2: Believes a single best run is a sufficient result to report
+m3: Hardcodes hyperparameters and paths throughout notebooks
+q: To make an experiment reproducible you should record || seeds, library versions, data version and code version || only the final accuracy~m1 || the date only~m2 || nothing, models are deterministic~m1
+q: Reporting only the single best of many runs is || misleading, since variation across seeds matters || the standard good practice~m2 || required by scikit-learn~m2 || better than averaging~m2
+q: Keeping hyperparameters in config files helps because || runs can be repeated and compared without editing code || it speeds up the model~m3 || it removes randomness~m3 || it increases accuracy~m3
+q: A preprocessing pipeline fitted on training folds only prevents || data leakage || overfitting entirely~m1 || any need for validation~m1 || underfitting~m1
+q: Which is a good practice for experiment tracking? || log parameters, metrics and the commit hash for each run || delete old results to avoid confusion~m3 || keep results in your head~m3 || only keep the best run's score~m2
+q: Same seed, same code but a different library version || may still give different results || always gives identical results~m1 || always gives worse results~m1 || is impossible~m1
+@skill ml.serving | Deploying and serving models | ml.pipelines,ml.quantization | 4 | 4
+notes: Serving a model means making its predictions available to an application, either as a remote service behind an API or embedded in the app itself. Key concerns are latency, throughput, memory, cost, reliability and privacy. Batch inference scores many items offline on a schedule, while online inference answers single requests in milliseconds to seconds. Export the model into a portable format, such as ONNX, TorchScript or ExecuTorch, and keep the preprocessing identical to training, because training-serving skew is a frequent cause of silent failures. Warm up the model before the first request, since loading and first-run compilation add delay, and cap input sizes. Cache frequent results, batch concurrent requests for throughput and set timeouts and fallbacks so failures degrade gracefully. On-device serving removes network latency and keeps data private but is limited by memory, battery and heat. Version models and support rollback.
+res: Designing Machine Learning Systems (Chip Huyen) chapter 7; ONNX documentation; ExecuTorch documentation
+m1: Believes a model that works in a notebook needs no extra work to serve it
+m2: Ignores training-serving skew in preprocessing
+m3: Believes first-request latency equals steady-state latency
+q: Training-serving skew means || preprocessing or data differs between training and serving || the model is too large~m2 || the GPU is slow~m2 || the labels are skewed~m2
+q: Why warm up a model before the first request? || the first run includes loading and setup delay || warm-up improves accuracy~m3 || it prevents overfitting~m3 || it reduces the model size~m3
+q: On-device inference helps with || privacy and no network latency || unlimited memory~m1 || zero battery use~m1 || larger models always~m1
+q: A fallback or timeout in serving helps || degrade gracefully when the model fails or is slow || increase accuracy~m1 || remove monitoring~m1 || hide errors from developers~m1
+q: Batch inference is best when || results are needed offline on a schedule, not instantly || a single request must return in 10 ms~m1 || data arrives one item at a time without delay~m1 || the model is tiny~m1
+q: Versioning models allows you to || roll back to a previous version if a release is bad || skip evaluation~m1 || remove the training data~m1 || avoid monitoring~m1
+@skill ml.monitoring | Monitoring and drift | ml.serving,ml.metrics_cls | 4 | 3
+notes: After deployment a model's performance can silently degrade because the world changes. Data drift, or covariate shift, means the distribution of input features changes, for example new devices or a new user population. Concept drift means the relationship between inputs and the target changes, for example fraud tactics evolving. Label delay makes it hard to measure accuracy immediately, so monitor proxies: input feature distributions, prediction distributions, missing-value rates, latency, error rates and crash counts, and compare them with the training baseline using summary statistics or tests such as the population stability index. Set alerts with thresholds, review samples manually and keep a feedback path for collecting fresh labels. Plan retraining triggered by schedule or by drift, and validate new models against the current one with shadow deployments or A/B tests before switching. Log enough information to debug, while respecting privacy.
+res: Designing Machine Learning Systems (Chip Huyen) chapter 8; Evidently AI documentation; Google MLOps guide
+m1: Believes a deployed model's accuracy never changes once it is trained well
+m2: Confuses data drift with concept drift
+m3: Believes monitoring requires true labels immediately
+q: Data drift means || the input distribution changes || the labels become wrong in the training set~m2 || the model weights change~m2 || the code is edited~m2
+q: Concept drift means || the relationship between inputs and the target changes || the input features change only~m2 || the model becomes bigger~m2 || the learning rate changes~m2
+q: A deployed model's performance || can degrade over time as the world changes || never changes after good validation~m1 || only improves over time~m1 || depends only on the GPU~m1
+q: When true labels arrive late you can monitor || input and prediction distributions as proxies || nothing at all~m3 || only the model size~m3 || only the training loss~m3
+q: A safe way to test a new model before full release is || shadow deployment or an A/B test || replacing the old model immediately without checks~m1 || deleting the old model~m1 || disabling logging~m1
+q: Retraining can be triggered by || schedule or detected drift || never~m1 || only by user complaints~m1 || only by hardware changes~m1
+@skill ml.mlops_ci | Testing, versioning and CI for ML | ml.pipelines | 3 | 3
+notes: Software practices carry over to machine learning with extra care for data and models. Version control tracks code, and data and model files too large for Git are tracked by checksum or with tools such as DVC, with the large binary stored elsewhere and referenced from the repository. Continuous integration runs on every push: formatting, unit tests, data validation checks such as schema, ranges and acyclic graphs, and small end-to-end smoke tests, so integration problems are found within a day. Tests for ML cover metric functions, preprocessing shapes, deterministic behaviour with a fixed seed, and invariants such as probabilities summing to one. Never commit secrets such as tokens, and keep model weights out of Git history because it permanently bloats the repository. Document licences for datasets and models. A model card records intended use, data, metrics and limits. Review changes through pull requests, and tag releases for traceability.
+res: Designing Machine Learning Systems (Chip Huyen) chapter 10; DVC documentation; Google Rules of Machine Learning
+m1: Believes committing large model weights directly to Git is fine
+m2: Believes ML code does not need automated tests
+m3: Commits secrets or tokens to the repository
+q: Large model files should be || stored outside Git with a checksum recorded in the repo || committed to Git on every change~m1 || deleted before release~m1 || renamed after each run~m1
+q: Continuous integration for an ML repo should include || unit tests and data validation on every push || only manual checks before the deadline~m2 || nothing until release~m2 || only model training~m2
+q: A test that checks predicted probabilities sum to one is an example of || an invariant test || a performance test~m2 || a licence check~m2 || a data leak~m2
+q: API tokens and passwords should || never be committed to the repository || be in a README~m3 || be committed in a private repo~m3 || be in the file name~m3
+q: A model card documents || intended use, data, metrics and limitations || only the model's weights~m2 || the CI configuration~m2 || the git history~m2
+q: Why tag releases? || to trace exactly which code and model produced a result || to make the repo faster~m1 || to hide older commits~m1 || to avoid CI~m1
+@skill ml.ondevice | On-device inference and efficiency | ml.quantization,ml.serving,ml.llm_basics | 5 | 5
+notes: Running models on a phone is limited by memory, compute, battery and heat rather than accuracy alone. Decode speed in tokens per second is mostly limited by memory bandwidth, because every generated token must read all the model weights, so smaller or more quantized models decode faster; prompt processing, which handles many tokens at once, is more compute bound. Time to first token depends on prompt length and prefill speed, so short system prompts and reuse of a cached prefix cut latency. Use a runtime tuned for the CPU, such as ExecuTorch with XNNPACK on Arm, and tune the thread count: more threads can hurt through contention or throttling, so sweep it. Sustained load raises temperature, and the operating system throttles clocks, which lowers speed over minutes; measure over 20 minutes, not 20 seconds. Measure energy per token and peak memory, warm up before timing, and report medians over repeated runs with conditions stated.
+res: ExecuTorch documentation Llama on Android; Efficient Deep Learning (Menghani survey); Arm developer learning paths for on-device AI
+m1: Believes more CPU threads always increase speed
+m2: Believes decode speed is limited mainly by compute rather than memory bandwidth
+m3: Benchmarks for a few seconds on a cool device and calls it sustained speed
+q: Decode speed on a phone is mostly limited by || memory bandwidth, since each token reads all weights || the screen resolution~m2 || the number of apps installed~m2 || compute only, never memory~m2
+q: A shorter, fixed system prompt helps by || reducing time to first token, and allowing prefix reuse || increasing the model size~m1 || increasing the temperature~m1 || removing the context~m1
+q: To find the best thread count you should || sweep thread counts and measure || always use the maximum threads~m1 || always use one thread~m1 || use a random number~m1
+q: Sustained performance should be measured over || several minutes, because throttling lowers speed over time || a few seconds on a cool device~m3 || one token~m3 || the first token only~m3
+q: Why warm up before benchmarking? || first runs include loading and cache setup, which distort timing || to improve accuracy~m3 || to heat the phone on purpose~m3 || to reduce the model size~m3
+q: A 4-bit model compared with an 8-bit one usually || reads fewer bytes per token and can decode faster || has more parameters~m2 || needs more memory bandwidth~m2 || cannot run on Arm~m2

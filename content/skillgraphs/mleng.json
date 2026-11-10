@@ -1,0 +1,766 @@
+{
+ "schema": "sahay.skillgraph/1",
+ "domain": "mleng",
+ "title": "Machine Learning Engineering",
+ "skills": [
+  {
+   "id": "ml.data_eda",
+   "name": "Tabular data and exploratory analysis",
+   "prereqs": [],
+   "difficulty": 1,
+   "hours": 3.0,
+   "resources": [
+    {
+     "title": "Python for Data Analysis (Wes McKinney)"
+    },
+    {
+     "title": "pandas documentation user guide"
+    },
+    {
+     "title": "Kaggle Learn Data Cleaning"
+    }
+   ],
+   "notes": "Most ML work starts with tabular data: rows are examples, columns are features, and one column is the target to predict. Before modelling, explore the data. Check the shape, data types, missing values, duplicates, ranges and class balance. Summarise numeric columns with mean, median, standard deviation and quantiles, and look at distributions with histograms and box plots. The mean is sensitive to outliers while the median is robust. Look at relationships with scatter plots and correlation, remembering that correlation measures linear association and does not prove causation. Look for impossible values, such as negative ages, and for suspicious columns that leak the target. Keep a clear record of every cleaning step so it can be repeated on new data. Good exploration prevents wasted effort on models built over broken data."
+  },
+  {
+   "id": "ml.stats_basics",
+   "name": "Probability and statistics basics",
+   "prereqs": [],
+   "difficulty": 2,
+   "hours": 4.0,
+   "resources": [
+    {
+     "title": "Pattern Recognition and Machine Learning (Bishop) chapter 1"
+    },
+    {
+     "title": "Khan Academy statistics and probability"
+    },
+    {
+     "title": "StatQuest YouTube channel"
+    }
+   ],
+   "notes": "Machine learning rests on probability. A probability lies between 0 and 1 and the probabilities of all outcomes sum to 1. Conditional probability P(A given B) is the chance of A when B is known to have happened, and Bayes' rule links it to the reverse: P(A given B) equals P(B given A) times P(A) divided by P(B). Two events are independent when P(A and B) equals P(A) times P(B). The expected value is the probability-weighted average, and variance measures spread around the mean; the standard deviation is its square root. A normal distribution is described by its mean and standard deviation, with about 68 percent of values within one standard deviation. The law of large numbers says sample averages approach the true mean. A small sample can mislead, so report uncertainty rather than a single number."
+  },
+  {
+   "id": "ml.linear_algebra",
+   "name": "Linear algebra for ML",
+   "prereqs": [],
+   "difficulty": 2,
+   "hours": 4.0,
+   "resources": [
+    {
+     "title": "Mathematics for Machine Learning (Deisenroth) chapter 2"
+    },
+    {
+     "title": "3Blue1Brown Essence of Linear Algebra"
+    },
+    {
+     "title": "NumPy documentation broadcasting"
+    }
+   ],
+   "notes": "Data and parameters in machine learning are vectors and matrices. A vector is a list of numbers and the dot product of two vectors multiplies matching entries and sums them, which measures alignment and is zero when they are perpendicular. A matrix times a vector applies a linear transformation, and multiplying an m by n matrix by an n by p matrix gives an m by p matrix; the inner dimensions must match and matrix multiplication is not commutative. The transpose flips rows and columns. The norm measures length, and the L2 norm is the square root of the sum of squares. Cosine similarity is the dot product divided by the product of norms. Batched operations with matrices make neural networks efficient, because one matrix multiplication computes all examples and neurons at once. Shapes are the most common source of bugs, so check them first."
+  },
+  {
+   "id": "ml.train_test",
+   "name": "Train, validation and test splits",
+   "prereqs": [
+    "ml.data_eda"
+   ],
+   "difficulty": 1,
+   "hours": 3.0,
+   "resources": [
+    {
+     "title": "Hands-On Machine Learning (Geron) chapter 2"
+    },
+    {
+     "title": "scikit-learn model selection guide"
+    },
+    {
+     "title": "Google ML crash course data splits"
+    }
+   ],
+   "notes": "To estimate how well a model will perform on new data you must evaluate it on examples it never trained on. Split the data into a training set to fit parameters, a validation set to choose hyperparameters and compare models, and a test set used once at the very end for the final unbiased estimate. A common split is 70, 15, 15 or 80, 10, 10 percent. Data leakage happens when information from outside the training set sneaks in, for example scaling with statistics computed on all data before splitting, or having the same patient or duplicate rows in both train and test. For time series, split by time so you never train on the future. For classification, stratify so class proportions are similar in every split. Repeatedly tuning on the test set quietly overfits to it, so it stops being a fair estimate."
+  },
+  {
+   "id": "ml.metrics_cls",
+   "name": "Classification metrics",
+   "prereqs": [
+    "ml.train_test",
+    "ml.stats_basics"
+   ],
+   "difficulty": 2,
+   "hours": 4.0,
+   "resources": [
+    {
+     "title": "Hands-On Machine Learning (Geron) chapter 3"
+    },
+    {
+     "title": "scikit-learn metrics documentation"
+    },
+    {
+     "title": "Google ML crash course classification"
+    }
+   ],
+   "notes": "Accuracy is the share of correct predictions but is misleading with imbalanced classes: a model that always predicts the majority class can score 99 percent while being useless. The confusion matrix counts true positives, false positives, true negatives and false negatives. Precision is true positives divided by predicted positives, answering how many flagged items were right. Recall is true positives divided by actual positives, answering how many real positives were found. F1 is the harmonic mean of precision and recall. Raising the decision threshold usually increases precision and lowers recall. The ROC curve plots true positive rate against false positive rate across thresholds and AUC summarises it, where 0.5 is random guessing and 1.0 is perfect. Choose the metric from the cost of mistakes, such as high recall for disease screening."
+  },
+  {
+   "id": "ml.metrics_reg",
+   "name": "Regression metrics",
+   "prereqs": [
+    "ml.train_test",
+    "ml.stats_basics"
+   ],
+   "difficulty": 2,
+   "hours": 3.0,
+   "resources": [
+    {
+     "title": "Hands-On Machine Learning (Geron) chapter 4"
+    },
+    {
+     "title": "scikit-learn regression metrics"
+    },
+    {
+     "title": "StatQuest R-squared"
+    }
+   ],
+   "notes": "Regression predicts a continuous number, so we measure the size of the error. Mean absolute error averages the absolute differences and is in the target's units and robust to outliers. Mean squared error averages the squared differences, penalising large errors heavily, and its square root RMSE returns to the target's units. R squared compares the model with always predicting the mean: 1 is perfect, 0 is no better than the mean, and it can be negative on new data for a bad model. A residual is the actual value minus the prediction, and a residual plot with visible patterns signals a missing relationship. Compare errors against a naive baseline such as predicting the average. Choose MAE when all errors matter equally and MSE or RMSE when large mistakes are especially costly."
+  },
+  {
+   "id": "ml.preprocessing",
+   "name": "Preprocessing: scaling, encoding, missing values",
+   "prereqs": [
+    "ml.data_eda",
+    "ml.train_test"
+   ],
+   "difficulty": 2,
+   "hours": 4.0,
+   "resources": [
+    {
+     "title": "Hands-On Machine Learning (Geron) chapter 2"
+    },
+    {
+     "title": "scikit-learn preprocessing guide"
+    },
+    {
+     "title": "Kaggle Learn Intermediate Machine Learning"
+    }
+   ],
+   "notes": "Models need clean numeric input. Missing values can be dropped, filled with the mean or median, or flagged with an indicator column; the fill value must be learned from training data only. Feature scaling matters for distance-based and gradient-based methods: standardisation subtracts the mean and divides by the standard deviation, while min-max scaling maps values into a fixed range. Tree-based models are mostly insensitive to scaling. Categorical features need encoding: one-hot encoding creates a binary column per category and suits nominal data, while ordinal encoding keeps an order and suits ranked categories. Giving an unordered category integer codes can mislead a linear model into seeing an order. Handle unseen categories at prediction time gracefully. Wrap all steps in a pipeline fitted on training data and applied identically to validation, test and production data."
+  },
+  {
+   "id": "ml.linear_reg",
+   "name": "Linear regression",
+   "prereqs": [
+    "ml.linear_algebra",
+    "ml.metrics_reg"
+   ],
+   "difficulty": 2,
+   "hours": 4.0,
+   "resources": [
+    {
+     "title": "Hands-On Machine Learning (Geron) chapter 4"
+    },
+    {
+     "title": "An Introduction to Statistical Learning chapter 3"
+    },
+    {
+     "title": "Andrew Ng Machine Learning Specialization"
+    }
+   ],
+   "notes": "Linear regression models the target as a weighted sum of features plus a bias: y equals w times x plus b. Training chooses weights that minimise the mean squared error between predictions and targets. The closed-form solution uses the normal equation, while gradient descent finds it iteratively and scales to large data. Each weight shows how much the prediction changes per unit increase of its feature with the others held fixed, which makes the model interpretable. The model assumes a linear relationship; if the relationship is curved you can add polynomial features. It is sensitive to outliers because errors are squared, and to correlated features, which make weights unstable. Evaluate on held-out data and inspect residuals. With many features relative to examples it overfits, which regularisation addresses. Linear regression is the baseline against which more complex models should be compared."
+  },
+  {
+   "id": "ml.gradient_descent",
+   "name": "Gradient descent",
+   "prereqs": [
+    "ml.linear_algebra",
+    "ml.linear_reg"
+   ],
+   "difficulty": 3,
+   "hours": 5.0,
+   "resources": [
+    {
+     "title": "Hands-On Machine Learning (Geron) chapter 4"
+    },
+    {
+     "title": "Deep Learning (Goodfellow) chapter 4 and 8"
+    },
+    {
+     "title": "Andrew Ng Machine Learning Specialization week 1"
+    }
+   ],
+   "notes": "Gradient descent minimises a loss function by repeatedly moving the parameters a small step in the direction opposite to the gradient, the direction of steepest increase: w becomes w minus the learning rate times the gradient. The learning rate controls the step size. Too large and the loss oscillates or diverges; too small and training is painfully slow. Batch gradient descent uses all examples per step, stochastic gradient descent uses one, and mini-batch uses a small group, which balances noise and speed and is the standard for deep learning. For convex losses such as linear regression the minimum is global; for neural networks the loss surface has many saddle points and local minima. Feature scaling makes the loss surface rounder and converges faster. Monitor the training loss curve, and stop or reduce the learning rate when it plateaus or becomes unstable."
+  },
+  {
+   "id": "ml.logistic",
+   "name": "Logistic regression",
+   "prereqs": [
+    "ml.linear_reg",
+    "ml.gradient_descent",
+    "ml.metrics_cls"
+   ],
+   "difficulty": 3,
+   "hours": 4.0,
+   "resources": [
+    {
+     "title": "Hands-On Machine Learning (Geron) chapter 4"
+    },
+    {
+     "title": "An Introduction to Statistical Learning chapter 4"
+    },
+    {
+     "title": "StatQuest logistic regression"
+    }
+   ],
+   "notes": "Logistic regression is a linear classifier. It computes a weighted sum of the features and passes it through the sigmoid function, which squashes any real number into the range 0 to 1 and is interpreted as the probability of the positive class. A threshold, commonly 0.5, converts the probability to a class label and can be moved to trade precision against recall. The decision boundary is linear in the features. Training minimises the cross-entropy, or log loss, which punishes confident wrong predictions very strongly, using gradient descent. The model is called regression for historical reasons but it solves classification. For more than two classes use softmax, which turns scores into probabilities that sum to one. Weights can be read as changes in log-odds. Regularisation is usually added, and features should be scaled for stable training."
+  },
+  {
+   "id": "ml.regularization",
+   "name": "Regularization (L1 and L2)",
+   "prereqs": [
+    "ml.linear_reg",
+    "ml.gradient_descent"
+   ],
+   "difficulty": 3,
+   "hours": 3.0,
+   "resources": [
+    {
+     "title": "An Introduction to Statistical Learning chapter 6"
+    },
+    {
+     "title": "Hands-On Machine Learning (Geron) chapter 4"
+    },
+    {
+     "title": "StatQuest ridge and lasso"
+    }
+   ],
+   "notes": "Regularisation reduces overfitting by adding a penalty on the size of the weights to the loss, discouraging the model from fitting noise. L2 regularisation, used in ridge regression, adds the sum of squared weights, shrinking all weights smoothly toward zero but rarely making them exactly zero. L1 regularisation, used in lasso, adds the sum of absolute weights and tends to drive some weights exactly to zero, which performs automatic feature selection. The strength is a hyperparameter, often called lambda or alpha: larger values mean simpler models that risk underfitting, and a value of zero means no regularisation. Choose it with cross-validation. Standardise features first, otherwise the penalty treats features unfairly. Other forms include dropout and early stopping in neural networks, and data augmentation. Regularisation trades a little bias for a larger reduction in variance."
+  },
+  {
+   "id": "ml.bias_variance",
+   "name": "Bias, variance and overfitting",
+   "prereqs": [
+    "ml.train_test",
+    "ml.regularization"
+   ],
+   "difficulty": 3,
+   "hours": 4.0,
+   "resources": [
+    {
+     "title": "An Introduction to Statistical Learning chapter 2"
+    },
+    {
+     "title": "Hands-On Machine Learning (Geron) chapter 4"
+    },
+    {
+     "title": "Andrew Ng ML Yearning"
+    }
+   ],
+   "notes": "Prediction error splits into bias, variance and irreducible noise. High bias means the model is too simple to capture the pattern, so it underfits: both training and validation errors are high. High variance means the model is too flexible and fits noise in the training data, so it overfits: training error is low but validation error is much higher. Learning curves that plot errors against training size or complexity show which problem you have. To reduce bias use a richer model or better features; to reduce variance get more data, regularise, simplify the model or use ensembling. Adding more data helps variance problems much more than bias problems. A large gap between training and validation scores signals overfitting. Noise in the labels sets a floor that no model can beat. Aim for the sweet spot, not the lowest training error."
+  },
+  {
+   "id": "ml.cross_validation",
+   "name": "Cross-validation and hyperparameter tuning",
+   "prereqs": [
+    "ml.bias_variance"
+   ],
+   "difficulty": 3,
+   "hours": 4.0,
+   "resources": [
+    {
+     "title": "Hands-On Machine Learning (Geron) chapter 2"
+    },
+    {
+     "title": "scikit-learn cross-validation guide"
+    },
+    {
+     "title": "An Introduction to Statistical Learning chapter 5"
+    }
+   ],
+   "notes": "Cross-validation estimates generalisation more reliably than a single split. In k-fold cross-validation the training data is divided into k folds; each fold takes a turn as the validation set while the model trains on the other k minus one folds, and the k scores are averaged. This costs k times as many trainings but uses data efficiently and shows variability across folds. Stratified folds keep class proportions, and grouped or time-aware folds avoid leakage across related rows. Hyperparameters, such as regularisation strength, tree depth or learning rate, are settings chosen before training, unlike parameters, which are learned. Grid search tries every combination, random search samples combinations and is often more efficient, and Bayesian methods guide the search. Tune with cross-validation on training data, then evaluate once on the untouched test set. Nested cross-validation gives an unbiased estimate when tuning and evaluating together."
+  },
+  {
+   "id": "ml.knn",
+   "name": "k-nearest neighbours and distance",
+   "prereqs": [
+    "ml.preprocessing",
+    "ml.linear_algebra"
+   ],
+   "difficulty": 2,
+   "hours": 3.0,
+   "resources": [
+    {
+     "title": "Hands-On Machine Learning (Geron) chapter 1"
+    },
+    {
+     "title": "An Introduction to Statistical Learning chapter 2"
+    },
+    {
+     "title": "scikit-learn nearest neighbours guide"
+    }
+   ],
+   "notes": "The k-nearest neighbours algorithm classifies a new point by finding the k closest training points under a distance measure and taking a majority vote, or averages their targets for regression. There is no training phase beyond storing the data, so it is called lazy, but prediction is slow on large datasets because it computes distances to every stored point unless an index structure is used. The most common distance is Euclidean, with Manhattan and cosine as alternatives. Because distances add up differences across features, features must be scaled, otherwise a feature with a large range dominates. A small k gives noisy, flexible boundaries that overfit, while a large k smooths too much and underfits; choose k by cross-validation and prefer an odd value for binary voting. In high dimensions distances become less meaningful, known as the curse of dimensionality."
+  },
+  {
+   "id": "ml.trees",
+   "name": "Decision trees",
+   "prereqs": [
+    "ml.metrics_cls",
+    "ml.bias_variance"
+   ],
+   "difficulty": 3,
+   "hours": 3.0,
+   "resources": [
+    {
+     "title": "Hands-On Machine Learning (Geron) chapter 6"
+    },
+    {
+     "title": "An Introduction to Statistical Learning chapter 8"
+    },
+    {
+     "title": "StatQuest decision trees"
+    }
+   ],
+   "notes": "A decision tree predicts by asking a sequence of yes-no questions about features, splitting the data into purer and purer groups until it reaches leaves that give a prediction. At each node the algorithm picks the split that most reduces impurity, measured for classification by Gini impurity or entropy and for regression by variance. Trees need no feature scaling, handle mixed feature types and are easy to interpret as rules. An unrestricted tree keeps splitting until it memorises the training data, so it overfits badly with high variance. Control complexity with maximum depth, minimum samples per leaf and pruning. Small changes in the data can produce a very different tree, so single trees are unstable. Trees split on axis-parallel thresholds, so they approximate diagonal boundaries with staircases. They are the building block of random forests and boosting."
+  },
+  {
+   "id": "ml.ensembles",
+   "name": "Random forests and gradient boosting",
+   "prereqs": [
+    "ml.trees",
+    "ml.cross_validation"
+   ],
+   "difficulty": 4,
+   "hours": 4.0,
+   "resources": [
+    {
+     "title": "Hands-On Machine Learning (Geron) chapter 7"
+    },
+    {
+     "title": "An Introduction to Statistical Learning chapter 8"
+    },
+    {
+     "title": "XGBoost documentation"
+    }
+   ],
+   "notes": "Ensembles combine many models to beat any single one. A random forest trains many deep decision trees in parallel, each on a bootstrap sample of the rows and a random subset of features at each split, then averages their predictions or takes a majority vote; averaging many decorrelated high-variance trees reduces variance. Gradient boosting builds trees sequentially, each new shallow tree fitted to the remaining errors of the current ensemble, so it mainly reduces bias; popular libraries are XGBoost, LightGBM and CatBoost. Boosting is often the strongest method on tabular data but is more sensitive to hyperparameters such as learning rate, tree count and depth, and can overfit if run too long, so use early stopping on a validation set. Random forests are harder to overfit, offer out-of-bag error estimates and give feature importances, which can be biased toward high-cardinality features."
+  },
+  {
+   "id": "ml.svm",
+   "name": "Support vector machines and kernels",
+   "prereqs": [
+    "ml.logistic",
+    "ml.regularization"
+   ],
+   "difficulty": 4,
+   "hours": 4.0,
+   "resources": [
+    {
+     "title": "Hands-On Machine Learning (Geron) chapter 5"
+    },
+    {
+     "title": "An Introduction to Statistical Learning chapter 9"
+    },
+    {
+     "title": "StatQuest support vector machines"
+    }
+   ],
+   "notes": "A support vector machine finds the separating hyperplane with the largest margin, the widest gap between the two classes. Only the points closest to the boundary, the support vectors, determine it. When classes overlap, a soft margin allows some violations, controlled by the parameter C: large C punishes violations heavily and risks overfitting, while small C allows a wider margin and a simpler model. The kernel trick lets an SVM learn nonlinear boundaries by computing similarities as if the data had been mapped into a higher-dimensional space; the RBF kernel with its gamma parameter is the usual choice, where a large gamma gives a very wiggly boundary that overfits. SVMs need scaled features, scale poorly to hundreds of thousands of examples and do not natively output probabilities. They work well on medium-sized, high-dimensional data."
+  },
+  {
+   "id": "ml.clustering",
+   "name": "Clustering and k-means",
+   "prereqs": [
+    "ml.knn",
+    "ml.preprocessing"
+   ],
+   "difficulty": 3,
+   "hours": 3.0,
+   "resources": [
+    {
+     "title": "Hands-On Machine Learning (Geron) chapter 9"
+    },
+    {
+     "title": "An Introduction to Statistical Learning chapter 12"
+    },
+    {
+     "title": "scikit-learn clustering guide"
+    }
+   ],
+   "notes": "Clustering groups unlabeled data so that points in the same cluster are more similar to each other than to points in other clusters. The k-means algorithm picks k initial centroids, assigns each point to the nearest centroid, recomputes each centroid as the mean of its points and repeats until assignments stop changing. It minimises the within-cluster sum of squared distances, always converges but possibly to a local minimum, so run it several times with different initialisations, as k-means++ does smartly. You must choose k in advance; the elbow method on the inertia curve and the silhouette score help. K-means assumes roughly spherical, similarly sized clusters and is affected by feature scale and outliers. Alternatives are hierarchical clustering and DBSCAN, which finds arbitrary-shaped clusters and flags noise points. Because there are no labels, validating clusters needs judgement."
+  },
+  {
+   "id": "ml.pca",
+   "name": "Dimensionality reduction with PCA",
+   "prereqs": [
+    "ml.linear_algebra",
+    "ml.preprocessing"
+   ],
+   "difficulty": 4,
+   "hours": 4.0,
+   "resources": [
+    {
+     "title": "Hands-On Machine Learning (Geron) chapter 8"
+    },
+    {
+     "title": "An Introduction to Statistical Learning chapter 12"
+    },
+    {
+     "title": "StatQuest PCA"
+    }
+   ],
+   "notes": "Principal component analysis finds new orthogonal axes, the principal components, ordered by how much of the data's variance each captures. The first component points in the direction of greatest spread, the second is perpendicular to it with the next greatest spread, and so on. Projecting the data onto the top components gives a lower-dimensional representation that keeps most of the information, useful for visualisation, noise reduction and speeding up models. Centre the data first and scale features so that large-range features do not dominate. The explained variance ratio shows how much each component keeps, and you can choose enough components to reach, say, 95 percent. PCA is linear and unsupervised: it ignores the target, so the top variance directions are not guaranteed to be the most predictive. Components are combinations of features, so interpretation is harder. Fit it on training data only."
+  },
+  {
+   "id": "ml.feature_eng",
+   "name": "Feature engineering and selection",
+   "prereqs": [
+    "ml.preprocessing",
+    "ml.trees"
+   ],
+   "difficulty": 3,
+   "hours": 4.0,
+   "resources": [
+    {
+     "title": "Feature Engineering for Machine Learning (Zheng and Casari)"
+    },
+    {
+     "title": "Kaggle Learn Feature Engineering"
+    },
+    {
+     "title": "scikit-learn feature selection guide"
+    }
+   ],
+   "notes": "Feature engineering creates inputs that make the pattern easier for a model to learn, often improving results more than switching algorithms. Examples are ratios, differences, interaction terms, polynomial terms, log transforms for skewed data, bins for continuous values, date parts such as day of week, text counts or embeddings, and aggregates over groups. Domain knowledge guides the best features. Target encoding replaces a category by the mean target of that category and is powerful but leaks the target unless computed within cross-validation folds. Feature selection removes useless or redundant features using filters such as correlation, wrapper methods like recursive elimination, or model-based importance and L1 penalties; this reduces overfitting, cost and latency. Features must be available at prediction time with the same definition as in training, otherwise the model fails in production. Check every new feature for leakage."
+  },
+  {
+   "id": "ml.imbalanced",
+   "name": "Class imbalance",
+   "prereqs": [
+    "ml.metrics_cls",
+    "ml.feature_eng"
+   ],
+   "difficulty": 3,
+   "hours": 3.0,
+   "resources": [
+    {
+     "title": "Hands-On Machine Learning (Geron) chapter 3"
+    },
+    {
+     "title": "imbalanced-learn documentation"
+    },
+    {
+     "title": "Google ML crash course imbalanced data"
+    }
+   ],
+   "notes": "In many problems, such as fraud, disease or defect detection, the positive class is rare. A classifier trained naively tends to favour the majority class and accuracy hides the failure, so rely on precision, recall, F1 or the precision-recall curve, which is more informative than ROC under heavy imbalance. Remedies work at the data level or the algorithm level. Data-level methods are random oversampling of the minority, undersampling of the majority, and synthetic oversampling such as SMOTE. Algorithm-level methods are class weights that make minority errors cost more, threshold tuning, and anomaly detection when positives are extremely rare. Always resample only the training data after splitting; resampling before the split leaks duplicates into the validation set and inflates scores. Keep the test set with its natural distribution so the metrics reflect reality. Collecting more minority examples is best."
+  },
+  {
+   "id": "ml.nn_basics",
+   "name": "Neural network basics",
+   "prereqs": [
+    "ml.logistic",
+    "ml.gradient_descent"
+   ],
+   "difficulty": 3,
+   "hours": 5.0,
+   "resources": [
+    {
+     "title": "Deep Learning (Goodfellow) chapter 6"
+    },
+    {
+     "title": "Neural Networks and Deep Learning (Nielsen)"
+    },
+    {
+     "title": "fast.ai Practical Deep Learning part 1"
+    }
+   ],
+   "notes": "A neural network stacks layers of neurons, each computing a weighted sum of its inputs plus a bias and passing it through a nonlinear activation function. Without the nonlinearity, stacked layers collapse into a single linear map, so activations such as ReLU, which outputs the larger of zero and its input, sigmoid and tanh are essential. Hidden layers learn intermediate features, and an output layer gives predictions: sigmoid for binary probabilities, softmax for multiple classes and a linear output for regression. The universal approximation theorem says a wide enough network can approximate any reasonable function, but it does not say that gradient descent will find the weights. Initialise weights with small random values, not all zeros, so neurons learn different things. Depth adds representational power but also training difficulty. Choose the loss to match the task: cross-entropy for classification and squared error for regression."
+  },
+  {
+   "id": "ml.backprop",
+   "name": "Backpropagation",
+   "prereqs": [
+    "ml.nn_basics",
+    "ml.linear_algebra"
+   ],
+   "difficulty": 4,
+   "hours": 5.0,
+   "resources": [
+    {
+     "title": "Deep Learning (Goodfellow) chapter 6.5"
+    },
+    {
+     "title": "Neural Networks and Deep Learning (Nielsen) chapter 2"
+    },
+    {
+     "title": "Karpathy micrograd lecture"
+    }
+   ],
+   "notes": "Backpropagation computes the gradient of the loss with respect to every weight efficiently using the chain rule. First the forward pass computes activations layer by layer and stores them; then the backward pass starts from the loss, computes the gradient with respect to the output, and propagates it backward, multiplying local derivatives at each layer to get gradients for the weights and the inputs of the previous layer. This reuses intermediate results, so the cost is about twice that of the forward pass rather than recomputing each derivative separately. Frameworks implement this as automatic differentiation over a computational graph. Gradients can vanish when many small derivatives multiply, as with sigmoid and tanh in deep networks, or explode when derivatives are large; ReLU, careful initialisation, residual connections and gradient clipping help. Backpropagation computes gradients only; an optimiser then uses them to update weights."
+  },
+  {
+   "id": "ml.optimizers",
+   "name": "Optimizers and training practice",
+   "prereqs": [
+    "ml.backprop",
+    "ml.cross_validation"
+   ],
+   "difficulty": 4,
+   "hours": 4.0,
+   "resources": [
+    {
+     "title": "Deep Learning (Goodfellow) chapter 8"
+    },
+    {
+     "title": "Hands-On Machine Learning (Geron) chapter 11"
+    },
+    {
+     "title": "Karpathy A Recipe for Training Neural Networks"
+    }
+   ],
+   "notes": "Optimisers decide how gradients become weight updates. Plain stochastic gradient descent uses a fixed learning rate; momentum accumulates a velocity of past gradients to smooth noise and speed up along consistent directions; RMSProp and Adam adapt a per-parameter step size using running estimates of gradient magnitude, and Adam also uses momentum, making it a strong default that needs less tuning. The learning rate is the single most important hyperparameter, and schedules such as warm-up followed by cosine or step decay often help. Batch size affects gradient noise, speed and memory: larger batches are efficient on hardware but may generalise slightly worse without learning rate adjustments. Use early stopping on validation loss, dropout and weight decay against overfitting, and gradient clipping against exploding gradients. Track training and validation curves, set random seeds for reproducibility, and overfit a tiny batch first to catch bugs."
+  },
+  {
+   "id": "ml.cnn",
+   "name": "Convolutional neural networks",
+   "prereqs": [
+    "ml.backprop",
+    "ml.preprocessing"
+   ],
+   "difficulty": 4,
+   "hours": 5.0,
+   "resources": [
+    {
+     "title": "Deep Learning (Goodfellow) chapter 9"
+    },
+    {
+     "title": "CS231n Convolutional Networks notes"
+    },
+    {
+     "title": "fast.ai Practical Deep Learning"
+    }
+   ],
+   "notes": "Convolutional neural networks process grid-like data such as images. A convolution layer slides small learnable filters over the input, computing dot products, so the same weights are reused at every position. This weight sharing gives far fewer parameters than a fully connected layer and builds in translation equivariance, meaning a pattern is detected wherever it appears. Early layers learn edges and textures, deeper layers learn parts and objects. Stride controls how far the filter moves, padding keeps the spatial size, and pooling layers downsample, for example by taking the maximum in each small window. The output size of a convolution is the input size minus the filter size plus twice the padding, divided by the stride, plus one. A typical network alternates convolution, activation and pooling, then ends with dense layers. Data augmentation such as flips and crops reduces overfitting. Batch normalisation stabilises training."
+  },
+  {
+   "id": "ml.rnn_seq",
+   "name": "Sequence models and RNNs",
+   "prereqs": [
+    "ml.nn_basics",
+    "ml.backprop"
+   ],
+   "difficulty": 4,
+   "hours": 4.0,
+   "resources": [
+    {
+     "title": "Deep Learning (Goodfellow) chapter 10"
+    },
+    {
+     "title": "Colah's Understanding LSTM Networks"
+    },
+    {
+     "title": "Dive into Deep Learning recurrent networks"
+    }
+   ],
+   "notes": "Sequential data such as text, speech and sensor streams has order and variable length. A recurrent neural network processes one element at a time and carries a hidden state that summarises what it has seen so far, applying the same weights at every step. Training unrolls the network through time and uses backpropagation through time, where gradients pass through many multiplications and vanish or explode, making long-range dependencies hard to learn. LSTM and GRU cells add gates that control what to remember, forget and output, which eases the vanishing gradient problem. RNNs process sequentially, so they cannot be parallelised across time steps, which makes training slow compared with transformers. Sequences are padded and masked into batches. Tasks include language modelling, translation and tagging. Bidirectional RNNs read both directions when the whole sequence is available. Transformers have largely replaced RNNs for large language tasks."
+  },
+  {
+   "id": "ml.attention",
+   "name": "Attention and transformers",
+   "prereqs": [
+    "ml.rnn_seq",
+    "ml.linear_algebra"
+   ],
+   "difficulty": 5,
+   "hours": 6.0,
+   "resources": [
+    {
+     "title": "Attention Is All You Need (Vaswani et al.)"
+    },
+    {
+     "title": "The Illustrated Transformer (Jay Alammar)"
+    },
+    {
+     "title": "Dive into Deep Learning attention chapter"
+    }
+   ],
+   "notes": "Attention lets a model weigh how relevant each position in a sequence is when computing the representation of the current position. In scaled dot-product attention each token is projected into a query, key and value; attention scores are query-key dot products divided by the square root of the key dimension, passed through softmax to give weights summing to one, and the output is the weighted sum of values. Self-attention applies this within one sequence, so every token can look at every other token directly, giving short paths for long-range dependencies. Multi-head attention runs several attentions in parallel to capture different relations. Transformers combine attention, feed-forward layers, residual connections and layer normalisation, and add positional information since attention alone ignores order. Because all positions are processed in parallel, training is fast on GPUs. Attention cost grows quadratically with sequence length. Decoder models use a causal mask so tokens cannot see future tokens."
+  },
+  {
+   "id": "ml.llm_basics",
+   "name": "LLM basics: tokens, context and sampling",
+   "prereqs": [
+    "ml.attention"
+   ],
+   "difficulty": 4,
+   "hours": 5.0,
+   "resources": [
+    {
+     "title": "Illustrated GPT-2 (Jay Alammar)"
+    },
+    {
+     "title": "Hugging Face NLP Course"
+    },
+    {
+     "title": "Llama 3 model card"
+    }
+   ],
+   "notes": "A large language model is a transformer trained to predict the next token. Text is split into tokens, which are pieces of words from a learned vocabulary, so token counts differ from word counts and non-English text often needs more tokens. The model sees at most a fixed context window of tokens, including prompt and output, and the KV cache stores past keys and values so each new token costs less to generate. Generation is autoregressive: it samples one token, appends it and repeats. Temperature rescales the output distribution: low values make output more deterministic, high values more varied. Top-k and top-p sampling restrict choices to likely tokens. Models can hallucinate fluent but false statements, so ground answers in provided notes and validate structured output. Prompt processing, called prefill, is usually faster per token than decoding. Smaller models are faster and fit in less memory but are less capable."
+  },
+  {
+   "id": "ml.transfer",
+   "name": "Transfer learning and fine-tuning",
+   "prereqs": [
+    "ml.llm_basics",
+    "ml.optimizers"
+   ],
+   "difficulty": 4,
+   "hours": 5.0,
+   "resources": [
+    {
+     "title": "LoRA paper (Hu et al.)"
+    },
+    {
+     "title": "Hugging Face PEFT documentation"
+    },
+    {
+     "title": "Hands-On Machine Learning (Geron) chapter 14"
+    }
+   ],
+   "notes": "Transfer learning reuses a model trained on a large dataset as the starting point for a new task, so you need far less data and compute. Options range from using the pretrained model as a frozen feature extractor, to fine-tuning only the last layers, to fine-tuning everything with a small learning rate. Full fine-tuning of a large language model updates every weight and needs a lot of memory. Parameter-efficient methods such as LoRA freeze the base weights and train small low-rank adapter matrices added to selected layers, cutting trainable parameters by orders of magnitude; the adapter can later be merged into the base weights so inference has no extra cost. Fine-tuning data quality matters more than quantity, and the data must be licensed and reviewed for that use. Beware of catastrophic forgetting, where tuning on a narrow task degrades general ability, and evaluate against the base model on a fixed test set. The base model's licence applies to the tuned version."
+  },
+  {
+   "id": "ml.quantization",
+   "name": "Quantization and model compression",
+   "prereqs": [
+    "ml.nn_basics",
+    "ml.llm_basics"
+   ],
+   "difficulty": 4,
+   "hours": 4.0,
+   "resources": [
+    {
+     "title": "Hugging Face quantization guide"
+    },
+    {
+     "title": "ExecuTorch documentation quantization"
+    },
+    {
+     "title": "A White Paper on Neural Network Quantization (Nagel et al.)"
+    }
+   ],
+   "notes": "Quantization stores weights, and sometimes activations, with fewer bits than 32-bit floats, for example 8-bit or 4-bit integers, shrinking model size and memory traffic and often speeding up inference on hardware with fast integer arithmetic. A scale factor, and sometimes a zero point, maps integers back to real values. Weight-only quantization keeps activations in higher precision; quantizing both weights and activations, such as 4-bit weights with 8-bit activations, can be faster still. Post-training quantization converts a trained model with little or no retraining, while quantization-aware training simulates low precision during training to recover accuracy. Lower precision saves memory roughly proportionally: a 1 billion parameter model needs about 4 GB in 32-bit and about 0.5 GB in 4-bit, plus overhead for the KV cache and activations. Quantization introduces error, so measure quality on your tasks. Other compression methods are pruning, distillation and smaller architectures."
+  },
+  {
+   "id": "ml.pipelines",
+   "name": "ML pipelines and reproducibility",
+   "prereqs": [
+    "ml.preprocessing",
+    "ml.cross_validation"
+   ],
+   "difficulty": 3,
+   "hours": 3.0,
+   "resources": [
+    {
+     "title": "Hands-On Machine Learning (Geron) chapter 2"
+    },
+    {
+     "title": "MLflow documentation"
+    },
+    {
+     "title": "Made With ML course on pipelines"
+    }
+   ],
+   "notes": "A machine learning pipeline chains data loading, cleaning, feature creation, training, evaluation and export as repeatable steps, so any result can be regenerated from the same inputs. Reproducibility requires fixed random seeds, recorded library versions, versioned data and code, and a single command or script that runs the whole flow. Keep configuration such as hyperparameters in files, not scattered in code, and log each run's parameters, metrics and artefacts with an experiment tracker or even a simple results file with the commit hash. Notebooks are fine for exploration but fragile for production; move stable logic into tested modules. Fitting preprocessing inside the pipeline on training folds only prevents leakage and ensures identical transformations at prediction time. Unit tests for data validation, shapes and metric functions catch bugs early. Small seed changes can alter results, so report averages over several seeds with variability, not one lucky run."
+  },
+  {
+   "id": "ml.serving",
+   "name": "Deploying and serving models",
+   "prereqs": [
+    "ml.pipelines",
+    "ml.quantization"
+   ],
+   "difficulty": 4,
+   "hours": 4.0,
+   "resources": [
+    {
+     "title": "Designing Machine Learning Systems (Chip Huyen) chapter 7"
+    },
+    {
+     "title": "ONNX documentation"
+    },
+    {
+     "title": "ExecuTorch documentation"
+    }
+   ],
+   "notes": "Serving a model means making its predictions available to an application, either as a remote service behind an API or embedded in the app itself. Key concerns are latency, throughput, memory, cost, reliability and privacy. Batch inference scores many items offline on a schedule, while online inference answers single requests in milliseconds to seconds. Export the model into a portable format, such as ONNX, TorchScript or ExecuTorch, and keep the preprocessing identical to training, because training-serving skew is a frequent cause of silent failures. Warm up the model before the first request, since loading and first-run compilation add delay, and cap input sizes. Cache frequent results, batch concurrent requests for throughput and set timeouts and fallbacks so failures degrade gracefully. On-device serving removes network latency and keeps data private but is limited by memory, battery and heat. Version models and support rollback."
+  },
+  {
+   "id": "ml.monitoring",
+   "name": "Monitoring and drift",
+   "prereqs": [
+    "ml.serving",
+    "ml.metrics_cls"
+   ],
+   "difficulty": 4,
+   "hours": 3.0,
+   "resources": [
+    {
+     "title": "Designing Machine Learning Systems (Chip Huyen) chapter 8"
+    },
+    {
+     "title": "Evidently AI documentation"
+    },
+    {
+     "title": "Google MLOps guide"
+    }
+   ],
+   "notes": "After deployment a model's performance can silently degrade because the world changes. Data drift, or covariate shift, means the distribution of input features changes, for example new devices or a new user population. Concept drift means the relationship between inputs and the target changes, for example fraud tactics evolving. Label delay makes it hard to measure accuracy immediately, so monitor proxies: input feature distributions, prediction distributions, missing-value rates, latency, error rates and crash counts, and compare them with the training baseline using summary statistics or tests such as the population stability index. Set alerts with thresholds, review samples manually and keep a feedback path for collecting fresh labels. Plan retraining triggered by schedule or by drift, and validate new models against the current one with shadow deployments or A/B tests before switching. Log enough information to debug, while respecting privacy."
+  },
+  {
+   "id": "ml.mlops_ci",
+   "name": "Testing, versioning and CI for ML",
+   "prereqs": [
+    "ml.pipelines"
+   ],
+   "difficulty": 3,
+   "hours": 3.0,
+   "resources": [
+    {
+     "title": "Designing Machine Learning Systems (Chip Huyen) chapter 10"
+    },
+    {
+     "title": "DVC documentation"
+    },
+    {
+     "title": "Google Rules of Machine Learning"
+    }
+   ],
+   "notes": "Software practices carry over to machine learning with extra care for data and models. Version control tracks code, and data and model files too large for Git are tracked by checksum or with tools such as DVC, with the large binary stored elsewhere and referenced from the repository. Continuous integration runs on every push: formatting, unit tests, data validation checks such as schema, ranges and acyclic graphs, and small end-to-end smoke tests, so integration problems are found within a day. Tests for ML cover metric functions, preprocessing shapes, deterministic behaviour with a fixed seed, and invariants such as probabilities summing to one. Never commit secrets such as tokens, and keep model weights out of Git history because it permanently bloats the repository. Document licences for datasets and models. A model card records intended use, data, metrics and limits. Review changes through pull requests, and tag releases for traceability."
+  },
+  {
+   "id": "ml.ondevice",
+   "name": "On-device inference and efficiency",
+   "prereqs": [
+    "ml.quantization",
+    "ml.serving",
+    "ml.llm_basics"
+   ],
+   "difficulty": 5,
+   "hours": 5.0,
+   "resources": [
+    {
+     "title": "ExecuTorch documentation Llama on Android"
+    },
+    {
+     "title": "Efficient Deep Learning (Menghani survey)"
+    },
+    {
+     "title": "Arm developer learning paths for on-device AI"
+    }
+   ],
+   "notes": "Running models on a phone is limited by memory, compute, battery and heat rather than accuracy alone. Decode speed in tokens per second is mostly limited by memory bandwidth, because every generated token must read all the model weights, so smaller or more quantized models decode faster; prompt processing, which handles many tokens at once, is more compute bound. Time to first token depends on prompt length and prefill speed, so short system prompts and reuse of a cached prefix cut latency. Use a runtime tuned for the CPU, such as ExecuTorch with XNNPACK on Arm, and tune the thread count: more threads can hurt through contention or throttling, so sweep it. Sustained load raises temperature, and the operating system throttles clocks, which lowers speed over minutes; measure over 20 minutes, not 20 seconds. Measure energy per token and peak memory, warm up before timing, and report medians over repeated runs with conditions stated."
+  }
+ ]
+}

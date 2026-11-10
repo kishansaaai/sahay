@@ -1,0 +1,5783 @@
+{
+ "schema": "sahay.questions/1",
+ "domain": "dsa",
+ "misconceptions": [
+  {
+   "id": "dsa.complexity.m1",
+   "skill": "dsa.complexity",
+   "description": "Thinks O(2n) or O(n+5) is a different, larger class than O(n)"
+  },
+  {
+   "id": "dsa.complexity.m2",
+   "skill": "dsa.complexity",
+   "description": "Thinks nested loops are always O(n^2) even when the inner loop is bounded by a constant or halves"
+  },
+  {
+   "id": "dsa.complexity.m3",
+   "skill": "dsa.complexity",
+   "description": "Confuses best case with worst case, or ignores the recursion stack in space complexity"
+  },
+  {
+   "id": "dsa.arrays.m1",
+   "skill": "dsa.arrays",
+   "description": "Believes the last valid index equals the length"
+  },
+  {
+   "id": "dsa.arrays.m2",
+   "skill": "dsa.arrays",
+   "description": "Believes inserting at the end of a full dynamic array is always O(n) and never amortised O(1)"
+  },
+  {
+   "id": "dsa.arrays.m3",
+   "skill": "dsa.arrays",
+   "description": "Believes accessing an element by index requires scanning from the start"
+  },
+  {
+   "id": "dsa.strings.m1",
+   "skill": "dsa.strings",
+   "description": "Believes strings can be modified in place in Java or Python"
+  },
+  {
+   "id": "dsa.strings.m2",
+   "skill": "dsa.strings",
+   "description": "Believes comparing strings with == always compares content"
+  },
+  {
+   "id": "dsa.strings.m3",
+   "skill": "dsa.strings",
+   "description": "Believes anagram check requires comparing all permutations"
+  },
+  {
+   "id": "dsa.recursion.m1",
+   "skill": "dsa.recursion",
+   "description": "Forgets that recursion needs a base case and a step toward it"
+  },
+  {
+   "id": "dsa.recursion.m2",
+   "skill": "dsa.recursion",
+   "description": "Believes naive Fibonacci recursion is O(n)"
+  },
+  {
+   "id": "dsa.recursion.m3",
+   "skill": "dsa.recursion",
+   "description": "Believes recursion uses no extra memory"
+  },
+  {
+   "id": "dsa.sorting_basic.m1",
+   "skill": "dsa.sorting_basic",
+   "description": "Believes bubble sort is O(n log n)"
+  },
+  {
+   "id": "dsa.sorting_basic.m2",
+   "skill": "dsa.sorting_basic",
+   "description": "Believes insertion sort is always O(n^2) even on sorted input"
+  },
+  {
+   "id": "dsa.sorting_basic.m3",
+   "skill": "dsa.sorting_basic",
+   "description": "Confuses stability with being fast or in-place"
+  },
+  {
+   "id": "dsa.binary_search.m1",
+   "skill": "dsa.binary_search",
+   "description": "Applies binary search to unsorted data"
+  },
+  {
+   "id": "dsa.binary_search.m2",
+   "skill": "dsa.binary_search",
+   "description": "Updates low = mid or high = mid causing infinite loops"
+  },
+  {
+   "id": "dsa.binary_search.m3",
+   "skill": "dsa.binary_search",
+   "description": "Believes binary search is O(n) or computes mid unsafely as (low+high)/2 without considering overflow"
+  },
+  {
+   "id": "dsa.hashing.m1",
+   "skill": "dsa.hashing",
+   "description": "Believes hash table lookup is always O(1) with no worst case"
+  },
+  {
+   "id": "dsa.hashing.m2",
+   "skill": "dsa.hashing",
+   "description": "Believes a hash map keeps keys in sorted order"
+  },
+  {
+   "id": "dsa.hashing.m3",
+   "skill": "dsa.hashing",
+   "description": "Believes two different keys can never share a bucket"
+  },
+  {
+   "id": "dsa.two_pointers.m1",
+   "skill": "dsa.two_pointers",
+   "description": "Applies opposite-end pair-sum two pointers to an unsorted array without sorting"
+  },
+  {
+   "id": "dsa.two_pointers.m2",
+   "skill": "dsa.two_pointers",
+   "description": "Moves both pointers every step regardless of the comparison"
+  },
+  {
+   "id": "dsa.two_pointers.m3",
+   "skill": "dsa.two_pointers",
+   "description": "Believes two pointers always needs O(n^2) time"
+  },
+  {
+   "id": "dsa.sliding_window.m1",
+   "skill": "dsa.sliding_window",
+   "description": "Recomputes the whole window sum from scratch each step"
+  },
+  {
+   "id": "dsa.sliding_window.m2",
+   "skill": "dsa.sliding_window",
+   "description": "Believes a window with a nested shrink loop must be O(n^2)"
+  },
+  {
+   "id": "dsa.sliding_window.m3",
+   "skill": "dsa.sliding_window",
+   "description": "Applies sliding window to non-contiguous subsequences"
+  },
+  {
+   "id": "dsa.prefix_sums.m1",
+   "skill": "dsa.prefix_sums",
+   "description": "Gets range-sum indices wrong by one (uses prefix[r] - prefix[l])"
+  },
+  {
+   "id": "dsa.prefix_sums.m2",
+   "skill": "dsa.prefix_sums",
+   "description": "Believes each range-sum query still costs O(n) after preprocessing"
+  },
+  {
+   "id": "dsa.prefix_sums.m3",
+   "skill": "dsa.prefix_sums",
+   "description": "Believes prefix sums handle frequent point updates efficiently"
+  },
+  {
+   "id": "dsa.linked_list.m1",
+   "skill": "dsa.linked_list",
+   "description": "Believes you can access the kth node in O(1) like an array"
+  },
+  {
+   "id": "dsa.linked_list.m2",
+   "skill": "dsa.linked_list",
+   "description": "Overwrites node.next before saving it when reversing"
+  },
+  {
+   "id": "dsa.linked_list.m3",
+   "skill": "dsa.linked_list",
+   "description": "Believes a cycle can be found only by marking nodes with extra memory"
+  },
+  {
+   "id": "dsa.stack.m1",
+   "skill": "dsa.stack",
+   "description": "Confuses LIFO with FIFO"
+  },
+  {
+   "id": "dsa.stack.m2",
+   "skill": "dsa.stack",
+   "description": "Forgets to check for an empty stack, or forgets the stack must be empty at the end for balanced brackets"
+  },
+  {
+   "id": "dsa.stack.m3",
+   "skill": "dsa.stack",
+   "description": "Believes pop on an array-based stack is O(n)"
+  },
+  {
+   "id": "dsa.queue.m1",
+   "skill": "dsa.queue",
+   "description": "Confuses FIFO with LIFO"
+  },
+  {
+   "id": "dsa.queue.m2",
+   "skill": "dsa.queue",
+   "description": "Believes dequeue from the front of a plain array is O(1)"
+  },
+  {
+   "id": "dsa.queue.m3",
+   "skill": "dsa.queue",
+   "description": "Confuses a priority queue with a normal FIFO queue"
+  },
+  {
+   "id": "dsa.monotonic_stack.m1",
+   "skill": "dsa.monotonic_stack",
+   "description": "Believes the nested while loop makes the algorithm O(n^2)"
+  },
+  {
+   "id": "dsa.monotonic_stack.m2",
+   "skill": "dsa.monotonic_stack",
+   "description": "Uses an increasing stack where a decreasing one is needed for next greater element"
+  },
+  {
+   "id": "dsa.monotonic_stack.m3",
+   "skill": "dsa.monotonic_stack",
+   "description": "Forgets to give a default answer for elements left on the stack"
+  },
+  {
+   "id": "dsa.sorting_adv.m1",
+   "skill": "dsa.sorting_adv",
+   "description": "Believes quicksort is always O(n log n)"
+  },
+  {
+   "id": "dsa.sorting_adv.m2",
+   "skill": "dsa.sorting_adv",
+   "description": "Believes merge sort needs no extra space"
+  },
+  {
+   "id": "dsa.sorting_adv.m3",
+   "skill": "dsa.sorting_adv",
+   "description": "Believes a comparison sort can run in O(n) in general"
+  },
+  {
+   "id": "dsa.heap.m1",
+   "skill": "dsa.heap",
+   "description": "Believes a heap keeps all elements fully sorted"
+  },
+  {
+   "id": "dsa.heap.m2",
+   "skill": "dsa.heap",
+   "description": "Believes building a heap from n elements costs O(n log n) at best"
+  },
+  {
+   "id": "dsa.heap.m3",
+   "skill": "dsa.heap",
+   "description": "Uses a max-heap of size k to keep the k largest elements"
+  },
+  {
+   "id": "dsa.bit.m1",
+   "skill": "dsa.bit",
+   "description": "Believes XOR of a number with itself is the number"
+  },
+  {
+   "id": "dsa.bit.m2",
+   "skill": "dsa.bit",
+   "description": "Believes right shift by one multiplies by two"
+  },
+  {
+   "id": "dsa.bit.m3",
+   "skill": "dsa.bit",
+   "description": "Thinks x & (x - 1) sets the lowest bit instead of clearing it"
+  },
+  {
+   "id": "dsa.math_number.m1",
+   "skill": "dsa.math_number",
+   "description": "Believes you must test all divisors up to n to check primality"
+  },
+  {
+   "id": "dsa.math_number.m2",
+   "skill": "dsa.math_number",
+   "description": "Believes 1 is prime or that all primes are odd"
+  },
+  {
+   "id": "dsa.math_number.m3",
+   "skill": "dsa.math_number",
+   "description": "Applies plain division under a modulus, such as (a / b) mod m = (a mod m) / (b mod m)"
+  },
+  {
+   "id": "dsa.backtracking.m1",
+   "skill": "dsa.backtracking",
+   "description": "Forgets to undo the choice after the recursive call"
+  },
+  {
+   "id": "dsa.backtracking.m2",
+   "skill": "dsa.backtracking",
+   "description": "Stores a reference to the path list without copying it into results"
+  },
+  {
+   "id": "dsa.backtracking.m3",
+   "skill": "dsa.backtracking",
+   "description": "Believes backtracking is polynomial time because of pruning"
+  },
+  {
+   "id": "dsa.trees.m1",
+   "skill": "dsa.trees",
+   "description": "Mixes up preorder, inorder and postorder"
+  },
+  {
+   "id": "dsa.trees.m2",
+   "skill": "dsa.trees",
+   "description": "Believes recursive traversal always uses O(log n) space"
+  },
+  {
+   "id": "dsa.trees.m3",
+   "skill": "dsa.trees",
+   "description": "Uses a stack for level-order traversal instead of a queue"
+  },
+  {
+   "id": "dsa.bst.m1",
+   "skill": "dsa.bst",
+   "description": "Checks only the direct children when validating a BST"
+  },
+  {
+   "id": "dsa.bst.m2",
+   "skill": "dsa.bst",
+   "description": "Believes BST operations are always O(log n)"
+  },
+  {
+   "id": "dsa.bst.m3",
+   "skill": "dsa.bst",
+   "description": "Believes preorder of a BST is sorted"
+  },
+  {
+   "id": "dsa.tree_problems.m1",
+   "skill": "dsa.tree_problems",
+   "description": "Computes the diameter only through the root"
+  },
+  {
+   "id": "dsa.tree_problems.m2",
+   "skill": "dsa.tree_problems",
+   "description": "Believes the LCA of two nodes is always the root"
+  },
+  {
+   "id": "dsa.tree_problems.m3",
+   "skill": "dsa.tree_problems",
+   "description": "Recomputes height at every node separately, causing O(n^2), without noticing"
+  },
+  {
+   "id": "dsa.trie.m1",
+   "skill": "dsa.trie",
+   "description": "Believes search time in a trie depends on the number of stored words"
+  },
+  {
+   "id": "dsa.trie.m2",
+   "skill": "dsa.trie",
+   "description": "Treats any prefix match as a full word match"
+  },
+  {
+   "id": "dsa.trie.m3",
+   "skill": "dsa.trie",
+   "description": "Believes a hash set can answer prefix queries in O(1)"
+  },
+  {
+   "id": "dsa.graph_repr.m1",
+   "skill": "dsa.graph_repr",
+   "description": "Stores an undirected edge in only one direction"
+  },
+  {
+   "id": "dsa.graph_repr.m2",
+   "skill": "dsa.graph_repr",
+   "description": "Believes an adjacency matrix uses O(V + E) space"
+  },
+  {
+   "id": "dsa.graph_repr.m3",
+   "skill": "dsa.graph_repr",
+   "description": "Thinks adjacency lists check edge existence in O(1)"
+  },
+  {
+   "id": "dsa.bfs.m1",
+   "skill": "dsa.bfs",
+   "description": "Uses BFS for shortest paths on weighted graphs"
+  },
+  {
+   "id": "dsa.bfs.m2",
+   "skill": "dsa.bfs",
+   "description": "Marks nodes visited only when dequeued, causing duplicates"
+  },
+  {
+   "id": "dsa.bfs.m3",
+   "skill": "dsa.bfs",
+   "description": "Uses a stack instead of a queue and still calls it BFS"
+  },
+  {
+   "id": "dsa.dfs.m1",
+   "skill": "dsa.dfs",
+   "description": "Believes DFS finds shortest paths in unweighted graphs"
+  },
+  {
+   "id": "dsa.dfs.m2",
+   "skill": "dsa.dfs",
+   "description": "Forgets the visited set and loops forever on cycles"
+  },
+  {
+   "id": "dsa.dfs.m3",
+   "skill": "dsa.dfs",
+   "description": "Treats any previously visited neighbour in a directed graph as a cycle"
+  },
+  {
+   "id": "dsa.topo.m1",
+   "skill": "dsa.topo",
+   "description": "Believes topological sort works on graphs with cycles"
+  },
+  {
+   "id": "dsa.topo.m2",
+   "skill": "dsa.topo",
+   "description": "Believes the topological order is always unique"
+  },
+  {
+   "id": "dsa.topo.m3",
+   "skill": "dsa.topo",
+   "description": "Starts Kahn's algorithm with vertices of highest in-degree"
+  },
+  {
+   "id": "dsa.union_find.m1",
+   "skill": "dsa.union_find",
+   "description": "Unions the elements themselves instead of their roots"
+  },
+  {
+   "id": "dsa.union_find.m2",
+   "skill": "dsa.union_find",
+   "description": "Believes find is always O(n) even with optimisations"
+  },
+  {
+   "id": "dsa.union_find.m3",
+   "skill": "dsa.union_find",
+   "description": "Believes Union-Find efficiently supports deleting edges"
+  },
+  {
+   "id": "dsa.shortest.m1",
+   "skill": "dsa.shortest",
+   "description": "Uses Dijkstra with negative edge weights"
+  },
+  {
+   "id": "dsa.shortest.m2",
+   "skill": "dsa.shortest",
+   "description": "Believes BFS gives shortest paths in weighted graphs"
+  },
+  {
+   "id": "dsa.shortest.m3",
+   "skill": "dsa.shortest",
+   "description": "Believes Dijkstra with a binary heap is O(V^2) always or ignores the log factor"
+  },
+  {
+   "id": "dsa.mst.m1",
+   "skill": "dsa.mst",
+   "description": "Confuses an MST with a shortest-path tree"
+  },
+  {
+   "id": "dsa.mst.m2",
+   "skill": "dsa.mst",
+   "description": "Believes a spanning tree can have a cycle or any number of edges"
+  },
+  {
+   "id": "dsa.mst.m3",
+   "skill": "dsa.mst",
+   "description": "Believes Kruskal adds every edge in sorted order without cycle checks"
+  },
+  {
+   "id": "dsa.dp_intro.m1",
+   "skill": "dsa.dp_intro",
+   "description": "Believes DP needs no overlapping subproblems"
+  },
+  {
+   "id": "dsa.dp_intro.m2",
+   "skill": "dsa.dp_intro",
+   "description": "Believes memoization does not change time complexity"
+  },
+  {
+   "id": "dsa.dp_intro.m3",
+   "skill": "dsa.dp_intro",
+   "description": "Forgets base cases or defines the state vaguely"
+  },
+  {
+   "id": "dsa.dp_1d.m1",
+   "skill": "dsa.dp_1d",
+   "description": "Uses greedy largest-coin-first for coin change with arbitrary denominations"
+  },
+  {
+   "id": "dsa.dp_1d.m2",
+   "skill": "dsa.dp_1d",
+   "description": "Starts coin change dp with zeros instead of infinity for unreachable amounts"
+  },
+  {
+   "id": "dsa.dp_1d.m3",
+   "skill": "dsa.dp_1d",
+   "description": "Mixes up the house robber recurrence (adds adjacent houses)"
+  },
+  {
+   "id": "dsa.dp_2d.m1",
+   "skill": "dsa.dp_2d",
+   "description": "Confuses a subsequence with a substring"
+  },
+  {
+   "id": "dsa.dp_2d.m2",
+   "skill": "dsa.dp_2d",
+   "description": "Uses the wrong LCS recurrence on a mismatch (resets to zero)"
+  },
+  {
+   "id": "dsa.dp_2d.m3",
+   "skill": "dsa.dp_2d",
+   "description": "Believes the 0/1 knapsack DP is polynomial in the input size"
+  },
+  {
+   "id": "dsa.greedy.m1",
+   "skill": "dsa.greedy",
+   "description": "Believes greedy always gives the optimal answer"
+  },
+  {
+   "id": "dsa.greedy.m2",
+   "skill": "dsa.greedy",
+   "description": "Sorts activity selection by start time instead of finish time"
+  },
+  {
+   "id": "dsa.greedy.m3",
+   "skill": "dsa.greedy",
+   "description": "Applies greedy value-per-weight to 0/1 knapsack and expects optimal results"
+  },
+  {
+   "id": "dsa.intervals.m1",
+   "skill": "dsa.intervals",
+   "description": "Forgets to sort intervals before merging"
+  },
+  {
+   "id": "dsa.intervals.m2",
+   "skill": "dsa.intervals",
+   "description": "When merging sets the end to the next interval's end instead of the maximum"
+  },
+  {
+   "id": "dsa.intervals.m3",
+   "skill": "dsa.intervals",
+   "description": "Believes minimum meeting rooms equals the number of intervals"
+  }
+ ],
+ "questions": [
+  {
+   "id": "dsa.complexity.q1",
+   "skill": "dsa.complexity",
+   "difficulty": 1,
+   "stem": "What is the time complexity of a single for loop that runs from 1 to n doing constant work per step?",
+   "options": [
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.complexity.m3"
+    },
+    {
+     "text": "O(n)",
+     "misconception": null
+    },
+    {
+     "text": "O(1)",
+     "misconception": "dsa.complexity.m1"
+    },
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.complexity.m2"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.complexity.q2",
+   "skill": "dsa.complexity",
+   "difficulty": 1,
+   "stem": "An algorithm does 3n + 10 basic operations. Which Big-O describes it?",
+   "options": [
+    {
+     "text": "O(n)",
+     "misconception": null
+    },
+    {
+     "text": "O(3n)",
+     "misconception": "dsa.complexity.m1"
+    },
+    {
+     "text": "O(n + 10)",
+     "misconception": "dsa.complexity.m1"
+    },
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.complexity.m2"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.complexity.q3",
+   "skill": "dsa.complexity",
+   "difficulty": 1,
+   "stem": "for (i = 1; i < n; i *= 2) { work(); } runs in",
+   "options": [
+    {
+     "text": "O(sqrt n)",
+     "misconception": "dsa.complexity.m3"
+    },
+    {
+     "text": "O(n)",
+     "misconception": "dsa.complexity.m2"
+    },
+    {
+     "text": "O(log n)",
+     "misconception": null
+    },
+    {
+     "text": "O(n log n)",
+     "misconception": "dsa.complexity.m2"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.complexity.q4",
+   "skill": "dsa.complexity",
+   "difficulty": 1,
+   "stem": "for (i = 0; i < n; i++) for (j = 0; j < 5; j++) work(); runs in",
+   "options": [
+    {
+     "text": "O(n)",
+     "misconception": null
+    },
+    {
+     "text": "O(5n^2)",
+     "misconception": "dsa.complexity.m1"
+    },
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.complexity.m3"
+    },
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.complexity.m2"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.complexity.q5",
+   "skill": "dsa.complexity",
+   "difficulty": 1,
+   "stem": "A recursive function f(n) calls f(n-1) once and does O(1) other work, with no loop. Its extra space (call stack) is",
+   "options": [
+    {
+     "text": "O(n)",
+     "misconception": null
+    },
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.complexity.m3"
+    },
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.complexity.m2"
+    },
+    {
+     "text": "O(1)",
+     "misconception": "dsa.complexity.m3"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.complexity.q6",
+   "skill": "dsa.complexity",
+   "difficulty": 1,
+   "stem": "Linear search for a target in an unsorted array. When is it O(1)?",
+   "options": [
+    {
+     "text": "Always, because it is a simple loop",
+     "misconception": "dsa.complexity.m3"
+    },
+    {
+     "text": "Best case, target is the first element",
+     "misconception": null
+    },
+    {
+     "text": "Never, linear search is always O(n)",
+     "misconception": "dsa.complexity.m3"
+    },
+    {
+     "text": "Worst case, target is the last element",
+     "misconception": "dsa.complexity.m3"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.arrays.q1",
+   "skill": "dsa.arrays",
+   "difficulty": 1,
+   "stem": "An array has length 8. What is the last valid index (0-based)?",
+   "options": [
+    {
+     "text": "7",
+     "misconception": null
+    },
+    {
+     "text": "6",
+     "misconception": "dsa.arrays.m1"
+    },
+    {
+     "text": "9",
+     "misconception": "dsa.arrays.m1"
+    },
+    {
+     "text": "8",
+     "misconception": "dsa.arrays.m1"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.arrays.q2",
+   "skill": "dsa.arrays",
+   "difficulty": 1,
+   "stem": "Time to read arr[k] for any valid k in an array is",
+   "options": [
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.arrays.m3"
+    },
+    {
+     "text": "O(n)",
+     "misconception": "dsa.arrays.m3"
+    },
+    {
+     "text": "O(1)",
+     "misconception": null
+    },
+    {
+     "text": "O(k)",
+     "misconception": "dsa.arrays.m3"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.arrays.q3",
+   "skill": "dsa.arrays",
+   "difficulty": 1,
+   "stem": "Inserting a value at the front of an array of n elements by shifting costs",
+   "options": [
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.arrays.m3"
+    },
+    {
+     "text": "O(n)",
+     "misconception": null
+    },
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.arrays.m3"
+    },
+    {
+     "text": "O(1)",
+     "misconception": "dsa.arrays.m3"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.arrays.q4",
+   "skill": "dsa.arrays",
+   "difficulty": 1,
+   "stem": "Appending n items one by one to a dynamic array that doubles when full costs in total",
+   "options": [
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.arrays.m2"
+    },
+    {
+     "text": "O(n log n)",
+     "misconception": "dsa.arrays.m2"
+    },
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.arrays.m2"
+    },
+    {
+     "text": "O(n)",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.arrays.q5",
+   "skill": "dsa.arrays",
+   "difficulty": 1,
+   "stem": "To reverse an array in place using O(1) extra space you should",
+   "options": [
+    {
+     "text": "copy into a new array then copy back",
+     "misconception": "dsa.arrays.m3"
+    },
+    {
+     "text": "swap all pairs for i from 0 to n-1",
+     "misconception": "dsa.arrays.m1"
+    },
+    {
+     "text": "sort it descending",
+     "misconception": "dsa.arrays.m3"
+    },
+    {
+     "text": "swap arr[i] with arr[n-1-i] for i up to the middle",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.arrays.q6",
+   "skill": "dsa.arrays",
+   "difficulty": 1,
+   "stem": "In a sorted array, removing duplicates in place with O(1) extra space is best done with",
+   "options": [
+    {
+     "text": "a hash set of seen values",
+     "misconception": "dsa.arrays.m3"
+    },
+    {
+     "text": "a read pointer and a write pointer",
+     "misconception": null
+    },
+    {
+     "text": "sorting again",
+     "misconception": "dsa.arrays.m3"
+    },
+    {
+     "text": "nested loops that shift left on every duplicate",
+     "misconception": "dsa.arrays.m2"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.strings.q1",
+   "skill": "dsa.strings",
+   "difficulty": 1,
+   "stem": "Which is the best way to build a long string from n pieces in Java?",
+   "options": [
+    {
+     "text": "Use + inside a loop",
+     "misconception": "dsa.strings.m1"
+    },
+    {
+     "text": "Call concat on the same string n times",
+     "misconception": "dsa.strings.m1"
+    },
+    {
+     "text": "Use a StringBuilder and append",
+     "misconception": null
+    },
+    {
+     "text": "Convert to int first",
+     "misconception": "dsa.strings.m1"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.strings.q2",
+   "skill": "dsa.strings",
+   "difficulty": 1,
+   "stem": "In Java, s.equals(t) tests",
+   "options": [
+    {
+     "text": "whether the two strings have the same characters",
+     "misconception": null
+    },
+    {
+     "text": "only the first character",
+     "misconception": "dsa.strings.m2"
+    },
+    {
+     "text": "only the length of the strings",
+     "misconception": "dsa.strings.m2"
+    },
+    {
+     "text": "whether both variables point to the same object",
+     "misconception": "dsa.strings.m2"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.strings.q3",
+   "skill": "dsa.strings",
+   "difficulty": 1,
+   "stem": "Two lowercase words are anagrams. The fastest check is",
+   "options": [
+    {
+     "text": "generate all permutations of one word",
+     "misconception": "dsa.strings.m3"
+    },
+    {
+     "text": "compare lengths only",
+     "misconception": "dsa.strings.m3"
+    },
+    {
+     "text": "compare 26-slot letter counts, O(n)",
+     "misconception": null
+    },
+    {
+     "text": "compare first letters",
+     "misconception": "dsa.strings.m3"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.strings.q4",
+   "skill": "dsa.strings",
+   "difficulty": 1,
+   "stem": "Time to check whether a string of length n is a palindrome using two indices from both ends is",
+   "options": [
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.strings.m1"
+    },
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.strings.m1"
+    },
+    {
+     "text": "O(1)",
+     "misconception": "dsa.strings.m1"
+    },
+    {
+     "text": "O(n)",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.strings.q5",
+   "skill": "dsa.strings",
+   "difficulty": 1,
+   "stem": "Concatenating n single-character strings one at a time to an immutable string costs about",
+   "options": [
+    {
+     "text": "O(n) total",
+     "misconception": "dsa.strings.m1"
+    },
+    {
+     "text": "O(1) total",
+     "misconception": "dsa.strings.m1"
+    },
+    {
+     "text": "O(n^2) total",
+     "misconception": null
+    },
+    {
+     "text": "O(log n) total",
+     "misconception": "dsa.strings.m1"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.strings.q6",
+   "skill": "dsa.strings",
+   "difficulty": 1,
+   "stem": "What does \"apple\" < \"banana\" return in a lexicographic comparison?",
+   "options": [
+    {
+     "text": "false, because 5 < 6 is false",
+     "misconception": "dsa.strings.m3"
+    },
+    {
+     "text": "true, because a comes before b",
+     "misconception": null
+    },
+    {
+     "text": "false, because apple is shorter",
+     "misconception": "dsa.strings.m3"
+    },
+    {
+     "text": "it is undefined",
+     "misconception": "dsa.strings.m3"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.recursion.q1",
+   "skill": "dsa.recursion",
+   "difficulty": 2,
+   "stem": "What are the two essential parts of a correct recursive function?",
+   "options": [
+    {
+     "text": "A loop and a counter",
+     "misconception": "dsa.recursion.m1"
+    },
+    {
+     "text": "Two return statements",
+     "misconception": "dsa.recursion.m1"
+    },
+    {
+     "text": "A global variable and a stack",
+     "misconception": "dsa.recursion.m1"
+    },
+    {
+     "text": "A base case and a recursive step toward it",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.recursion.q2",
+   "skill": "dsa.recursion",
+   "difficulty": 2,
+   "stem": "What happens if f(n) calls f(n) with no base case?",
+   "options": [
+    {
+     "text": "It returns 0",
+     "misconception": "dsa.recursion.m1"
+    },
+    {
+     "text": "Stack overflow from infinite recursion",
+     "misconception": null
+    },
+    {
+     "text": "The compiler rewrites it as a loop",
+     "misconception": "dsa.recursion.m1"
+    },
+    {
+     "text": "It stops after n calls",
+     "misconception": "dsa.recursion.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.recursion.q3",
+   "skill": "dsa.recursion",
+   "difficulty": 2,
+   "stem": "Naive recursive fib(n) = fib(n-1) + fib(n-2) has time complexity",
+   "options": [
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.recursion.m2"
+    },
+    {
+     "text": "O(n)",
+     "misconception": "dsa.recursion.m2"
+    },
+    {
+     "text": "exponential, about O(2^n)",
+     "misconception": null
+    },
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.recursion.m2"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.recursion.q4",
+   "skill": "dsa.recursion",
+   "difficulty": 2,
+   "stem": "Recursive sum of 1..n (sum(n)=n+sum(n-1)) uses stack space",
+   "options": [
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.recursion.m3"
+    },
+    {
+     "text": "none, recursion is free",
+     "misconception": "dsa.recursion.m3"
+    },
+    {
+     "text": "O(n)",
+     "misconception": null
+    },
+    {
+     "text": "O(1)",
+     "misconception": "dsa.recursion.m3"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.recursion.q5",
+   "skill": "dsa.recursion",
+   "difficulty": 2,
+   "stem": "Which base case is correct for factorial(n)?",
+   "options": [
+    {
+     "text": "n == 1 returns 0",
+     "misconception": "dsa.recursion.m1"
+    },
+    {
+     "text": "n == 0 returns 0",
+     "misconception": "dsa.recursion.m1"
+    },
+    {
+     "text": "n == 0 returns 1",
+     "misconception": null
+    },
+    {
+     "text": "no base case needed",
+     "misconception": "dsa.recursion.m1"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.recursion.q6",
+   "skill": "dsa.recursion",
+   "difficulty": 2,
+   "stem": "What does power(x, n) = x * power(x, n-1) with power(x,0)=1 compute for n=3?",
+   "options": [
+    {
+     "text": "x+3",
+     "misconception": "dsa.recursion.m1"
+    },
+    {
+     "text": "x^3",
+     "misconception": null
+    },
+    {
+     "text": "x^4",
+     "misconception": "dsa.recursion.m1"
+    },
+    {
+     "text": "3x",
+     "misconception": "dsa.recursion.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.sorting_basic.q1",
+   "skill": "dsa.sorting_basic",
+   "difficulty": 2,
+   "stem": "Worst-case time of insertion sort is",
+   "options": [
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.sorting_basic.m1"
+    },
+    {
+     "text": "O(n log n)",
+     "misconception": "dsa.sorting_basic.m1"
+    },
+    {
+     "text": "O(n^2)",
+     "misconception": null
+    },
+    {
+     "text": "O(n)",
+     "misconception": "dsa.sorting_basic.m2"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.sorting_basic.q2",
+   "skill": "dsa.sorting_basic",
+   "difficulty": 2,
+   "stem": "Best-case time of insertion sort on an already sorted array is",
+   "options": [
+    {
+     "text": "O(n log n)",
+     "misconception": "dsa.sorting_basic.m2"
+    },
+    {
+     "text": "O(n)",
+     "misconception": null
+    },
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.sorting_basic.m2"
+    },
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.sorting_basic.m2"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.sorting_basic.q3",
+   "skill": "dsa.sorting_basic",
+   "difficulty": 2,
+   "stem": "Which elementary sort performs the fewest swaps, at most n-1?",
+   "options": [
+    {
+     "text": "Bubble sort",
+     "misconception": "dsa.sorting_basic.m1"
+    },
+    {
+     "text": "All do the same",
+     "misconception": "dsa.sorting_basic.m1"
+    },
+    {
+     "text": "Selection sort",
+     "misconception": null
+    },
+    {
+     "text": "Insertion sort",
+     "misconception": "dsa.sorting_basic.m1"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.sorting_basic.q4",
+   "skill": "dsa.sorting_basic",
+   "difficulty": 2,
+   "stem": "A stable sort means",
+   "options": [
+    {
+     "text": "it never crashes",
+     "misconception": "dsa.sorting_basic.m3"
+    },
+    {
+     "text": "it is always O(n log n)",
+     "misconception": "dsa.sorting_basic.m3"
+    },
+    {
+     "text": "it uses O(1) extra memory",
+     "misconception": "dsa.sorting_basic.m3"
+    },
+    {
+     "text": "equal elements keep their original relative order",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.sorting_basic.q5",
+   "skill": "dsa.sorting_basic",
+   "difficulty": 2,
+   "stem": "Bubble sort after the first full pass guarantees",
+   "options": [
+    {
+     "text": "the smallest element is at the end",
+     "misconception": "dsa.sorting_basic.m1"
+    },
+    {
+     "text": "nothing is guaranteed",
+     "misconception": "dsa.sorting_basic.m1"
+    },
+    {
+     "text": "the largest element is at the end",
+     "misconception": null
+    },
+    {
+     "text": "the array is fully sorted",
+     "misconception": "dsa.sorting_basic.m1"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.sorting_basic.q6",
+   "skill": "dsa.sorting_basic",
+   "difficulty": 2,
+   "stem": "Why is insertion sort used for small subarrays in library sorts?",
+   "options": [
+    {
+     "text": "It is O(n) in the worst case",
+     "misconception": "dsa.sorting_basic.m2"
+    },
+    {
+     "text": "It uses no comparisons",
+     "misconception": "dsa.sorting_basic.m3"
+    },
+    {
+     "text": "It is the only stable sort",
+     "misconception": "dsa.sorting_basic.m3"
+    },
+    {
+     "text": "It has low overhead and is fast on small or nearly sorted data",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.binary_search.q1",
+   "skill": "dsa.binary_search",
+   "difficulty": 2,
+   "stem": "Binary search on n sorted elements takes",
+   "options": [
+    {
+     "text": "O(1)",
+     "misconception": "dsa.binary_search.m3"
+    },
+    {
+     "text": "O(log n)",
+     "misconception": null
+    },
+    {
+     "text": "O(n log n)",
+     "misconception": "dsa.binary_search.m3"
+    },
+    {
+     "text": "O(n)",
+     "misconception": "dsa.binary_search.m3"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.binary_search.q2",
+   "skill": "dsa.binary_search",
+   "difficulty": 2,
+   "stem": "Which precondition is required for binary search on an array?",
+   "options": [
+    {
+     "text": "The array has distinct values",
+     "misconception": "dsa.binary_search.m1"
+    },
+    {
+     "text": "The array is sorted",
+     "misconception": null
+    },
+    {
+     "text": "The array has even length",
+     "misconception": "dsa.binary_search.m1"
+    },
+    {
+     "text": "The array is stored in a hash table",
+     "misconception": "dsa.binary_search.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.binary_search.q3",
+   "skill": "dsa.binary_search",
+   "difficulty": 2,
+   "stem": "With inclusive bounds, after finding arr[mid] < target the next step is",
+   "options": [
+    {
+     "text": "low = mid",
+     "misconception": "dsa.binary_search.m2"
+    },
+    {
+     "text": "low = mid + 1",
+     "misconception": null
+    },
+    {
+     "text": "high = mid - 1",
+     "misconception": "dsa.binary_search.m2"
+    },
+    {
+     "text": "mid = mid + 1",
+     "misconception": "dsa.binary_search.m2"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.binary_search.q4",
+   "skill": "dsa.binary_search",
+   "difficulty": 2,
+   "stem": "A safer way to compute the middle index is",
+   "options": [
+    {
+     "text": "high / 2",
+     "misconception": "dsa.binary_search.m3"
+    },
+    {
+     "text": "low * high",
+     "misconception": "dsa.binary_search.m3"
+    },
+    {
+     "text": "low + (high - low) / 2",
+     "misconception": null
+    },
+    {
+     "text": "(low + high) / 2 always",
+     "misconception": "dsa.binary_search.m3"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.binary_search.q5",
+   "skill": "dsa.binary_search",
+   "difficulty": 2,
+   "stem": "How many comparisons at most to search 1,000,000 sorted items?",
+   "options": [
+    {
+     "text": "about 500,000",
+     "misconception": "dsa.binary_search.m3"
+    },
+    {
+     "text": "about 1,000",
+     "misconception": "dsa.binary_search.m3"
+    },
+    {
+     "text": "about 20",
+     "misconception": null
+    },
+    {
+     "text": "exactly 1,000,000",
+     "misconception": "dsa.binary_search.m3"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.binary_search.q6",
+   "skill": "dsa.binary_search",
+   "difficulty": 2,
+   "stem": "Binary search on an unsorted array [5, 1, 4, 2, 3] for 4 is",
+   "options": [
+    {
+     "text": "guaranteed to work if you pick the middle",
+     "misconception": "dsa.binary_search.m1"
+    },
+    {
+     "text": "guaranteed to work in O(log n)",
+     "misconception": "dsa.binary_search.m1"
+    },
+    {
+     "text": "guaranteed to work if n is odd",
+     "misconception": "dsa.binary_search.m1"
+    },
+    {
+     "text": "not guaranteed to work~m1",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.hashing.q1",
+   "skill": "dsa.hashing",
+   "difficulty": 2,
+   "stem": "Average-case lookup time in a well-designed hash table is",
+   "options": [
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.hashing.m1"
+    },
+    {
+     "text": "O(1)",
+     "misconception": null
+    },
+    {
+     "text": "O(n)",
+     "misconception": "dsa.hashing.m1"
+    },
+    {
+     "text": "O(n log n)",
+     "misconception": "dsa.hashing.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.hashing.q2",
+   "skill": "dsa.hashing",
+   "difficulty": 2,
+   "stem": "Two different keys hash to the same bucket. This is called",
+   "options": [
+    {
+     "text": "a collision, handled by chaining or probing",
+     "misconception": null
+    },
+    {
+     "text": "a duplicate key",
+     "misconception": "dsa.hashing.m3"
+    },
+    {
+     "text": "impossible with a good hash function",
+     "misconception": "dsa.hashing.m3"
+    },
+    {
+     "text": "an overflow error that crashes the table",
+     "misconception": "dsa.hashing.m3"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.hashing.q3",
+   "skill": "dsa.hashing",
+   "difficulty": 2,
+   "stem": "Iterating over a standard hash map returns keys",
+   "options": [
+    {
+     "text": "in descending order",
+     "misconception": "dsa.hashing.m2"
+    },
+    {
+     "text": "in ascending sorted order",
+     "misconception": "dsa.hashing.m2"
+    },
+    {
+     "text": "in the order of their hash codes always",
+     "misconception": "dsa.hashing.m2"
+    },
+    {
+     "text": "in no guaranteed sorted order",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.hashing.q4",
+   "skill": "dsa.hashing",
+   "difficulty": 2,
+   "stem": "In the worst case, with all keys colliding in one bucket, lookup costs",
+   "options": [
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.hashing.m1"
+    },
+    {
+     "text": "O(n)",
+     "misconception": null
+    },
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.hashing.m1"
+    },
+    {
+     "text": "O(1)",
+     "misconception": "dsa.hashing.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.hashing.q5",
+   "skill": "dsa.hashing",
+   "difficulty": 2,
+   "stem": "Two-sum on an unsorted array in one pass is best done with",
+   "options": [
+    {
+     "text": "a hash map that stores only sorted keys",
+     "misconception": "dsa.hashing.m2"
+    },
+    {
+     "text": "binary search without sorting",
+     "misconception": "dsa.hashing.m3"
+    },
+    {
+     "text": "a hash map from value to index, O(n)",
+     "misconception": null
+    },
+    {
+     "text": "sorting then nested loops, O(n^2)",
+     "misconception": "dsa.hashing.m3"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.hashing.q6",
+   "skill": "dsa.hashing",
+   "difficulty": 2,
+   "stem": "What does resizing a hash table when the load factor gets high do?",
+   "options": [
+    {
+     "text": "Deletes the oldest entries",
+     "misconception": "dsa.hashing.m3"
+    },
+    {
+     "text": "Allocates more buckets and rehashes entries",
+     "misconception": null
+    },
+    {
+     "text": "Sorts the keys",
+     "misconception": "dsa.hashing.m2"
+    },
+    {
+     "text": "Removes collisions permanently",
+     "misconception": "dsa.hashing.m3"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.two_pointers.q1",
+   "skill": "dsa.two_pointers",
+   "difficulty": 2,
+   "stem": "Pair-sum on a sorted array with two pointers at both ends: if arr[l] + arr[r] is less than the target, you",
+   "options": [
+    {
+     "text": "move both inward",
+     "misconception": "dsa.two_pointers.m2"
+    },
+    {
+     "text": "move l right",
+     "misconception": null
+    },
+    {
+     "text": "stop and return false",
+     "misconception": "dsa.two_pointers.m3"
+    },
+    {
+     "text": "move r left",
+     "misconception": "dsa.two_pointers.m2"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.two_pointers.q2",
+   "skill": "dsa.two_pointers",
+   "difficulty": 2,
+   "stem": "Time complexity of two-pointer pair-sum on a sorted array is",
+   "options": [
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.two_pointers.m3"
+    },
+    {
+     "text": "O(n)",
+     "misconception": null
+    },
+    {
+     "text": "O(n log n) after sorting is unavoidable even if already sorted",
+     "misconception": "dsa.two_pointers.m3"
+    },
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.two_pointers.m3"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.two_pointers.q3",
+   "skill": "dsa.two_pointers",
+   "difficulty": 2,
+   "stem": "The opposite-end two-pointer pair-sum logic is valid only if the array is",
+   "options": [
+    {
+     "text": "all positive",
+     "misconception": "dsa.two_pointers.m1"
+    },
+    {
+     "text": "made of distinct values only",
+     "misconception": "dsa.two_pointers.m1"
+    },
+    {
+     "text": "sorted",
+     "misconception": null
+    },
+    {
+     "text": "of even length",
+     "misconception": "dsa.two_pointers.m1"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.two_pointers.q4",
+   "skill": "dsa.two_pointers",
+   "difficulty": 2,
+   "stem": "Moving all zeros to the end in place, keeping order, is best done with",
+   "options": [
+    {
+     "text": "a new array of the same size",
+     "misconception": "dsa.two_pointers.m3"
+    },
+    {
+     "text": "two pointers at opposite ends swapping every step",
+     "misconception": "dsa.two_pointers.m2"
+    },
+    {
+     "text": "sorting the array",
+     "misconception": "dsa.two_pointers.m3"
+    },
+    {
+     "text": "a slow write pointer and a fast read pointer",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.two_pointers.q5",
+   "skill": "dsa.two_pointers",
+   "difficulty": 2,
+   "stem": "To check whether a string is a palindrome with two pointers you",
+   "options": [
+    {
+     "text": "compare s[l] and s[r] and move both inward",
+     "misconception": null
+    },
+    {
+     "text": "move only the left pointer",
+     "misconception": "dsa.two_pointers.m2"
+    },
+    {
+     "text": "compare s[l] with s[l+1]",
+     "misconception": "dsa.two_pointers.m2"
+    },
+    {
+     "text": "reverse the string twice",
+     "misconception": "dsa.two_pointers.m3"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.two_pointers.q6",
+   "skill": "dsa.two_pointers",
+   "difficulty": 2,
+   "stem": "Which task can opposite-end two pointers do correctly on an UNSORTED array without sorting first?",
+   "options": [
+    {
+     "text": "Find a pair summing to a target",
+     "misconception": "dsa.two_pointers.m1"
+    },
+    {
+     "text": "Reverse the array in place",
+     "misconception": null
+    },
+    {
+     "text": "Find the closest pair sum to a target",
+     "misconception": "dsa.two_pointers.m1"
+    },
+    {
+     "text": "Count pairs with difference at most k",
+     "misconception": "dsa.two_pointers.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.sliding_window.q1",
+   "skill": "dsa.sliding_window",
+   "difficulty": 3,
+   "stem": "For a fixed window of size k, moving from one window to the next you should",
+   "options": [
+    {
+     "text": "sort the window",
+     "misconception": "dsa.sliding_window.m1"
+    },
+    {
+     "text": "add the new element and subtract the one leaving",
+     "misconception": null
+    },
+    {
+     "text": "recompute the sum of all k elements",
+     "misconception": "dsa.sliding_window.m1"
+    },
+    {
+     "text": "reset the sum to 0",
+     "misconception": "dsa.sliding_window.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.sliding_window.q2",
+   "skill": "dsa.sliding_window",
+   "difficulty": 3,
+   "stem": "Maximum sum of any k consecutive elements using a sliding window runs in",
+   "options": [
+    {
+     "text": "O(n)",
+     "misconception": null
+    },
+    {
+     "text": "O(k log n)",
+     "misconception": "dsa.sliding_window.m1"
+    },
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.sliding_window.m2"
+    },
+    {
+     "text": "O(nk)",
+     "misconception": "dsa.sliding_window.m1"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.sliding_window.q3",
+   "skill": "dsa.sliding_window",
+   "difficulty": 3,
+   "stem": "Variable window with an inner while loop that moves left forward has total complexity",
+   "options": [
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.sliding_window.m2"
+    },
+    {
+     "text": "O(n), since each pointer moves at most n times",
+     "misconception": null
+    },
+    {
+     "text": "O(n log n)",
+     "misconception": "dsa.sliding_window.m2"
+    },
+    {
+     "text": "O(n^2) always",
+     "misconception": "dsa.sliding_window.m2"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.sliding_window.q4",
+   "skill": "dsa.sliding_window",
+   "difficulty": 3,
+   "stem": "Sliding window is suited to problems about",
+   "options": [
+    {
+     "text": "non-contiguous subsequences",
+     "misconception": "dsa.sliding_window.m3"
+    },
+    {
+     "text": "tree depth",
+     "misconception": "dsa.sliding_window.m3"
+    },
+    {
+     "text": "any subset of elements",
+     "misconception": "dsa.sliding_window.m3"
+    },
+    {
+     "text": "contiguous subarrays or substrings",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.sliding_window.q5",
+   "skill": "dsa.sliding_window",
+   "difficulty": 3,
+   "stem": "For longest substring without repeating characters you track",
+   "options": [
+    {
+     "text": "the characters in the current window with a set or map",
+     "misconception": null
+    },
+    {
+     "text": "the sorted order of the string",
+     "misconception": "dsa.sliding_window.m3"
+    },
+    {
+     "text": "the sum of the window",
+     "misconception": "dsa.sliding_window.m1"
+    },
+    {
+     "text": "only the left index",
+     "misconception": "dsa.sliding_window.m1"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.sliding_window.q6",
+   "skill": "dsa.sliding_window",
+   "difficulty": 3,
+   "stem": "When a window becomes invalid (for example a repeated character) in a variable window you",
+   "options": [
+    {
+     "text": "discard the whole window and start over from the middle",
+     "misconception": "dsa.sliding_window.m1"
+    },
+    {
+     "text": "stop the algorithm",
+     "misconception": "dsa.sliding_window.m1"
+    },
+    {
+     "text": "move the left pointer forward until it is valid again",
+     "misconception": null
+    },
+    {
+     "text": "reset the right pointer to zero",
+     "misconception": "dsa.sliding_window.m1"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.prefix_sums.q1",
+   "skill": "dsa.prefix_sums",
+   "difficulty": 2,
+   "stem": "With prefix[0]=0 and prefix[i] = sum of first i elements, the sum of indices l..r inclusive is",
+   "options": [
+    {
+     "text": "prefix[r] - prefix[l-1] with no zero entry",
+     "misconception": "dsa.prefix_sums.m1"
+    },
+    {
+     "text": "prefix[r+1] - prefix[l]",
+     "misconception": null
+    },
+    {
+     "text": "prefix[r] - prefix[l]",
+     "misconception": "dsa.prefix_sums.m1"
+    },
+    {
+     "text": "prefix[r] + prefix[l]",
+     "misconception": "dsa.prefix_sums.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.prefix_sums.q2",
+   "skill": "dsa.prefix_sums",
+   "difficulty": 2,
+   "stem": "After building prefix sums, one range-sum query costs",
+   "options": [
+    {
+     "text": "O(1)",
+     "misconception": null
+    },
+    {
+     "text": "O(n)",
+     "misconception": "dsa.prefix_sums.m2"
+    },
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.prefix_sums.m2"
+    },
+    {
+     "text": "O(r - l)",
+     "misconception": "dsa.prefix_sums.m2"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.prefix_sums.q3",
+   "skill": "dsa.prefix_sums",
+   "difficulty": 2,
+   "stem": "Building the prefix array takes",
+   "options": [
+    {
+     "text": "O(1)",
+     "misconception": "dsa.prefix_sums.m2"
+    },
+    {
+     "text": "O(n)",
+     "misconception": null
+    },
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.prefix_sums.m2"
+    },
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.prefix_sums.m2"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.prefix_sums.q4",
+   "skill": "dsa.prefix_sums",
+   "difficulty": 2,
+   "stem": "For arr = [2, 4, 6, 8] what is the sum of indices 1..2?",
+   "options": [
+    {
+     "text": "6",
+     "misconception": "dsa.prefix_sums.m1"
+    },
+    {
+     "text": "12",
+     "misconception": "dsa.prefix_sums.m1"
+    },
+    {
+     "text": "14",
+     "misconception": "dsa.prefix_sums.m1"
+    },
+    {
+     "text": "10",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.prefix_sums.q5",
+   "skill": "dsa.prefix_sums",
+   "difficulty": 2,
+   "stem": "Counting subarrays with sum equal to k in O(n) uses",
+   "options": [
+    {
+     "text": "sorting the array",
+     "misconception": "dsa.prefix_sums.m3"
+    },
+    {
+     "text": "nested loops",
+     "misconception": "dsa.prefix_sums.m2"
+    },
+    {
+     "text": "prefix sums with a hash map of earlier prefix values",
+     "misconception": null
+    },
+    {
+     "text": "a sliding window on arrays with negatives",
+     "misconception": "dsa.prefix_sums.m3"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.prefix_sums.q6",
+   "skill": "dsa.prefix_sums",
+   "difficulty": 2,
+   "stem": "Prefix sums are a poor fit when",
+   "options": [
+    {
+     "text": "you need sums on a 2D grid",
+     "misconception": "dsa.prefix_sums.m3"
+    },
+    {
+     "text": "the array is static",
+     "misconception": "dsa.prefix_sums.m3"
+    },
+    {
+     "text": "you need many range-sum queries",
+     "misconception": "dsa.prefix_sums.m3"
+    },
+    {
+     "text": "the array changes by many point updates between queries",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.linked_list.q1",
+   "skill": "dsa.linked_list",
+   "difficulty": 2,
+   "stem": "Accessing the kth node of a singly linked list takes",
+   "options": [
+    {
+     "text": "O(1)",
+     "misconception": "dsa.linked_list.m1"
+    },
+    {
+     "text": "O(log k)",
+     "misconception": "dsa.linked_list.m1"
+    },
+    {
+     "text": "O(k)",
+     "misconception": null
+    },
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.linked_list.m1"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.linked_list.q2",
+   "skill": "dsa.linked_list",
+   "difficulty": 2,
+   "stem": "Inserting after a node you already hold a reference to costs",
+   "options": [
+    {
+     "text": "O(n)",
+     "misconception": "dsa.linked_list.m1"
+    },
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.linked_list.m1"
+    },
+    {
+     "text": "O(1)",
+     "misconception": null
+    },
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.linked_list.m1"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.linked_list.q3",
+   "skill": "dsa.linked_list",
+   "difficulty": 2,
+   "stem": "When reversing a list you must first",
+   "options": [
+    {
+     "text": "move the head to the tail",
+     "misconception": "dsa.linked_list.m2"
+    },
+    {
+     "text": "save node.next in a temporary variable",
+     "misconception": null
+    },
+    {
+     "text": "copy all values to an array",
+     "misconception": "dsa.linked_list.m2"
+    },
+    {
+     "text": "set node.next to null immediately",
+     "misconception": "dsa.linked_list.m2"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.linked_list.q4",
+   "skill": "dsa.linked_list",
+   "difficulty": 2,
+   "stem": "Detecting a cycle in O(1) extra space uses",
+   "options": [
+    {
+     "text": "sorting the nodes",
+     "misconception": "dsa.linked_list.m3"
+    },
+    {
+     "text": "reversing the list and counting",
+     "misconception": "dsa.linked_list.m3"
+    },
+    {
+     "text": "a hash set of visited nodes",
+     "misconception": "dsa.linked_list.m3"
+    },
+    {
+     "text": "slow and fast pointers",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.linked_list.q5",
+   "skill": "dsa.linked_list",
+   "difficulty": 2,
+   "stem": "The slow pointer is at the middle when the fast pointer moving two steps reaches",
+   "options": [
+    {
+     "text": "the node after the head",
+     "misconception": "dsa.linked_list.m1"
+    },
+    {
+     "text": "the end of the list",
+     "misconception": null
+    },
+    {
+     "text": "the head",
+     "misconception": "dsa.linked_list.m1"
+    },
+    {
+     "text": "a random node",
+     "misconception": "dsa.linked_list.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.linked_list.q6",
+   "skill": "dsa.linked_list",
+   "difficulty": 2,
+   "stem": "Why use a dummy head node?",
+   "options": [
+    {
+     "text": "It makes the list doubly linked",
+     "misconception": "dsa.linked_list.m3"
+    },
+    {
+     "text": "It prevents cycles",
+     "misconception": "dsa.linked_list.m3"
+    },
+    {
+     "text": "It speeds up access to the kth node",
+     "misconception": "dsa.linked_list.m1"
+    },
+    {
+     "text": "It removes special cases for operations at the head",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.stack.q1",
+   "skill": "dsa.stack",
+   "difficulty": 2,
+   "stem": "Which ordering does a stack follow?",
+   "options": [
+    {
+     "text": "Last in, first out",
+     "misconception": null
+    },
+    {
+     "text": "Sorted order",
+     "misconception": "dsa.stack.m1"
+    },
+    {
+     "text": "Random order",
+     "misconception": "dsa.stack.m1"
+    },
+    {
+     "text": "First in, first out",
+     "misconception": "dsa.stack.m1"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.stack.q2",
+   "skill": "dsa.stack",
+   "difficulty": 2,
+   "stem": "Pushing 1, 2, 3 and then popping once returns",
+   "options": [
+    {
+     "text": "2",
+     "misconception": "dsa.stack.m1"
+    },
+    {
+     "text": "3",
+     "misconception": null
+    },
+    {
+     "text": "1",
+     "misconception": "dsa.stack.m1"
+    },
+    {
+     "text": "nothing",
+     "misconception": "dsa.stack.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.stack.q3",
+   "skill": "dsa.stack",
+   "difficulty": 2,
+   "stem": "Check \"([)]\" for balanced brackets with a stack. The result is",
+   "options": [
+    {
+     "text": "balanced, counts match",
+     "misconception": "dsa.stack.m2"
+    },
+    {
+     "text": "cannot be decided",
+     "misconception": "dsa.stack.m2"
+    },
+    {
+     "text": "not balanced, ) does not match the top [",
+     "misconception": null
+    },
+    {
+     "text": "balanced, because each type appears twice",
+     "misconception": "dsa.stack.m2"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.stack.q4",
+   "skill": "dsa.stack",
+   "difficulty": 2,
+   "stem": "For \"((\" after scanning all characters a correct bracket checker should",
+   "options": [
+    {
+     "text": "report not balanced because the stack is not empty",
+     "misconception": null
+    },
+    {
+     "text": "report balanced because there is no mismatch",
+     "misconception": "dsa.stack.m2"
+    },
+    {
+     "text": "crash on pop",
+     "misconception": "dsa.stack.m2"
+    },
+    {
+     "text": "ignore it",
+     "misconception": "dsa.stack.m2"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.stack.q5",
+   "skill": "dsa.stack",
+   "difficulty": 2,
+   "stem": "Time for push and pop on an array-backed stack is",
+   "options": [
+    {
+     "text": "O(n) each",
+     "misconception": "dsa.stack.m3"
+    },
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.stack.m3"
+    },
+    {
+     "text": "O(1) each",
+     "misconception": null
+    },
+    {
+     "text": "O(log n) each",
+     "misconception": "dsa.stack.m3"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.stack.q6",
+   "skill": "dsa.stack",
+   "difficulty": 2,
+   "stem": "Postfix expression \"2 3 4 * +\" evaluates (using a stack) to",
+   "options": [
+    {
+     "text": "24",
+     "misconception": "dsa.stack.m2"
+    },
+    {
+     "text": "14",
+     "misconception": null
+    },
+    {
+     "text": "9",
+     "misconception": "dsa.stack.m2"
+    },
+    {
+     "text": "20",
+     "misconception": "dsa.stack.m2"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.queue.q1",
+   "skill": "dsa.queue",
+   "difficulty": 2,
+   "stem": "Enqueue 1, 2, 3 then dequeue once. The element returned is",
+   "options": [
+    {
+     "text": "3",
+     "misconception": "dsa.queue.m1"
+    },
+    {
+     "text": "none",
+     "misconception": "dsa.queue.m1"
+    },
+    {
+     "text": "2",
+     "misconception": "dsa.queue.m1"
+    },
+    {
+     "text": "1",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.queue.q2",
+   "skill": "dsa.queue",
+   "difficulty": 2,
+   "stem": "Removing the first element of a plain array of n items by shifting costs",
+   "options": [
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.queue.m2"
+    },
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.queue.m2"
+    },
+    {
+     "text": "O(1)",
+     "misconception": "dsa.queue.m2"
+    },
+    {
+     "text": "O(n)",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.queue.q3",
+   "skill": "dsa.queue",
+   "difficulty": 2,
+   "stem": "A deque supports O(1) insert and remove at",
+   "options": [
+    {
+     "text": "any position",
+     "misconception": "dsa.queue.m3"
+    },
+    {
+     "text": "the middle only",
+     "misconception": "dsa.queue.m3"
+    },
+    {
+     "text": "both ends",
+     "misconception": null
+    },
+    {
+     "text": "the front only",
+     "misconception": "dsa.queue.m3"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.queue.q4",
+   "skill": "dsa.queue",
+   "difficulty": 2,
+   "stem": "Which structure is used for level-order traversal of a tree?",
+   "options": [
+    {
+     "text": "a queue",
+     "misconception": null
+    },
+    {
+     "text": "a hash set",
+     "misconception": "dsa.queue.m3"
+    },
+    {
+     "text": "a stack",
+     "misconception": "dsa.queue.m1"
+    },
+    {
+     "text": "a heap",
+     "misconception": "dsa.queue.m3"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.queue.q5",
+   "skill": "dsa.queue",
+   "difficulty": 2,
+   "stem": "A priority queue dequeues",
+   "options": [
+    {
+     "text": "the oldest element",
+     "misconception": "dsa.queue.m3"
+    },
+    {
+     "text": "the highest-priority element",
+     "misconception": null
+    },
+    {
+     "text": "the newest element",
+     "misconception": "dsa.queue.m3"
+    },
+    {
+     "text": "a random element",
+     "misconception": "dsa.queue.m3"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.queue.q6",
+   "skill": "dsa.queue",
+   "difficulty": 2,
+   "stem": "In a circular array queue the next write index is computed as",
+   "options": [
+    {
+     "text": "capacity - tail",
+     "misconception": "dsa.queue.m2"
+    },
+    {
+     "text": "(tail + 1) % capacity",
+     "misconception": null
+    },
+    {
+     "text": "tail + 1 always",
+     "misconception": "dsa.queue.m2"
+    },
+    {
+     "text": "tail - 1",
+     "misconception": "dsa.queue.m2"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.monotonic_stack.q1",
+   "skill": "dsa.monotonic_stack",
+   "difficulty": 3,
+   "stem": "Monotonic stack next greater element runs in",
+   "options": [
+    {
+     "text": "O(n^2) because of the inner while",
+     "misconception": "dsa.monotonic_stack.m1"
+    },
+    {
+     "text": "O(n), each element pushed and popped at most once",
+     "misconception": null
+    },
+    {
+     "text": "O(n log n)",
+     "misconception": "dsa.monotonic_stack.m1"
+    },
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.monotonic_stack.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.monotonic_stack.q2",
+   "skill": "dsa.monotonic_stack",
+   "difficulty": 3,
+   "stem": "For next greater element, scanning left to right, the stack should be",
+   "options": [
+    {
+     "text": "increasing from bottom to top",
+     "misconception": "dsa.monotonic_stack.m2"
+    },
+    {
+     "text": "decreasing from bottom to top",
+     "misconception": null
+    },
+    {
+     "text": "unsorted",
+     "misconception": "dsa.monotonic_stack.m2"
+    },
+    {
+     "text": "a queue",
+     "misconception": "dsa.monotonic_stack.m2"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.monotonic_stack.q3",
+   "skill": "dsa.monotonic_stack",
+   "difficulty": 3,
+   "stem": "In next greater element, when the current value is larger than the stack top you",
+   "options": [
+    {
+     "text": "discard the current value",
+     "misconception": "dsa.monotonic_stack.m2"
+    },
+    {
+     "text": "reset the stack",
+     "misconception": "dsa.monotonic_stack.m3"
+    },
+    {
+     "text": "pop the top and record the current value as its answer",
+     "misconception": null
+    },
+    {
+     "text": "push without popping",
+     "misconception": "dsa.monotonic_stack.m2"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.monotonic_stack.q4",
+   "skill": "dsa.monotonic_stack",
+   "difficulty": 3,
+   "stem": "After scanning all elements, indices still on the stack for next greater element should get",
+   "options": [
+    {
+     "text": "zero days",
+     "misconception": "dsa.monotonic_stack.m3"
+    },
+    {
+     "text": "-1 or another default meaning no greater element",
+     "misconception": null
+    },
+    {
+     "text": "an error",
+     "misconception": "dsa.monotonic_stack.m3"
+    },
+    {
+     "text": "the maximum of the array",
+     "misconception": "dsa.monotonic_stack.m3"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.monotonic_stack.q5",
+   "skill": "dsa.monotonic_stack",
+   "difficulty": 3,
+   "stem": "Why store indices on the stack rather than values for daily temperatures?",
+   "options": [
+    {
+     "text": "Because values may be negative",
+     "misconception": "dsa.monotonic_stack.m1"
+    },
+    {
+     "text": "To save memory only",
+     "misconception": "dsa.monotonic_stack.m1"
+    },
+    {
+     "text": "Stacks cannot store values",
+     "misconception": "dsa.monotonic_stack.m1"
+    },
+    {
+     "text": "To compute the distance in days",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.monotonic_stack.q6",
+   "skill": "dsa.monotonic_stack",
+   "difficulty": 3,
+   "stem": "Largest rectangle in a histogram is solved in O(n) using",
+   "options": [
+    {
+     "text": "nested loops over all pairs of bars",
+     "misconception": "dsa.monotonic_stack.m1"
+    },
+    {
+     "text": "a monotonic increasing stack of bar indices",
+     "misconception": null
+    },
+    {
+     "text": "sorting the bars",
+     "misconception": "dsa.monotonic_stack.m1"
+    },
+    {
+     "text": "a hash map of heights",
+     "misconception": "dsa.monotonic_stack.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.sorting_adv.q1",
+   "skill": "dsa.sorting_adv",
+   "difficulty": 3,
+   "stem": "Worst-case time of quicksort with a bad pivot choice is",
+   "options": [
+    {
+     "text": "O(n log n)",
+     "misconception": "dsa.sorting_adv.m1"
+    },
+    {
+     "text": "O(n)",
+     "misconception": "dsa.sorting_adv.m1"
+    },
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.sorting_adv.m1"
+    },
+    {
+     "text": "O(n^2)",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.sorting_adv.q2",
+   "skill": "dsa.sorting_adv",
+   "difficulty": 3,
+   "stem": "Merge sort time complexity in every case is",
+   "options": [
+    {
+     "text": "O(n log n)",
+     "misconception": null
+    },
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.sorting_adv.m3"
+    },
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.sorting_adv.m1"
+    },
+    {
+     "text": "O(n)",
+     "misconception": "dsa.sorting_adv.m3"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.sorting_adv.q3",
+   "skill": "dsa.sorting_adv",
+   "difficulty": 3,
+   "stem": "Merge sort on an array uses extra space of",
+   "options": [
+    {
+     "text": "O(1)",
+     "misconception": "dsa.sorting_adv.m2"
+    },
+    {
+     "text": "O(n)",
+     "misconception": null
+    },
+    {
+     "text": "O(log n) always",
+     "misconception": "dsa.sorting_adv.m2"
+    },
+    {
+     "text": "none, it works in place",
+     "misconception": "dsa.sorting_adv.m2"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.sorting_adv.q4",
+   "skill": "dsa.sorting_adv",
+   "difficulty": 3,
+   "stem": "Quicksort average-case time is",
+   "options": [
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.sorting_adv.m1"
+    },
+    {
+     "text": "O(n)",
+     "misconception": "dsa.sorting_adv.m3"
+    },
+    {
+     "text": "O(2^n)",
+     "misconception": "dsa.sorting_adv.m1"
+    },
+    {
+     "text": "O(n log n)",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.sorting_adv.q5",
+   "skill": "dsa.sorting_adv",
+   "difficulty": 3,
+   "stem": "Which is stable by default?",
+   "options": [
+    {
+     "text": "Heap sort",
+     "misconception": "dsa.sorting_adv.m1"
+    },
+    {
+     "text": "Merge sort",
+     "misconception": null
+    },
+    {
+     "text": "Selection sort",
+     "misconception": "dsa.sorting_adv.m1"
+    },
+    {
+     "text": "Quicksort with in-place partition",
+     "misconception": "dsa.sorting_adv.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.sorting_adv.q6",
+   "skill": "dsa.sorting_adv",
+   "difficulty": 3,
+   "stem": "The lower bound for sorting by comparisons in general is",
+   "options": [
+    {
+     "text": "Omega(n log n)",
+     "misconception": null
+    },
+    {
+     "text": "Omega(n)",
+     "misconception": "dsa.sorting_adv.m3"
+    },
+    {
+     "text": "Omega(1)",
+     "misconception": "dsa.sorting_adv.m3"
+    },
+    {
+     "text": "Omega(n^2)",
+     "misconception": "dsa.sorting_adv.m3"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.heap.q1",
+   "skill": "dsa.heap",
+   "difficulty": 3,
+   "stem": "In a min-heap, the element at the root is",
+   "options": [
+    {
+     "text": "the largest",
+     "misconception": "dsa.heap.m1"
+    },
+    {
+     "text": "the median",
+     "misconception": "dsa.heap.m1"
+    },
+    {
+     "text": "the smallest",
+     "misconception": null
+    },
+    {
+     "text": "arbitrary",
+     "misconception": "dsa.heap.m1"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.heap.q2",
+   "skill": "dsa.heap",
+   "difficulty": 3,
+   "stem": "Time to extract the minimum from a binary min-heap of n elements is",
+   "options": [
+    {
+     "text": "O(log n)",
+     "misconception": null
+    },
+    {
+     "text": "O(n log n)",
+     "misconception": "dsa.heap.m1"
+    },
+    {
+     "text": "O(1)",
+     "misconception": "dsa.heap.m1"
+    },
+    {
+     "text": "O(n)",
+     "misconception": "dsa.heap.m1"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.heap.q3",
+   "skill": "dsa.heap",
+   "difficulty": 3,
+   "stem": "Time to read (peek) the minimum of a min-heap is",
+   "options": [
+    {
+     "text": "O(1)",
+     "misconception": null
+    },
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.heap.m1"
+    },
+    {
+     "text": "O(n)",
+     "misconception": "dsa.heap.m1"
+    },
+    {
+     "text": "O(n log n)",
+     "misconception": "dsa.heap.m1"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.heap.q4",
+   "skill": "dsa.heap",
+   "difficulty": 3,
+   "stem": "Bottom-up heapify of n elements takes",
+   "options": [
+    {
+     "text": "O(n)",
+     "misconception": null
+    },
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.heap.m2"
+    },
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.heap.m2"
+    },
+    {
+     "text": "O(n log n)",
+     "misconception": "dsa.heap.m2"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.heap.q5",
+   "skill": "dsa.heap",
+   "difficulty": 3,
+   "stem": "To find the k largest elements in a stream with O(log k) per element, keep",
+   "options": [
+    {
+     "text": "a min-heap of size k",
+     "misconception": null
+    },
+    {
+     "text": "a sorted array of all elements",
+     "misconception": "dsa.heap.m1"
+    },
+    {
+     "text": "a max-heap of size k",
+     "misconception": "dsa.heap.m3"
+    },
+    {
+     "text": "a hash set",
+     "misconception": "dsa.heap.m3"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.heap.q6",
+   "skill": "dsa.heap",
+   "difficulty": 3,
+   "stem": "In an array-based heap the parent of index i (i > 0) is at",
+   "options": [
+    {
+     "text": "2 * i",
+     "misconception": "dsa.heap.m1"
+    },
+    {
+     "text": "i + 1",
+     "misconception": "dsa.heap.m1"
+    },
+    {
+     "text": "i / 3",
+     "misconception": "dsa.heap.m1"
+    },
+    {
+     "text": "(i - 1) / 2 (integer division)",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.bit.q1",
+   "skill": "dsa.bit",
+   "difficulty": 3,
+   "stem": "What is 5 ^ 5 (XOR)?",
+   "options": [
+    {
+     "text": "10",
+     "misconception": "dsa.bit.m1"
+    },
+    {
+     "text": "1",
+     "misconception": "dsa.bit.m1"
+    },
+    {
+     "text": "5",
+     "misconception": "dsa.bit.m1"
+    },
+    {
+     "text": "0",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.bit.q2",
+   "skill": "dsa.bit",
+   "difficulty": 3,
+   "stem": "Left shifting an integer by 3 positions multiplies it by",
+   "options": [
+    {
+     "text": "1/8",
+     "misconception": "dsa.bit.m2"
+    },
+    {
+     "text": "6",
+     "misconception": "dsa.bit.m2"
+    },
+    {
+     "text": "8",
+     "misconception": null
+    },
+    {
+     "text": "3",
+     "misconception": "dsa.bit.m2"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.bit.q3",
+   "skill": "dsa.bit",
+   "difficulty": 3,
+   "stem": "x >> 1 for a positive integer x is the same as",
+   "options": [
+    {
+     "text": "multiplication by 2",
+     "misconception": "dsa.bit.m2"
+    },
+    {
+     "text": "integer division by 2",
+     "misconception": null
+    },
+    {
+     "text": "adding 1",
+     "misconception": "dsa.bit.m2"
+    },
+    {
+     "text": "squaring",
+     "misconception": "dsa.bit.m2"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.bit.q4",
+   "skill": "dsa.bit",
+   "difficulty": 3,
+   "stem": "A single non-duplicated number in an array where every other number appears twice can be found by",
+   "options": [
+    {
+     "text": "sum of all elements",
+     "misconception": "dsa.bit.m1"
+    },
+    {
+     "text": "XOR of all elements",
+     "misconception": null
+    },
+    {
+     "text": "AND of all elements",
+     "misconception": "dsa.bit.m1"
+    },
+    {
+     "text": "sorting and summing",
+     "misconception": "dsa.bit.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.bit.q5",
+   "skill": "dsa.bit",
+   "difficulty": 3,
+   "stem": "x & (x - 1) does what to the binary form of x?",
+   "options": [
+    {
+     "text": "clears the lowest set bit",
+     "misconception": null
+    },
+    {
+     "text": "flips all bits",
+     "misconception": "dsa.bit.m3"
+    },
+    {
+     "text": "shifts x right by one",
+     "misconception": "dsa.bit.m2"
+    },
+    {
+     "text": "sets the lowest bit",
+     "misconception": "dsa.bit.m3"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.bit.q6",
+   "skill": "dsa.bit",
+   "difficulty": 3,
+   "stem": "For positive x, x & (x - 1) == 0 means",
+   "options": [
+    {
+     "text": "x is odd",
+     "misconception": "dsa.bit.m3"
+    },
+    {
+     "text": "x is a power of two",
+     "misconception": null
+    },
+    {
+     "text": "x is a prime",
+     "misconception": "dsa.bit.m3"
+    },
+    {
+     "text": "x is zero only",
+     "misconception": "dsa.bit.m3"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.math_number.q1",
+   "skill": "dsa.math_number",
+   "difficulty": 2,
+   "stem": "gcd(48, 18) by the Euclidean algorithm is",
+   "options": [
+    {
+     "text": "6",
+     "misconception": null
+    },
+    {
+     "text": "3",
+     "misconception": "dsa.math_number.m1"
+    },
+    {
+     "text": "9",
+     "misconception": "dsa.math_number.m1"
+    },
+    {
+     "text": "12",
+     "misconception": "dsa.math_number.m1"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.math_number.q2",
+   "skill": "dsa.math_number",
+   "difficulty": 2,
+   "stem": "To test whether n is prime by trial division you need to check divisors up to",
+   "options": [
+    {
+     "text": "n",
+     "misconception": "dsa.math_number.m1"
+    },
+    {
+     "text": "n / 2",
+     "misconception": "dsa.math_number.m1"
+    },
+    {
+     "text": "sqrt(n)",
+     "misconception": null
+    },
+    {
+     "text": "log n",
+     "misconception": "dsa.math_number.m1"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.math_number.q3",
+   "skill": "dsa.math_number",
+   "difficulty": 2,
+   "stem": "Which statement is true?",
+   "options": [
+    {
+     "text": "1 is the smallest prime",
+     "misconception": "dsa.math_number.m2"
+    },
+    {
+     "text": "9 is prime",
+     "misconception": "dsa.math_number.m2"
+    },
+    {
+     "text": "all primes are odd",
+     "misconception": "dsa.math_number.m2"
+    },
+    {
+     "text": "2 is the only even prime",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.math_number.q4",
+   "skill": "dsa.math_number",
+   "difficulty": 2,
+   "stem": "lcm(a, b) equals",
+   "options": [
+    {
+     "text": "gcd(a, b) * gcd(a, b)",
+     "misconception": "dsa.math_number.m1"
+    },
+    {
+     "text": "a * b / gcd(a, b)",
+     "misconception": null
+    },
+    {
+     "text": "a + b - gcd(a, b)",
+     "misconception": "dsa.math_number.m1"
+    },
+    {
+     "text": "max(a, b)",
+     "misconception": "dsa.math_number.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.math_number.q5",
+   "skill": "dsa.math_number",
+   "difficulty": 2,
+   "stem": "Which is valid under a modulus m?",
+   "options": [
+    {
+     "text": "(a * b) mod m = ((a mod m) * (b mod m)) mod m",
+     "misconception": null
+    },
+    {
+     "text": "(a / b) mod m = (a mod m) / (b mod m)",
+     "misconception": "dsa.math_number.m3"
+    },
+    {
+     "text": "(a ^ b) mod m = (a mod m) ^ b without reducing",
+     "misconception": "dsa.math_number.m3"
+    },
+    {
+     "text": "(a - b) mod m = (a mod m) - (b mod m) always non-negative",
+     "misconception": "dsa.math_number.m3"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.math_number.q6",
+   "skill": "dsa.math_number",
+   "difficulty": 2,
+   "stem": "Fast exponentiation computes x^n in",
+   "options": [
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.math_number.m1"
+    },
+    {
+     "text": "O(1)",
+     "misconception": "dsa.math_number.m1"
+    },
+    {
+     "text": "O(n) multiplications",
+     "misconception": "dsa.math_number.m1"
+    },
+    {
+     "text": "O(log n) multiplications",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.backtracking.q1",
+   "skill": "dsa.backtracking",
+   "difficulty": 3,
+   "stem": "The standard backtracking pattern is",
+   "options": [
+    {
+     "text": "choose, recurse, unchoose",
+     "misconception": null
+    },
+    {
+     "text": "sort, then binary search",
+     "misconception": "dsa.backtracking.m3"
+    },
+    {
+     "text": "recurse, return, never undo",
+     "misconception": "dsa.backtracking.m1"
+    },
+    {
+     "text": "split in half and merge",
+     "misconception": "dsa.backtracking.m3"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.backtracking.q2",
+   "skill": "dsa.backtracking",
+   "difficulty": 3,
+   "stem": "The number of subsets of an n-element set is",
+   "options": [
+    {
+     "text": "n^2",
+     "misconception": "dsa.backtracking.m3"
+    },
+    {
+     "text": "n!",
+     "misconception": "dsa.backtracking.m3"
+    },
+    {
+     "text": "2^n",
+     "misconception": null
+    },
+    {
+     "text": "2n",
+     "misconception": "dsa.backtracking.m3"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.backtracking.q3",
+   "skill": "dsa.backtracking",
+   "difficulty": 3,
+   "stem": "The number of permutations of n distinct items is",
+   "options": [
+    {
+     "text": "n * (n - 1) only",
+     "misconception": "dsa.backtracking.m3"
+    },
+    {
+     "text": "n^2",
+     "misconception": "dsa.backtracking.m3"
+    },
+    {
+     "text": "2^n",
+     "misconception": "dsa.backtracking.m3"
+    },
+    {
+     "text": "n!",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.backtracking.q4",
+   "skill": "dsa.backtracking",
+   "difficulty": 3,
+   "stem": "Adding the current path list directly to the results without copying causes",
+   "options": [
+    {
+     "text": "later changes to the path alter the stored results",
+     "misconception": null
+    },
+    {
+     "text": "the path becoming empty immediately",
+     "misconception": "dsa.backtracking.m2"
+    },
+    {
+     "text": "faster code with no side effects",
+     "misconception": "dsa.backtracking.m2"
+    },
+    {
+     "text": "a compile error",
+     "misconception": "dsa.backtracking.m2"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.backtracking.q5",
+   "skill": "dsa.backtracking",
+   "difficulty": 3,
+   "stem": "Pruning in backtracking means",
+   "options": [
+    {
+     "text": "sorting the input",
+     "misconception": "dsa.backtracking.m3"
+    },
+    {
+     "text": "memoising results",
+     "misconception": "dsa.backtracking.m3"
+    },
+    {
+     "text": "abandoning a partial solution as soon as it cannot lead to a valid one",
+     "misconception": null
+    },
+    {
+     "text": "running on multiple threads",
+     "misconception": "dsa.backtracking.m3"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.backtracking.q6",
+   "skill": "dsa.backtracking",
+   "difficulty": 3,
+   "stem": "If you forget to remove the last chosen element after recursion in subset generation, you get",
+   "options": [
+    {
+     "text": "an automatic fix by the language",
+     "misconception": "dsa.backtracking.m1"
+    },
+    {
+     "text": "only duplicates removed",
+     "misconception": "dsa.backtracking.m1"
+    },
+    {
+     "text": "the correct answer faster",
+     "misconception": "dsa.backtracking.m1"
+    },
+    {
+     "text": "wrong, ever-growing paths in later branches",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.trees.q1",
+   "skill": "dsa.trees",
+   "difficulty": 2,
+   "stem": "Inorder traversal visits nodes in the order",
+   "options": [
+    {
+     "text": "root, left, right",
+     "misconception": "dsa.trees.m1"
+    },
+    {
+     "text": "right, root, left",
+     "misconception": "dsa.trees.m1"
+    },
+    {
+     "text": "left, right, root",
+     "misconception": "dsa.trees.m1"
+    },
+    {
+     "text": "left, root, right",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.trees.q2",
+   "skill": "dsa.trees",
+   "difficulty": 2,
+   "stem": "Preorder traversal visits nodes in the order",
+   "options": [
+    {
+     "text": "left, root, right",
+     "misconception": "dsa.trees.m1"
+    },
+    {
+     "text": "left, right, root",
+     "misconception": "dsa.trees.m1"
+    },
+    {
+     "text": "level by level",
+     "misconception": "dsa.trees.m1"
+    },
+    {
+     "text": "root, left, right",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.trees.q3",
+   "skill": "dsa.trees",
+   "difficulty": 2,
+   "stem": "Postorder traversal is useful for",
+   "options": [
+    {
+     "text": "reading a BST in sorted order",
+     "misconception": "dsa.trees.m1"
+    },
+    {
+     "text": "copying the tree top-down only",
+     "misconception": "dsa.trees.m1"
+    },
+    {
+     "text": "level-by-level printing",
+     "misconception": "dsa.trees.m3"
+    },
+    {
+     "text": "processing children before the parent, such as deleting a tree",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.trees.q4",
+   "skill": "dsa.trees",
+   "difficulty": 2,
+   "stem": "Level-order traversal uses a",
+   "options": [
+    {
+     "text": "hash map",
+     "misconception": "dsa.trees.m3"
+    },
+    {
+     "text": "heap",
+     "misconception": "dsa.trees.m3"
+    },
+    {
+     "text": "stack",
+     "misconception": "dsa.trees.m3"
+    },
+    {
+     "text": "queue",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.trees.q5",
+   "skill": "dsa.trees",
+   "difficulty": 2,
+   "stem": "Recursive DFS on a completely skewed tree of n nodes uses stack space",
+   "options": [
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.trees.m2"
+    },
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.trees.m2"
+    },
+    {
+     "text": "O(n)",
+     "misconception": null
+    },
+    {
+     "text": "O(1)",
+     "misconception": "dsa.trees.m2"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.trees.q6",
+   "skill": "dsa.trees",
+   "difficulty": 2,
+   "stem": "A binary tree with n nodes has how many edges?",
+   "options": [
+    {
+     "text": "2n",
+     "misconception": "dsa.trees.m1"
+    },
+    {
+     "text": "n",
+     "misconception": "dsa.trees.m1"
+    },
+    {
+     "text": "n - 1",
+     "misconception": null
+    },
+    {
+     "text": "n + 1",
+     "misconception": "dsa.trees.m1"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.bst.q1",
+   "skill": "dsa.bst",
+   "difficulty": 3,
+   "stem": "Inorder traversal of a valid BST produces",
+   "options": [
+    {
+     "text": "level order",
+     "misconception": "dsa.bst.m3"
+    },
+    {
+     "text": "values in descending order",
+     "misconception": "dsa.bst.m3"
+    },
+    {
+     "text": "a random order",
+     "misconception": "dsa.bst.m3"
+    },
+    {
+     "text": "values in sorted ascending order",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.bst.q2",
+   "skill": "dsa.bst",
+   "difficulty": 3,
+   "stem": "Worst-case search time in a BST built by inserting 1, 2, 3, ..., n in order is",
+   "options": [
+    {
+     "text": "O(n log n)",
+     "misconception": "dsa.bst.m2"
+    },
+    {
+     "text": "O(1)",
+     "misconception": "dsa.bst.m2"
+    },
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.bst.m2"
+    },
+    {
+     "text": "O(n)",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.bst.q3",
+   "skill": "dsa.bst",
+   "difficulty": 3,
+   "stem": "Which tree is NOT a valid BST: root 10, left child 5 with right child 12?",
+   "options": [
+    {
+     "text": "It is valid, all children are ordered",
+     "misconception": "dsa.bst.m1"
+    },
+    {
+     "text": "It cannot be decided",
+     "misconception": "dsa.bst.m1"
+    },
+    {
+     "text": "It is invalid, 12 is in the left subtree but larger than 10",
+     "misconception": null
+    },
+    {
+     "text": "It is valid, 12 > 5",
+     "misconception": "dsa.bst.m1"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.bst.q4",
+   "skill": "dsa.bst",
+   "difficulty": 3,
+   "stem": "To validate a BST correctly you should",
+   "options": [
+    {
+     "text": "compare each node only with its children",
+     "misconception": "dsa.bst.m1"
+    },
+    {
+     "text": "pass min and max bounds down the recursion",
+     "misconception": null
+    },
+    {
+     "text": "count the nodes",
+     "misconception": "dsa.bst.m1"
+    },
+    {
+     "text": "compare each node only with its parent",
+     "misconception": "dsa.bst.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.bst.q5",
+   "skill": "dsa.bst",
+   "difficulty": 3,
+   "stem": "When deleting a node with two children, replace it with",
+   "options": [
+    {
+     "text": "its inorder successor or predecessor",
+     "misconception": null
+    },
+    {
+     "text": "the root",
+     "misconception": "dsa.bst.m1"
+    },
+    {
+     "text": "null",
+     "misconception": "dsa.bst.m1"
+    },
+    {
+     "text": "its left child only",
+     "misconception": "dsa.bst.m1"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.bst.q6",
+   "skill": "dsa.bst",
+   "difficulty": 3,
+   "stem": "Self-balancing trees such as AVL trees guarantee operations in",
+   "options": [
+    {
+     "text": "O(n log n)",
+     "misconception": "dsa.bst.m2"
+    },
+    {
+     "text": "O(log n)",
+     "misconception": null
+    },
+    {
+     "text": "O(n)",
+     "misconception": "dsa.bst.m2"
+    },
+    {
+     "text": "O(1)",
+     "misconception": "dsa.bst.m2"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.tree_problems.q1",
+   "skill": "dsa.tree_problems",
+   "difficulty": 3,
+   "stem": "Height of a null node is usually defined as",
+   "options": [
+    {
+     "text": "infinity",
+     "misconception": "dsa.tree_problems.m1"
+    },
+    {
+     "text": "1",
+     "misconception": "dsa.tree_problems.m1"
+    },
+    {
+     "text": "the height of the root",
+     "misconception": "dsa.tree_problems.m1"
+    },
+    {
+     "text": "0 nodes, or -1 edges, depending on convention",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.tree_problems.q2",
+   "skill": "dsa.tree_problems",
+   "difficulty": 3,
+   "stem": "Height of a node (in nodes) equals",
+   "options": [
+    {
+     "text": "min(height(left), height(right))",
+     "misconception": "dsa.tree_problems.m1"
+    },
+    {
+     "text": "1 + max(height(left), height(right))",
+     "misconception": null
+    },
+    {
+     "text": "1 + height(left) only",
+     "misconception": "dsa.tree_problems.m1"
+    },
+    {
+     "text": "height(left) + height(right)",
+     "misconception": "dsa.tree_problems.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.tree_problems.q3",
+   "skill": "dsa.tree_problems",
+   "difficulty": 3,
+   "stem": "The diameter of a binary tree",
+   "options": [
+    {
+     "text": "equals the number of leaves",
+     "misconception": "dsa.tree_problems.m1"
+    },
+    {
+     "text": "always passes through the root",
+     "misconception": "dsa.tree_problems.m1"
+    },
+    {
+     "text": "may not pass through the root",
+     "misconception": null
+    },
+    {
+     "text": "equals the height",
+     "misconception": "dsa.tree_problems.m1"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.tree_problems.q4",
+   "skill": "dsa.tree_problems",
+   "difficulty": 3,
+   "stem": "In a BST, the lowest common ancestor of nodes p and q can be found by",
+   "options": [
+    {
+     "text": "returning the larger of p and q",
+     "misconception": "dsa.tree_problems.m2"
+    },
+    {
+     "text": "always returning the root",
+     "misconception": "dsa.tree_problems.m2"
+    },
+    {
+     "text": "sorting the tree",
+     "misconception": "dsa.tree_problems.m2"
+    },
+    {
+     "text": "walking down: go left if both are smaller, right if both are larger, else the current node is the LCA",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.tree_problems.q5",
+   "skill": "dsa.tree_problems",
+   "difficulty": 3,
+   "stem": "Checking balance by calling height() at every node separately costs about",
+   "options": [
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.tree_problems.m3"
+    },
+    {
+     "text": "O(n)",
+     "misconception": "dsa.tree_problems.m3"
+    },
+    {
+     "text": "O(n^2) in the worst case",
+     "misconception": null
+    },
+    {
+     "text": "O(1)",
+     "misconception": "dsa.tree_problems.m3"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.tree_problems.q6",
+   "skill": "dsa.tree_problems",
+   "difficulty": 3,
+   "stem": "Which direction does information flow for a \"remaining target\" path-sum recursion?",
+   "options": [
+    {
+     "text": "upward as a return only",
+     "misconception": "dsa.tree_problems.m1"
+    },
+    {
+     "text": "downward as a parameter",
+     "misconception": null
+    },
+    {
+     "text": "it does not flow",
+     "misconception": "dsa.tree_problems.m1"
+    },
+    {
+     "text": "through global sorting",
+     "misconception": "dsa.tree_problems.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.trie.q1",
+   "skill": "dsa.trie",
+   "difficulty": 3,
+   "stem": "Search for a word of length L in a trie costs",
+   "options": [
+    {
+     "text": "O(L^2)",
+     "misconception": "dsa.trie.m1"
+    },
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.trie.m1"
+    },
+    {
+     "text": "O(L)",
+     "misconception": null
+    },
+    {
+     "text": "O(number of words)",
+     "misconception": "dsa.trie.m1"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.trie.q2",
+   "skill": "dsa.trie",
+   "difficulty": 3,
+   "stem": "After inserting only \"apple\", search(\"app\") should return",
+   "options": [
+    {
+     "text": "an error",
+     "misconception": "dsa.trie.m2"
+    },
+    {
+     "text": "true, since app is a prefix",
+     "misconception": "dsa.trie.m2"
+    },
+    {
+     "text": "the word apple",
+     "misconception": "dsa.trie.m2"
+    },
+    {
+     "text": "false, since app is only a prefix",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.trie.q3",
+   "skill": "dsa.trie",
+   "difficulty": 3,
+   "stem": "After inserting only \"apple\", startsWith(\"app\") should return",
+   "options": [
+    {
+     "text": "null",
+     "misconception": "dsa.trie.m2"
+    },
+    {
+     "text": "true",
+     "misconception": null
+    },
+    {
+     "text": "false",
+     "misconception": "dsa.trie.m2"
+    },
+    {
+     "text": "an error",
+     "misconception": "dsa.trie.m2"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.trie.q4",
+   "skill": "dsa.trie",
+   "difficulty": 3,
+   "stem": "Which problem suits a trie best?",
+   "options": [
+    {
+     "text": "Sorting integers",
+     "misconception": "dsa.trie.m3"
+    },
+    {
+     "text": "Finding the median",
+     "misconception": "dsa.trie.m3"
+    },
+    {
+     "text": "Autocomplete suggestions for a prefix",
+     "misconception": null
+    },
+    {
+     "text": "Detecting a cycle in a linked list",
+     "misconception": "dsa.trie.m3"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.trie.q5",
+   "skill": "dsa.trie",
+   "difficulty": 3,
+   "stem": "Why is a hash set poor for prefix queries?",
+   "options": [
+    {
+     "text": "It cannot find all keys with a given prefix without scanning",
+     "misconception": null
+    },
+    {
+     "text": "It stores characters, not words",
+     "misconception": "dsa.trie.m3"
+    },
+    {
+     "text": "It is slower than a trie for exact lookups in O(1)",
+     "misconception": "dsa.trie.m3"
+    },
+    {
+     "text": "It always has collisions",
+     "misconception": "dsa.trie.m3"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.trie.q6",
+   "skill": "dsa.trie",
+   "difficulty": 3,
+   "stem": "The main drawback of a trie is",
+   "options": [
+    {
+     "text": "it needs sorted input",
+     "misconception": "dsa.trie.m1"
+    },
+    {
+     "text": "memory use from many nodes",
+     "misconception": null
+    },
+    {
+     "text": "it cannot store long words",
+     "misconception": "dsa.trie.m1"
+    },
+    {
+     "text": "slow insertion at O(n^2)",
+     "misconception": "dsa.trie.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.graph_repr.q1",
+   "skill": "dsa.graph_repr",
+   "difficulty": 2,
+   "stem": "Space used by an adjacency list is",
+   "options": [
+    {
+     "text": "O(E^2)",
+     "misconception": "dsa.graph_repr.m2"
+    },
+    {
+     "text": "O(V)",
+     "misconception": "dsa.graph_repr.m2"
+    },
+    {
+     "text": "O(V^2)",
+     "misconception": "dsa.graph_repr.m2"
+    },
+    {
+     "text": "O(V + E)",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.graph_repr.q2",
+   "skill": "dsa.graph_repr",
+   "difficulty": 2,
+   "stem": "Space used by an adjacency matrix is",
+   "options": [
+    {
+     "text": "O(V^2)",
+     "misconception": null
+    },
+    {
+     "text": "O(E)",
+     "misconception": "dsa.graph_repr.m2"
+    },
+    {
+     "text": "O(V log V)",
+     "misconception": "dsa.graph_repr.m2"
+    },
+    {
+     "text": "O(V + E)",
+     "misconception": "dsa.graph_repr.m2"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.graph_repr.q3",
+   "skill": "dsa.graph_repr",
+   "difficulty": 2,
+   "stem": "In an adjacency list for an undirected edge between u and v you should",
+   "options": [
+    {
+     "text": "add v to u's list and u to v's list",
+     "misconception": null
+    },
+    {
+     "text": "add the edge once anywhere",
+     "misconception": "dsa.graph_repr.m1"
+    },
+    {
+     "text": "add v to u's list only",
+     "misconception": "dsa.graph_repr.m1"
+    },
+    {
+     "text": "store it in a matrix only",
+     "misconception": "dsa.graph_repr.m1"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.graph_repr.q4",
+   "skill": "dsa.graph_repr",
+   "difficulty": 2,
+   "stem": "Checking whether an edge (u, v) exists is O(1) with",
+   "options": [
+    {
+     "text": "an adjacency matrix",
+     "misconception": null
+    },
+    {
+     "text": "an edge list always",
+     "misconception": "dsa.graph_repr.m3"
+    },
+    {
+     "text": "a linked list of vertices",
+     "misconception": "dsa.graph_repr.m3"
+    },
+    {
+     "text": "an adjacency list always",
+     "misconception": "dsa.graph_repr.m3"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.graph_repr.q5",
+   "skill": "dsa.graph_repr",
+   "difficulty": 2,
+   "stem": "A sparse graph (E much smaller than V^2) is best stored as",
+   "options": [
+    {
+     "text": "an adjacency list",
+     "misconception": null
+    },
+    {
+     "text": "a sorted string",
+     "misconception": "dsa.graph_repr.m2"
+    },
+    {
+     "text": "a 3D array",
+     "misconception": "dsa.graph_repr.m2"
+    },
+    {
+     "text": "an adjacency matrix",
+     "misconception": "dsa.graph_repr.m2"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.graph_repr.q6",
+   "skill": "dsa.graph_repr",
+   "difficulty": 2,
+   "stem": "The maximum number of edges in a simple undirected graph with V vertices is",
+   "options": [
+    {
+     "text": "V",
+     "misconception": "dsa.graph_repr.m1"
+    },
+    {
+     "text": "V(V-1)/2",
+     "misconception": null
+    },
+    {
+     "text": "2V",
+     "misconception": "dsa.graph_repr.m1"
+    },
+    {
+     "text": "V^2",
+     "misconception": "dsa.graph_repr.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.bfs.q1",
+   "skill": "dsa.bfs",
+   "difficulty": 3,
+   "stem": "BFS uses which data structure for the frontier?",
+   "options": [
+    {
+     "text": "a queue",
+     "misconception": null
+    },
+    {
+     "text": "a hash map",
+     "misconception": "dsa.bfs.m3"
+    },
+    {
+     "text": "a heap",
+     "misconception": "dsa.bfs.m3"
+    },
+    {
+     "text": "a stack",
+     "misconception": "dsa.bfs.m3"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.bfs.q2",
+   "skill": "dsa.bfs",
+   "difficulty": 3,
+   "stem": "BFS time complexity with an adjacency list is",
+   "options": [
+    {
+     "text": "O(V^2)",
+     "misconception": "dsa.bfs.m1"
+    },
+    {
+     "text": "O(V log V)",
+     "misconception": "dsa.bfs.m1"
+    },
+    {
+     "text": "O(E^2)",
+     "misconception": "dsa.bfs.m1"
+    },
+    {
+     "text": "O(V + E)",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.bfs.q3",
+   "skill": "dsa.bfs",
+   "difficulty": 3,
+   "stem": "BFS finds the shortest path in terms of",
+   "options": [
+    {
+     "text": "neither",
+     "misconception": "dsa.bfs.m1"
+    },
+    {
+     "text": "total weight in a weighted graph",
+     "misconception": "dsa.bfs.m1"
+    },
+    {
+     "text": "fewest vertices in a directed acyclic weighted graph only",
+     "misconception": "dsa.bfs.m1"
+    },
+    {
+     "text": "number of edges in an unweighted graph",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.bfs.q4",
+   "skill": "dsa.bfs",
+   "difficulty": 3,
+   "stem": "To avoid enqueuing a node many times you should mark it visited",
+   "options": [
+    {
+     "text": "only after processing all its neighbours",
+     "misconception": "dsa.bfs.m2"
+    },
+    {
+     "text": "never",
+     "misconception": "dsa.bfs.m2"
+    },
+    {
+     "text": "when you enqueue it",
+     "misconception": null
+    },
+    {
+     "text": "when you dequeue it",
+     "misconception": "dsa.bfs.m2"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.bfs.q5",
+   "skill": "dsa.bfs",
+   "difficulty": 3,
+   "stem": "Multi-source BFS (e.g. rotting oranges) starts by",
+   "options": [
+    {
+     "text": "running BFS separately from each source and adding results",
+     "misconception": "dsa.bfs.m3"
+    },
+    {
+     "text": "sorting the sources",
+     "misconception": "dsa.bfs.m3"
+    },
+    {
+     "text": "enqueueing all source cells before the loop",
+     "misconception": null
+    },
+    {
+     "text": "using DFS from one source",
+     "misconception": "dsa.bfs.m3"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.bfs.q6",
+   "skill": "dsa.bfs",
+   "difficulty": 3,
+   "stem": "On a grid, BFS neighbours of a cell are normally",
+   "options": [
+    {
+     "text": "only the cell to the right",
+     "misconception": "dsa.bfs.m3"
+    },
+    {
+     "text": "up, down, left, right, within bounds",
+     "misconception": null
+    },
+    {
+     "text": "random cells",
+     "misconception": "dsa.bfs.m3"
+    },
+    {
+     "text": "all cells in the same row",
+     "misconception": "dsa.bfs.m3"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.dfs.q1",
+   "skill": "dsa.dfs",
+   "difficulty": 3,
+   "stem": "DFS time complexity on an adjacency list graph is",
+   "options": [
+    {
+     "text": "O(V + E)",
+     "misconception": null
+    },
+    {
+     "text": "O(E log V)",
+     "misconception": "dsa.dfs.m1"
+    },
+    {
+     "text": "O(2^V)",
+     "misconception": "dsa.dfs.m1"
+    },
+    {
+     "text": "O(V^2)",
+     "misconception": "dsa.dfs.m1"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.dfs.q2",
+   "skill": "dsa.dfs",
+   "difficulty": 3,
+   "stem": "Can plain DFS be relied on to give the fewest-edge path in an unweighted graph?",
+   "options": [
+    {
+     "text": "No, BFS is needed for that",
+     "misconception": null
+    },
+    {
+     "text": "Yes, if the graph has a visited set",
+     "misconception": "dsa.dfs.m1"
+    },
+    {
+     "text": "Yes, but only on trees with more than one leaf",
+     "misconception": "dsa.dfs.m1"
+    },
+    {
+     "text": "Yes, DFS always reaches the target by the shortest route first",
+     "misconception": "dsa.dfs.m1"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.dfs.q3",
+   "skill": "dsa.dfs",
+   "difficulty": 3,
+   "stem": "Without a visited set DFS on a graph with a cycle will",
+   "options": [
+    {
+     "text": "never terminate (infinite recursion)",
+     "misconception": null
+    },
+    {
+     "text": "visit each node once",
+     "misconception": "dsa.dfs.m2"
+    },
+    {
+     "text": "find the shortest cycle",
+     "misconception": "dsa.dfs.m2"
+    },
+    {
+     "text": "finish faster",
+     "misconception": "dsa.dfs.m2"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.dfs.q4",
+   "skill": "dsa.dfs",
+   "difficulty": 3,
+   "stem": "In a directed graph a back edge, meaning a neighbour currently on the recursion path, indicates",
+   "options": [
+    {
+     "text": "a topological order",
+     "misconception": "dsa.dfs.m3"
+    },
+    {
+     "text": "a cycle",
+     "misconception": null
+    },
+    {
+     "text": "a connected component",
+     "misconception": "dsa.dfs.m3"
+    },
+    {
+     "text": "a shortest path",
+     "misconception": "dsa.dfs.m3"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.dfs.q5",
+   "skill": "dsa.dfs",
+   "difficulty": 3,
+   "stem": "In a directed graph a neighbour that is already fully processed (done) means",
+   "options": [
+    {
+     "text": "the end of the search",
+     "misconception": "dsa.dfs.m3"
+    },
+    {
+     "text": "an invalid graph",
+     "misconception": "dsa.dfs.m3"
+    },
+    {
+     "text": "not necessarily a cycle~m3",
+     "misconception": null
+    },
+    {
+     "text": "always a cycle",
+     "misconception": "dsa.dfs.m3"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.dfs.q6",
+   "skill": "dsa.dfs",
+   "difficulty": 3,
+   "stem": "Counting islands in a grid with DFS flood fill: each unvisited land cell starts",
+   "options": [
+    {
+     "text": "one new island and marks all connected land visited",
+     "misconception": null
+    },
+    {
+     "text": "the algorithm over from scratch for every cell",
+     "misconception": "dsa.dfs.m2"
+    },
+    {
+     "text": "a sort",
+     "misconception": "dsa.dfs.m1"
+    },
+    {
+     "text": "a shortest path search",
+     "misconception": "dsa.dfs.m1"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.topo.q1",
+   "skill": "dsa.topo",
+   "difficulty": 3,
+   "stem": "A topological ordering exists only if the directed graph",
+   "options": [
+    {
+     "text": "has no cycles",
+     "misconception": null
+    },
+    {
+     "text": "is connected",
+     "misconception": "dsa.topo.m1"
+    },
+    {
+     "text": "is a tree",
+     "misconception": "dsa.topo.m1"
+    },
+    {
+     "text": "has an even number of edges",
+     "misconception": "dsa.topo.m1"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.topo.q2",
+   "skill": "dsa.topo",
+   "difficulty": 3,
+   "stem": "Kahn's algorithm starts with vertices of",
+   "options": [
+    {
+     "text": "in-degree zero",
+     "misconception": null
+    },
+    {
+     "text": "highest in-degree",
+     "misconception": "dsa.topo.m3"
+    },
+    {
+     "text": "any vertex at random",
+     "misconception": "dsa.topo.m3"
+    },
+    {
+     "text": "out-degree zero",
+     "misconception": "dsa.topo.m3"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.topo.q3",
+   "skill": "dsa.topo",
+   "difficulty": 3,
+   "stem": "If Kahn's algorithm outputs fewer than V vertices then",
+   "options": [
+    {
+     "text": "the graph is disconnected only",
+     "misconception": "dsa.topo.m1"
+    },
+    {
+     "text": "the order is unique",
+     "misconception": "dsa.topo.m2"
+    },
+    {
+     "text": "the graph has a cycle",
+     "misconception": null
+    },
+    {
+     "text": "the graph is a tree",
+     "misconception": "dsa.topo.m1"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.topo.q4",
+   "skill": "dsa.topo",
+   "difficulty": 3,
+   "stem": "Time complexity of topological sort is",
+   "options": [
+    {
+     "text": "O(V + E)",
+     "misconception": null
+    },
+    {
+     "text": "O(V^2) always",
+     "misconception": "dsa.topo.m1"
+    },
+    {
+     "text": "O(E^2)",
+     "misconception": "dsa.topo.m1"
+    },
+    {
+     "text": "O(V log V)",
+     "misconception": "dsa.topo.m1"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.topo.q5",
+   "skill": "dsa.topo",
+   "difficulty": 3,
+   "stem": "A DAG with edges A->C and B->C has",
+   "options": [
+    {
+     "text": "exactly one order",
+     "misconception": "dsa.topo.m2"
+    },
+    {
+     "text": "only the order C, A, B",
+     "misconception": "dsa.topo.m1"
+    },
+    {
+     "text": "no valid order",
+     "misconception": "dsa.topo.m1"
+    },
+    {
+     "text": "more than one valid topological order",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.topo.q6",
+   "skill": "dsa.topo",
+   "difficulty": 3,
+   "stem": "Topological sort models",
+   "options": [
+    {
+     "text": "sorting numbers",
+     "misconception": "dsa.topo.m1"
+    },
+    {
+     "text": "shortest paths in weighted graphs",
+     "misconception": "dsa.topo.m1"
+    },
+    {
+     "text": "tasks with prerequisites, learn dependencies first",
+     "misconception": null
+    },
+    {
+     "text": "finding the median",
+     "misconception": "dsa.topo.m1"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.union_find.q1",
+   "skill": "dsa.union_find",
+   "difficulty": 3,
+   "stem": "Two elements are in the same set exactly when",
+   "options": [
+    {
+     "text": "their indices differ by one",
+     "misconception": "dsa.union_find.m1"
+    },
+    {
+     "text": "their find operations return the same root",
+     "misconception": null
+    },
+    {
+     "text": "their values are equal",
+     "misconception": "dsa.union_find.m1"
+    },
+    {
+     "text": "they were never unioned",
+     "misconception": "dsa.union_find.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.union_find.q2",
+   "skill": "dsa.union_find",
+   "difficulty": 3,
+   "stem": "With path compression and union by rank, each operation costs about",
+   "options": [
+    {
+     "text": "nearly O(1) amortised",
+     "misconception": null
+    },
+    {
+     "text": "O(n log n)",
+     "misconception": "dsa.union_find.m2"
+    },
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.union_find.m2"
+    },
+    {
+     "text": "O(n)",
+     "misconception": "dsa.union_find.m2"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.union_find.q3",
+   "skill": "dsa.union_find",
+   "difficulty": 3,
+   "stem": "Without any optimisation, find in the worst case costs",
+   "options": [
+    {
+     "text": "O(log log n)",
+     "misconception": "dsa.union_find.m2"
+    },
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.union_find.m2"
+    },
+    {
+     "text": "O(1)",
+     "misconception": "dsa.union_find.m2"
+    },
+    {
+     "text": "O(n), if the tree becomes a chain",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.union_find.q4",
+   "skill": "dsa.union_find",
+   "difficulty": 3,
+   "stem": "union(a, b) should link",
+   "options": [
+    {
+     "text": "all elements of a to b one by one",
+     "misconception": "dsa.union_find.m1"
+    },
+    {
+     "text": "nothing if a < b",
+     "misconception": "dsa.union_find.m1"
+    },
+    {
+     "text": "a directly to b without finding roots",
+     "misconception": "dsa.union_find.m1"
+    },
+    {
+     "text": "the root of a's set to the root of b's set",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.union_find.q5",
+   "skill": "dsa.union_find",
+   "difficulty": 3,
+   "stem": "Detecting a cycle in an undirected graph: when adding edge (u, v), a cycle exists if",
+   "options": [
+    {
+     "text": "find(u) equals find(v)",
+     "misconception": null
+    },
+    {
+     "text": "find(u) is not equal to find(v)",
+     "misconception": "dsa.union_find.m1"
+    },
+    {
+     "text": "u < v",
+     "misconception": "dsa.union_find.m1"
+    },
+    {
+     "text": "the graph has more than V edges only",
+     "misconception": "dsa.union_find.m1"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.union_find.q6",
+   "skill": "dsa.union_find",
+   "difficulty": 3,
+   "stem": "Which statement about Union-Find is true?",
+   "options": [
+    {
+     "text": "It cannot merge sets after the first union",
+     "misconception": "dsa.union_find.m3"
+    },
+    {
+     "text": "It efficiently supports deleting edges",
+     "misconception": "dsa.union_find.m3"
+    },
+    {
+     "text": "It merges sets efficiently but cannot easily split them again",
+     "misconception": null
+    },
+    {
+     "text": "It supports edge deletion in O(1)",
+     "misconception": "dsa.union_find.m3"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.shortest.q1",
+   "skill": "dsa.shortest",
+   "difficulty": 4,
+   "stem": "Dijkstra's algorithm requires edge weights to be",
+   "options": [
+    {
+     "text": "non-negative",
+     "misconception": null
+    },
+    {
+     "text": "positive and distinct",
+     "misconception": "dsa.shortest.m1"
+    },
+    {
+     "text": "all equal",
+     "misconception": "dsa.shortest.m1"
+    },
+    {
+     "text": "integers only",
+     "misconception": "dsa.shortest.m1"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.shortest.q2",
+   "skill": "dsa.shortest",
+   "difficulty": 4,
+   "stem": "Time complexity of Dijkstra with a binary heap and adjacency lists is",
+   "options": [
+    {
+     "text": "O(V^3)",
+     "misconception": "dsa.shortest.m3"
+    },
+    {
+     "text": "O(E)",
+     "misconception": "dsa.shortest.m3"
+    },
+    {
+     "text": "O(V + E)",
+     "misconception": "dsa.shortest.m3"
+    },
+    {
+     "text": "O((V + E) log V)",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.shortest.q3",
+   "skill": "dsa.shortest",
+   "difficulty": 4,
+   "stem": "For shortest paths with negative edges (but no negative cycle) use",
+   "options": [
+    {
+     "text": "Dijkstra",
+     "misconception": "dsa.shortest.m1"
+    },
+    {
+     "text": "Bellman-Ford",
+     "misconception": null
+    },
+    {
+     "text": "BFS",
+     "misconception": "dsa.shortest.m2"
+    },
+    {
+     "text": "Kruskal",
+     "misconception": "dsa.shortest.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.shortest.q4",
+   "skill": "dsa.shortest",
+   "difficulty": 4,
+   "stem": "On an unweighted graph the simplest correct shortest-path algorithm is",
+   "options": [
+    {
+     "text": "Bellman-Ford only",
+     "misconception": "dsa.shortest.m1"
+    },
+    {
+     "text": "BFS",
+     "misconception": null
+    },
+    {
+     "text": "DFS",
+     "misconception": "dsa.shortest.m2"
+    },
+    {
+     "text": "Dijkstra only",
+     "misconception": "dsa.shortest.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.shortest.q5",
+   "skill": "dsa.shortest",
+   "difficulty": 4,
+   "stem": "\"Relaxing\" edge (u, v) with weight w means",
+   "options": [
+    {
+     "text": "if dist[u] + w < dist[v], update dist[v]",
+     "misconception": null
+    },
+    {
+     "text": "always setting dist[v] = w",
+     "misconception": "dsa.shortest.m3"
+    },
+    {
+     "text": "removing the edge",
+     "misconception": "dsa.shortest.m3"
+    },
+    {
+     "text": "sorting the neighbours",
+     "misconception": "dsa.shortest.m3"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.shortest.q6",
+   "skill": "dsa.shortest",
+   "difficulty": 4,
+   "stem": "Why skip stale entries popped from the heap?",
+   "options": [
+    {
+     "text": "They are duplicates of the source",
+     "misconception": "dsa.shortest.m3"
+    },
+    {
+     "text": "The heap is corrupt",
+     "misconception": "dsa.shortest.m3"
+    },
+    {
+     "text": "Their distance is greater than the best known distance",
+     "misconception": null
+    },
+    {
+     "text": "They are negative",
+     "misconception": "dsa.shortest.m3"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.mst.q1",
+   "skill": "dsa.mst",
+   "difficulty": 4,
+   "stem": "A spanning tree of a connected graph with V vertices has exactly",
+   "options": [
+    {
+     "text": "V + 1 edges",
+     "misconception": "dsa.mst.m2"
+    },
+    {
+     "text": "V - 1 edges",
+     "misconception": null
+    },
+    {
+     "text": "2V edges",
+     "misconception": "dsa.mst.m2"
+    },
+    {
+     "text": "V edges",
+     "misconception": "dsa.mst.m2"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.mst.q2",
+   "skill": "dsa.mst",
+   "difficulty": 4,
+   "stem": "Kruskal's algorithm adds the next lightest edge only if it",
+   "options": [
+    {
+     "text": "creates a cycle",
+     "misconception": "dsa.mst.m3"
+    },
+    {
+     "text": "touches vertex 0",
+     "misconception": "dsa.mst.m3"
+    },
+    {
+     "text": "connects two different components",
+     "misconception": null
+    },
+    {
+     "text": "is the heaviest edge",
+     "misconception": "dsa.mst.m3"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.mst.q3",
+   "skill": "dsa.mst",
+   "difficulty": 4,
+   "stem": "Which data structure makes Kruskal's cycle check fast?",
+   "options": [
+    {
+     "text": "Queue",
+     "misconception": "dsa.mst.m3"
+    },
+    {
+     "text": "Stack",
+     "misconception": "dsa.mst.m3"
+    },
+    {
+     "text": "Trie",
+     "misconception": "dsa.mst.m3"
+    },
+    {
+     "text": "Union-Find",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.mst.q4",
+   "skill": "dsa.mst",
+   "difficulty": 4,
+   "stem": "The path between two vertices in the MST",
+   "options": [
+    {
+     "text": "is always the shortest path",
+     "misconception": "dsa.mst.m1"
+    },
+    {
+     "text": "is always the longest path",
+     "misconception": "dsa.mst.m1"
+    },
+    {
+     "text": "is not necessarily the shortest path in the graph",
+     "misconception": null
+    },
+    {
+     "text": "does not exist",
+     "misconception": "dsa.mst.m1"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.mst.q5",
+   "skill": "dsa.mst",
+   "difficulty": 4,
+   "stem": "Prim's algorithm repeatedly adds",
+   "options": [
+    {
+     "text": "the cheapest edge anywhere in the graph",
+     "misconception": "dsa.mst.m3"
+    },
+    {
+     "text": "the cheapest edge leaving the current tree",
+     "misconception": null
+    },
+    {
+     "text": "a random edge",
+     "misconception": "dsa.mst.m3"
+    },
+    {
+     "text": "the heaviest edge",
+     "misconception": "dsa.mst.m3"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.mst.q6",
+   "skill": "dsa.mst",
+   "difficulty": 4,
+   "stem": "Kruskal's time with sorting dominated cost is",
+   "options": [
+    {
+     "text": "O(V^3)",
+     "misconception": "dsa.mst.m3"
+    },
+    {
+     "text": "O(V)",
+     "misconception": "dsa.mst.m3"
+    },
+    {
+     "text": "O(E log E)",
+     "misconception": null
+    },
+    {
+     "text": "O(E)",
+     "misconception": "dsa.mst.m3"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.dp_intro.q1",
+   "skill": "dsa.dp_intro",
+   "difficulty": 3,
+   "stem": "Memoized Fibonacci runs in",
+   "options": [
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.dp_intro.m2"
+    },
+    {
+     "text": "O(2^n)",
+     "misconception": "dsa.dp_intro.m2"
+    },
+    {
+     "text": "O(n)",
+     "misconception": null
+    },
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.dp_intro.m2"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.dp_intro.q2",
+   "skill": "dsa.dp_intro",
+   "difficulty": 3,
+   "stem": "DP is applicable when a problem has",
+   "options": [
+    {
+     "text": "overlapping subproblems and optimal substructure",
+     "misconception": null
+    },
+    {
+     "text": "no recursive structure",
+     "misconception": "dsa.dp_intro.m1"
+    },
+    {
+     "text": "sorted input",
+     "misconception": "dsa.dp_intro.m1"
+    },
+    {
+     "text": "only independent subproblems",
+     "misconception": "dsa.dp_intro.m1"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.dp_intro.q3",
+   "skill": "dsa.dp_intro",
+   "difficulty": 3,
+   "stem": "Time of a DP solution is typically",
+   "options": [
+    {
+     "text": "always O(n)",
+     "misconception": "dsa.dp_intro.m2"
+    },
+    {
+     "text": "the number of recursive calls without caching",
+     "misconception": "dsa.dp_intro.m2"
+    },
+    {
+     "text": "number of states times work per state",
+     "misconception": null
+    },
+    {
+     "text": "always O(n^2)",
+     "misconception": "dsa.dp_intro.m2"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.dp_intro.q4",
+   "skill": "dsa.dp_intro",
+   "difficulty": 3,
+   "stem": "Tabulation fills the table",
+   "options": [
+    {
+     "text": "using only the last cell",
+     "misconception": "dsa.dp_intro.m3"
+    },
+    {
+     "text": "bottom up in an order that respects dependencies",
+     "misconception": null
+    },
+    {
+     "text": "top down from the answer only",
+     "misconception": "dsa.dp_intro.m3"
+    },
+    {
+     "text": "in random order",
+     "misconception": "dsa.dp_intro.m3"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.dp_intro.q5",
+   "skill": "dsa.dp_intro",
+   "difficulty": 3,
+   "stem": "A missing base case in the recurrence causes",
+   "options": [
+    {
+     "text": "automatic correction",
+     "misconception": "dsa.dp_intro.m3"
+    },
+    {
+     "text": "faster code",
+     "misconception": "dsa.dp_intro.m3"
+    },
+    {
+     "text": "wrong answers or infinite recursion",
+     "misconception": null
+    },
+    {
+     "text": "nothing at all",
+     "misconception": "dsa.dp_intro.m3"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.dp_intro.q6",
+   "skill": "dsa.dp_intro",
+   "difficulty": 3,
+   "stem": "Fibonacci in O(1) space is possible by",
+   "options": [
+    {
+     "text": "recursion without caching",
+     "misconception": "dsa.dp_intro.m2"
+    },
+    {
+     "text": "sorting",
+     "misconception": "dsa.dp_intro.m1"
+    },
+    {
+     "text": "storing a full table",
+     "misconception": "dsa.dp_intro.m1"
+    },
+    {
+     "text": "keeping only the previous two values",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.dp_1d.q1",
+   "skill": "dsa.dp_1d",
+   "difficulty": 3,
+   "stem": "Climbing stairs with steps of 1 or 2: ways(n) equals",
+   "options": [
+    {
+     "text": "ways(n-1) only",
+     "misconception": "dsa.dp_1d.m3"
+    },
+    {
+     "text": "n^2",
+     "misconception": "dsa.dp_1d.m3"
+    },
+    {
+     "text": "ways(n-1) * ways(n-2)",
+     "misconception": "dsa.dp_1d.m3"
+    },
+    {
+     "text": "ways(n-1) + ways(n-2)",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.dp_1d.q2",
+   "skill": "dsa.dp_1d",
+   "difficulty": 3,
+   "stem": "House robber (no two adjacent houses): dp[i] equals",
+   "options": [
+    {
+     "text": "min(dp[i-1], dp[i-2])",
+     "misconception": "dsa.dp_1d.m3"
+    },
+    {
+     "text": "max(dp[i-1], dp[i-2] + nums[i])",
+     "misconception": null
+    },
+    {
+     "text": "dp[i-1] + dp[i-2]",
+     "misconception": "dsa.dp_1d.m3"
+    },
+    {
+     "text": "dp[i-1] + nums[i]",
+     "misconception": "dsa.dp_1d.m3"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.dp_1d.q3",
+   "skill": "dsa.dp_1d",
+   "difficulty": 3,
+   "stem": "Minimum coins for amount 6 with coins {1, 3, 4} is",
+   "options": [
+    {
+     "text": "2 (3 + 3)",
+     "misconception": null
+    },
+    {
+     "text": "3 (4 + 1 + 1), as greedy gives",
+     "misconception": "dsa.dp_1d.m1"
+    },
+    {
+     "text": "6",
+     "misconception": "dsa.dp_1d.m1"
+    },
+    {
+     "text": "1",
+     "misconception": "dsa.dp_1d.m1"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.dp_1d.q4",
+   "skill": "dsa.dp_1d",
+   "difficulty": 3,
+   "stem": "In coin change DP, unreachable amounts should be initialised to",
+   "options": [
+    {
+     "text": "the amount itself",
+     "misconception": "dsa.dp_1d.m2"
+    },
+    {
+     "text": "0",
+     "misconception": "dsa.dp_1d.m2"
+    },
+    {
+     "text": "infinity (a large number)",
+     "misconception": null
+    },
+    {
+     "text": "-1 and then added to",
+     "misconception": "dsa.dp_1d.m2"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.dp_1d.q5",
+   "skill": "dsa.dp_1d",
+   "difficulty": 3,
+   "stem": "Coin change DP: dp[a] equals",
+   "options": [
+    {
+     "text": "1 + min over coins of dp[a - coin]",
+     "misconception": null
+    },
+    {
+     "text": "max over coins of dp[a - coin]",
+     "misconception": "dsa.dp_1d.m3"
+    },
+    {
+     "text": "sum of all dp[a - coin]",
+     "misconception": "dsa.dp_1d.m3"
+    },
+    {
+     "text": "dp[a - 1] only",
+     "misconception": "dsa.dp_1d.m1"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.dp_1d.q6",
+   "skill": "dsa.dp_1d",
+   "difficulty": 3,
+   "stem": "Longest increasing subsequence with the O(n^2) DP has dp[i] meaning",
+   "options": [
+    {
+     "text": "the value at index i",
+     "misconception": "dsa.dp_1d.m3"
+    },
+    {
+     "text": "the number of elements smaller than nums[i]",
+     "misconception": "dsa.dp_1d.m3"
+    },
+    {
+     "text": "length of the LIS ending at index i",
+     "misconception": null
+    },
+    {
+     "text": "length of the LIS in the first i elements only",
+     "misconception": "dsa.dp_1d.m3"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.dp_2d.q1",
+   "skill": "dsa.dp_2d",
+   "difficulty": 4,
+   "stem": "On a character match, LCS dp[i][j] equals",
+   "options": [
+    {
+     "text": "max(dp[i-1][j], dp[i][j-1])",
+     "misconception": "dsa.dp_2d.m2"
+    },
+    {
+     "text": "0",
+     "misconception": "dsa.dp_2d.m2"
+    },
+    {
+     "text": "dp[i-1][j-1] + 1",
+     "misconception": null
+    },
+    {
+     "text": "dp[i-1][j] + dp[i][j-1]",
+     "misconception": "dsa.dp_2d.m2"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.dp_2d.q2",
+   "skill": "dsa.dp_2d",
+   "difficulty": 4,
+   "stem": "On a mismatch, LCS dp[i][j] equals",
+   "options": [
+    {
+     "text": "dp[i-1][j-1] + 1",
+     "misconception": "dsa.dp_2d.m2"
+    },
+    {
+     "text": "max(dp[i-1][j], dp[i][j-1])",
+     "misconception": null
+    },
+    {
+     "text": "0",
+     "misconception": "dsa.dp_2d.m2"
+    },
+    {
+     "text": "dp[i-1][j-1]",
+     "misconception": "dsa.dp_2d.m2"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.dp_2d.q3",
+   "skill": "dsa.dp_2d",
+   "difficulty": 4,
+   "stem": "A subsequence differs from a substring because",
+   "options": [
+    {
+     "text": "it is always a palindrome",
+     "misconception": "dsa.dp_2d.m1"
+    },
+    {
+     "text": "it need not be contiguous",
+     "misconception": null
+    },
+    {
+     "text": "it must be sorted",
+     "misconception": "dsa.dp_2d.m1"
+    },
+    {
+     "text": "it must be shorter",
+     "misconception": "dsa.dp_2d.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.dp_2d.q4",
+   "skill": "dsa.dp_2d",
+   "difficulty": 4,
+   "stem": "Time complexity of the 0/1 knapsack DP with n items and capacity W is",
+   "options": [
+    {
+     "text": "O(n + W)",
+     "misconception": "dsa.dp_2d.m3"
+    },
+    {
+     "text": "O(nW)",
+     "misconception": null
+    },
+    {
+     "text": "O(n log W)",
+     "misconception": "dsa.dp_2d.m3"
+    },
+    {
+     "text": "O(2^n) always",
+     "misconception": "dsa.dp_2d.m3"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.dp_2d.q5",
+   "skill": "dsa.dp_2d",
+   "difficulty": 4,
+   "stem": "Number of paths in an R by C grid moving only right or down: dp[r][c] equals",
+   "options": [
+    {
+     "text": "dp[r-1][c] * dp[r][c-1]",
+     "misconception": "dsa.dp_2d.m2"
+    },
+    {
+     "text": "dp[r-1][c-1]",
+     "misconception": "dsa.dp_2d.m2"
+    },
+    {
+     "text": "max(dp[r-1][c], dp[r][c-1])",
+     "misconception": "dsa.dp_2d.m2"
+    },
+    {
+     "text": "dp[r-1][c] + dp[r][c-1]",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.dp_2d.q6",
+   "skill": "dsa.dp_2d",
+   "difficulty": 4,
+   "stem": "Edit distance considers the operations",
+   "options": [
+    {
+     "text": "sort and merge",
+     "misconception": "dsa.dp_2d.m1"
+    },
+    {
+     "text": "only insert",
+     "misconception": "dsa.dp_2d.m1"
+    },
+    {
+     "text": "insert, delete and replace",
+     "misconception": null
+    },
+    {
+     "text": "only replace",
+     "misconception": "dsa.dp_2d.m1"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.greedy.q1",
+   "skill": "dsa.greedy",
+   "difficulty": 3,
+   "stem": "Activity selection (maximum number of non-overlapping intervals) is solved greedily by sorting by",
+   "options": [
+    {
+     "text": "earliest start time",
+     "misconception": "dsa.greedy.m2"
+    },
+    {
+     "text": "shortest duration",
+     "misconception": "dsa.greedy.m2"
+    },
+    {
+     "text": "earliest finish time",
+     "misconception": null
+    },
+    {
+     "text": "latest finish time",
+     "misconception": "dsa.greedy.m2"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.greedy.q2",
+   "skill": "dsa.greedy",
+   "difficulty": 3,
+   "stem": "Greedy by value per weight is optimal for",
+   "options": [
+    {
+     "text": "0/1 knapsack",
+     "misconception": "dsa.greedy.m3"
+    },
+    {
+     "text": "longest common subsequence",
+     "misconception": "dsa.greedy.m1"
+    },
+    {
+     "text": "coin change with arbitrary coins",
+     "misconception": "dsa.greedy.m1"
+    },
+    {
+     "text": "fractional knapsack",
+     "misconception": null
+    }
+   ],
+   "answer": 3
+  },
+  {
+   "id": "dsa.greedy.q3",
+   "skill": "dsa.greedy",
+   "difficulty": 3,
+   "stem": "Coins {1, 3, 4}, amount 6: greedy largest-first gives",
+   "options": [
+    {
+     "text": "3 coins (4, 1, 1) while optimal is 2 (3, 3)",
+     "misconception": null
+    },
+    {
+     "text": "1 coin",
+     "misconception": "dsa.greedy.m1"
+    },
+    {
+     "text": "the optimal 2 coins",
+     "misconception": "dsa.greedy.m1"
+    },
+    {
+     "text": "it fails with an error",
+     "misconception": "dsa.greedy.m1"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.greedy.q4",
+   "skill": "dsa.greedy",
+   "difficulty": 3,
+   "stem": "To justify a greedy algorithm you typically use",
+   "options": [
+    {
+     "text": "a random test only",
+     "misconception": "dsa.greedy.m1"
+    },
+    {
+     "text": "the size of the input",
+     "misconception": "dsa.greedy.m1"
+    },
+    {
+     "text": "an exchange argument",
+     "misconception": null
+    },
+    {
+     "text": "recursion depth",
+     "misconception": "dsa.greedy.m1"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.greedy.q5",
+   "skill": "dsa.greedy",
+   "difficulty": 3,
+   "stem": "A typical greedy solution first",
+   "options": [
+    {
+     "text": "runs BFS",
+     "misconception": "dsa.greedy.m1"
+    },
+    {
+     "text": "sorts by a key then makes local choices",
+     "misconception": null
+    },
+    {
+     "text": "builds a full DP table",
+     "misconception": "dsa.greedy.m1"
+    },
+    {
+     "text": "builds a trie",
+     "misconception": "dsa.greedy.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.greedy.q6",
+   "skill": "dsa.greedy",
+   "difficulty": 3,
+   "stem": "When unsure whether a greedy rule is correct you should",
+   "options": [
+    {
+     "text": "assume it is correct if it passes the sample",
+     "misconception": "dsa.greedy.m1"
+    },
+    {
+     "text": "test it against small counterexamples or a brute force",
+     "misconception": null
+    },
+    {
+     "text": "add more loops",
+     "misconception": "dsa.greedy.m1"
+    },
+    {
+     "text": "switch to a hash map",
+     "misconception": "dsa.greedy.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.intervals.q1",
+   "skill": "dsa.intervals",
+   "difficulty": 3,
+   "stem": "The first step for merging overlapping intervals is usually to",
+   "options": [
+    {
+     "text": "sort the intervals by start time",
+     "misconception": null
+    },
+    {
+     "text": "sort them by length",
+     "misconception": "dsa.intervals.m1"
+    },
+    {
+     "text": "reverse them",
+     "misconception": "dsa.intervals.m1"
+    },
+    {
+     "text": "hash them",
+     "misconception": "dsa.intervals.m1"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.intervals.q2",
+   "skill": "dsa.intervals",
+   "difficulty": 3,
+   "stem": "Merging [1,5] and [2,3] gives",
+   "options": [
+    {
+     "text": "[1,5]",
+     "misconception": null
+    },
+    {
+     "text": "[1,3]",
+     "misconception": "dsa.intervals.m2"
+    },
+    {
+     "text": "[1,2]",
+     "misconception": "dsa.intervals.m2"
+    },
+    {
+     "text": "[2,5]",
+     "misconception": "dsa.intervals.m2"
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "dsa.intervals.q3",
+   "skill": "dsa.intervals",
+   "difficulty": 3,
+   "stem": "When merging, the new end should be",
+   "options": [
+    {
+     "text": "current start",
+     "misconception": "dsa.intervals.m2"
+    },
+    {
+     "text": "next end always",
+     "misconception": "dsa.intervals.m2"
+    },
+    {
+     "text": "max(current end, next end)",
+     "misconception": null
+    },
+    {
+     "text": "min of the ends",
+     "misconception": "dsa.intervals.m2"
+    }
+   ],
+   "answer": 2
+  },
+  {
+   "id": "dsa.intervals.q4",
+   "skill": "dsa.intervals",
+   "difficulty": 3,
+   "stem": "Minimum meeting rooms needed equals",
+   "options": [
+    {
+     "text": "the number of intervals",
+     "misconception": "dsa.intervals.m3"
+    },
+    {
+     "text": "the maximum number of overlapping intervals at any time",
+     "misconception": null
+    },
+    {
+     "text": "the number of distinct start times",
+     "misconception": "dsa.intervals.m3"
+    },
+    {
+     "text": "the longest interval",
+     "misconception": "dsa.intervals.m3"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.intervals.q5",
+   "skill": "dsa.intervals",
+   "difficulty": 3,
+   "stem": "Time complexity of merging n intervals including sorting is",
+   "options": [
+    {
+     "text": "O(log n)",
+     "misconception": "dsa.intervals.m1"
+    },
+    {
+     "text": "O(n log n)",
+     "misconception": null
+    },
+    {
+     "text": "O(n^2)",
+     "misconception": "dsa.intervals.m1"
+    },
+    {
+     "text": "O(n)",
+     "misconception": "dsa.intervals.m1"
+    }
+   ],
+   "answer": 1
+  },
+  {
+   "id": "dsa.intervals.q6",
+   "skill": "dsa.intervals",
+   "difficulty": 3,
+   "stem": "Which pair overlaps if touching endpoints do NOT count as overlap?",
+   "options": [
+    {
+     "text": "[5,6] and [7,8]",
+     "misconception": "dsa.intervals.m1"
+    },
+    {
+     "text": "[1,5] and [4,8]",
+     "misconception": null
+    },
+    {
+     "text": "[1,3] and [3,6]",
+     "misconception": "dsa.intervals.m1"
+    },
+    {
+     "text": "[1,2] and [2,3]",
+     "misconception": "dsa.intervals.m1"
+    }
+   ],
+   "answer": 1
+  }
+ ]
+}

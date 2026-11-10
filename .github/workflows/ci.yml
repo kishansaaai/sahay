@@ -12,3 +12,7 @@ jobs:
           python-version: '3.12'
       - name: Repository checks (no INTERNET permission, content JSON valid)
         run: python scripts/ci_checks.py
+      - name: Content validation (acyclic graphs, one correct option, misconception tags)
+        run: python scripts/validate_content.py
+      - name: Learning engine unit tests
+        run: python -m unittest discover -s engine/tests
