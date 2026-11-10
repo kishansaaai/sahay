@@ -20,12 +20,12 @@ jobs:
         run: python -m unittest discover -s simulator/tests
       - name: Kotlin engine tests and Python parity
         run: |
-          curl -sL -o /tmp/kc.zip https://github.com/JetBrains/kotlin/releases/download/v2.0.21/kotlin-compiler-2.0.21.zip
-          unzip -q /tmp/kc.zip -d /tmp
+          curl -fsSL -o /tmp/kc.zip https://github.com/JetBrains/kotlin/releases/download/v2.0.21/kotlin-compiler-2.0.21.zip || exit 11
+          unzip -q /tmp/kc.zip -d /tmp || exit 12
           export PATH=/tmp/kotlinc/bin:$PATH
-          kotlinc engine/src/main/kotlin -include-runtime -d /tmp/engine.jar
-          kotlinc -cp /tmp/engine.jar engine/src/test/kotlin -d /tmp/tests
-          java -cp /tmp/engine.jar:/tmp/tests com.sahay.engine.EngineTestsKt content
-          python3 engine/parity_python.py > /tmp/py.txt
-          java -cp /tmp/engine.jar:/tmp/tests com.sahay.engine.ParityKt content > /tmp/kt.txt
-          diff /tmp/py.txt /tmp/kt.txt
+          kotlinc engine/src/main/kotlin -include-runtime -d /tmp/engine.jar || exit 13
+          kotlinc -cp /tmp/engine.jar engine/src/test/kotlin -d /tmp/tests || exit 14
+          java -cp /tmp/engine.jar:/tmp/tests com.sahay.engine.EngineTestsKt content || exit 15
+          python3 engine/parity_python.py > /tmp/py.txt || exit 16
+          java -cp /tmp/engine.jar:/tmp/tests com.sahay.engine.ParityKt content > /tmp/kt.txt || exit 17
+          diff /tmp/py.txt /tmp/kt.txt || exit 18
