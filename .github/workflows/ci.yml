@@ -22,6 +22,7 @@ jobs:
           python eval/prompt_sets.py
           python eval/run_eval.py --generator mock --label ci --n 20 > /dev/null
           python export/build_pte.py --checkpoint-dir /nonexistent --dry-run > /dev/null
+          python bench/tests/test_bench.py
       - name: Simulator tests
         run: python -m unittest discover -s simulator/tests
       - uses: actions/setup-java@v4
