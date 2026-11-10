@@ -100,3 +100,29 @@ Official deadline: **23 Nov 2026**. Internal submission target: **22 Nov 2026**.
 6. C14 cognitive-load pacing  7. A11 teach-back  8. A12 syllabus compiler  9. A13 governor (keep measurement panel)
 
 Never cut: B1-B4 base layer, C1-C7 learning core, hint ladder, simulator, recover mode, analogies, benchmarks, demo video, report.
+
+## Stream A status (Sanjith) - updated 2026-11-11
+
+"Code done" means written, unit-tested here and in CI. "Needs device/model" is what still has to be run on a phone or with the weights, so the story is **not** closable until then.
+
+| ID | Status | Done in repo | Still needed |
+| --- | --- | --- | --- |
+| A01 | In progress | `docs/setup-runtime.md` steps and result template | Run the demo on the phone, fill the doc, email blockers |
+| A02 | In progress | `LICENSES/` tables and `LLAMA-3.2-NOTICE.md` checklist | Confirm model access (name, date), add the licence text from the download |
+| A03 | Code done | `export/build_pte.py`, `prompts20.json`, `releases/CHECKSUMS.txt` | Pin ExecuTorch tag, confirm flag names, build the .pte, 20 prompts on the phone |
+| A04 | Code done | `LlmRuntime`, `ExecuTorchRuntime` (opt-in), `SahayLlm.stream` Flow | Compile against the pinned tag; check stop under 500 ms and 200 runs memory on device |
+| A05 | Code done | `ModelManager` lazy load, warm-up, `onTrimMemory`, tests | Simulated trim on device |
+| A06 | Code done | `BenchStats`, debug `BenchmarkActivity`, `bench/README.md` | Run on the phone, commit numbers |
+| A07 | Done | `content/prompts/*`, tests, Python/Kotlin parity in CI | - |
+| A08 | Done | Python and Kotlin orchestrators, validity log, tests | Report numbers need the model |
+| A09 | Code done | `tutor.explain` | Model-run quality check (A16) |
+| A10 | Done | `tutor.hint`, leak validator and tests | - |
+| A11 | Code done | rubric prompt, validator, agreement script | 70% agreement on 40 samples needs a human grader |
+| A12 | Code done | compiler, validator (acyclic, at most 60), OCR sanitising | 80% topic coverage on 5 real syllabi |
+| A13 | Code done | `Governor`, `DeviceMonitor`, tests | Thresholds tuned from the thermal test; debug panel UI (Stream B) |
+| A14 | Tooling done | sustained run mode, `bench/thermal_chart.py` | The 20-minute runs |
+| A15 | Tooling done | `bench/ENERGY.md`, `energy_calc.py` | The measurements |
+| A16 | Tooling done | `eval/` fixed sets (500 per task), rubric scripts, compare | Run with the real model; human reviewers |
+| A17 | Not started | `bench/PREFIX_REUSE.md` with mentor email | Send the email, measure |
+| A18 | Not started | `export/finetune/` validator and training script | Reviewed licensed data, Colab run, evaluation |
+| A19 | Code done | `ModelVerifier`, checksum asset bundling, `scripts/verify_model.py`, `releases/README.md` | Attach the model to a GitHub release |
