@@ -23,8 +23,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.sahay.app.state.AppState
 import com.sahay.app.state.Screen
+import com.sahay.app.ui.screens.DashboardScreen
 import com.sahay.app.ui.screens.DiagnosticScreen
 import com.sahay.app.ui.screens.IntakeScreen
+import com.sahay.app.ui.screens.RecoverScreen
 import com.sahay.app.ui.screens.RoadmapScreen
 import com.sahay.app.ui.screens.StudyScreen
 import com.sahay.app.ui.screens.TodayScreen
@@ -34,7 +36,7 @@ import com.sahay.app.ui.sr
 import com.sahay.app.ui.theme.SahayTheme
 import java.util.Locale
 
-private val TABS = listOf(Screen.Today, Screen.Roadmap, Screen.Tutor)
+private val TABS = listOf(Screen.Today, Screen.Roadmap, Screen.Dashboard, Screen.Tutor)
 
 /** App shell (issue B03): top bar, three main tabs and the full-screen flows (welcome, intake, diagnostic, study). */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -91,6 +93,8 @@ fun SahayApp() {
                         Screen.Study -> StudyScreen(state)
                         Screen.Roadmap -> RoadmapScreen(state)
                         Screen.Tutor -> TutorScreen(state)
+                        Screen.Dashboard -> DashboardScreen(state)
+                        Screen.Recover -> RecoverScreen(state)
                         else -> NotInBuildScreen()
                     }
                 }
@@ -104,6 +108,7 @@ private fun goBack(state: AppState) {
         Screen.Intake -> state.go(Screen.Welcome)
         Screen.Diagnostic -> state.go(if (state.profile == null) Screen.Intake else Screen.Today)
         Screen.Study -> state.go(Screen.Today)
+        Screen.Recover -> state.go(Screen.Today)
         else -> state.go(Screen.Today)
     }
 }
@@ -117,6 +122,8 @@ private fun screenTitle(screen: Screen): String = when (screen) {
     Screen.Study -> sr(R.string.study_title)
     Screen.Roadmap -> sr(R.string.roadmap_title)
     Screen.Tutor -> sr(R.string.tutor_title)
+    Screen.Dashboard -> sr(R.string.dashboard_title)
+    Screen.Recover -> sr(R.string.recover_title)
     else -> sr(R.string.app_name)
 }
 
@@ -124,6 +131,7 @@ private fun screenTitle(screen: Screen): String = when (screen) {
 private fun tabLabel(screen: Screen): String = when (screen) {
     Screen.Roadmap -> sr(R.string.nav_roadmap)
     Screen.Tutor -> sr(R.string.nav_tutor)
+    Screen.Dashboard -> sr(R.string.nav_dashboard)
     else -> sr(R.string.nav_today)
 }
 

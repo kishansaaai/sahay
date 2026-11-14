@@ -152,5 +152,44 @@
     <string name="tutor_stopped">रोका गया</string>
     <string name="tutor_template">टेम्पलेट उत्तर</string>
     <string name="tutor_failed">उत्तर नहीं बन सका: %1$s</string>
+    <string name="dashboard_title">डैशबोर्ड</string>
+    <string name="dashboard_no_profile">डैशबोर्ड देखने के लिए पहले शुरुआती जानकारी भरें।</string>
+    <string name="dashboard_mastery">दक्षता</string>
+    <string name="dashboard_average">औसत दक्षता %1$d%%</string>
+    <string name="dashboard_target">लक्ष्य %1$d%%</string>
+    <string name="dashboard_gap">बाकी %1$d अंक</string>
+    <string name="dashboard_forecast">लक्ष्य तक अनुमान</string>
+    <string name="forecast_estimate">मौजूदा रफ़्तार से लगभग %1$d अध्ययन दिन और। यह आपके जवाबों से बना अनुमान है, कोई वादा नहीं।</string>
+    <string name="forecast_reached">आप लक्ष्य दक्षता पर या उससे ऊपर हैं।</string>
+    <string name="forecast_not_enough">अनुमान दिखाने के लिए जवाबों वाले दो अध्ययन दिन चाहिए।</string>
+    <string name="forecast_no_trend">दर्ज किए गए दिनों में दक्षता अभी नहीं बढ़ी, इसलिए कोई अनुमान नहीं दिखाया गया है।</string>
+    <string name="forecast_too_far">मौजूदा रफ़्तार से लक्ष्य एक साल से ज़्यादा दूर है।</string>
+    <string name="forecast_basis">%1$d दर्ज अध्ययन दिन के आधार पर।</string>
+    <string name="dashboard_calibration">आत्मविश्वास का मिलान</string>
+    <string name="dashboard_calibration_none">पाँच जवाबों के बाद मिलान शुरू होता है।</string>
+    <string name="dashboard_calibration_label">आपका पैटर्न: %1$s</string>
+    <string name="dashboard_calibration_n">आत्मविश्वास वाले %1$d जवाब</string>
+    <string name="dashboard_bias">आत्मविश्वास घटा सही दर: %1$d अंक</string>
+    <string name="dashboard_brier">ब्रायर स्कोर: %1$s (कम बेहतर है)</string>
+    <string name="calibration_overconfident">ज़्यादा आत्मविश्वासी</string>
+    <string name="calibration_underconfident">कम आत्मविश्वासी</string>
+    <string name="calibration_calibrated">संतुलित</string>
+    <string name="dashboard_skills">आपके लक्ष्य के कौशल</string>
+    <string name="dashboard_no_skills">इस लक्ष्य के लिए कोई कौशल लोड नहीं है।</string>
+    <string name="dashboard_percent">%1$d%%</string>
+    <string name="dashboard_skill_mastery">%1$s, %2$d%% दक्षता</string>
+    <string name="dashboard_answers">%1$d जवाब</string>
+    <string name="dashboard_revise">जल्द दोहराएँ</string>
+
+    <string name="recover_title">सुधार</string>
+    <string name="recover_body">अगर कुछ दिन छूट गए, तो सहाय बचे समय में योजना फिर से बना सकता है। यह हर घंटे के हिसाब से सबसे उपयोगी कौशल रखता है और जो छोड़ा उसका कारण बताता है।</string>
+    <string name="recover_budget">पढ़ाई के लिए बचा समय</string>
+    <string name="recover_apply">मेरी योजना फिर बनाएँ</string>
+    <string name="recover_no_change">बदलाव देखने के लिए समय चुनकर योजना फिर बनाएँ।</string>
+    <string name="recover_result">क्या बदला</string>
+    <string name="recover_before_after">पहले: %1$d नियोजित आइटम। अब: %2$d आइटम, %3$d छोड़े गए।</string>
+    <string name="recover_note">योजना पहले शर्त वाले कौशल का क्रम रखती है। छोड़े गए कौशल नीचे कारण के साथ हैं।</string>
+    <string name="recover_dropped">इस बार छोड़े गए</string>
+
     <string name="not_in_build">यह स्क्रीन अभी इस बिल्ड में नहीं है।</string>
 </resources>

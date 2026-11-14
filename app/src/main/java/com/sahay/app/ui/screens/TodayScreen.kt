@@ -88,5 +88,9 @@ fun TodayScreen(state: AppState) {
             OutlinedButton(onClick = { state.go(com.sahay.app.state.Screen.Roadmap) }) { Text(sr(R.string.nav_roadmap)) }
             OutlinedButton(onClick = { state.openTutor(item?.skillId) }) { Text(sr(R.string.today_tutor)) }
         }
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
+            OutlinedButton(onClick = { state.go(com.sahay.app.state.Screen.Recover) }) { Text(sr(R.string.today_recover)) }
+            OutlinedButton(onClick = { state.go(com.sahay.app.state.Screen.Dashboard) }) { Text(sr(R.string.nav_dashboard)) }
+        }
     }
 }
