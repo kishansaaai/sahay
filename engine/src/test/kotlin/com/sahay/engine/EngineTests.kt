@@ -351,6 +351,26 @@ fun main(args: Array<String>) {
         check(f.daysToTarget == 0, "zero days")
     }
 
+    test("practice replay preserves unrated confidence and rejects contradictory attempts") {
+        val q = C.questions.values.first()
+        val row = AttemptRow(1, q.id, q.skill, q.answer, true, 50.0, 2000.0, 0, 0.0, confidenceRated = false)
+        val parsed = Snapshot.fromJson(Snapshot(attempts = listOf(row)).toJson())
+        check(!parsed.attempts.single().confidenceRated, "rating flag lost")
+        check(replay(C, listOf(q.skill), parsed.attempts).calibration.n == 0, "invented confidence rating")
+        check(validateAttempts(C, listOf(row.copy(correct = false))).isNotEmpty(), "forged correctness accepted")
+        check(validateAttempts(C, listOf(row, row)).isNotEmpty(), "duplicate sequence accepted")
+        check(validateAttempts(C, listOf(row.copy(day = -1.0))).isNotEmpty(), "negative day accepted")
+    }
+    test("import rejects fractional integers, nonfinite numbers and invalid plan references") {
+        val q = C.questions.values.first()
+        val row = AttemptRow(1, q.id, q.skill, q.answer, true, 50.0, 2000.0, 0, 0.0)
+        val json = Snapshot(attempts = listOf(row)).toJson()
+        var rejected = false
+        try { Snapshot.fromJson(json.replace("\"seq\":1", "\"seq\":1.5")) } catch (e: IllegalArgumentException) { rejected = true }
+        check(rejected, "fractional sequence truncated")
+        val snapshot = Snapshot(plan = Plan(1, 0.0, "", mutableListOf(PlanItem("learn", "missing", day = null))))
+        check(snapshot.validationErrors(C).isNotEmpty(), "invalid plan accepted")
+    }
     val (lp, lf) = llmTests(args[0]); passed += lp; failures += lf
 
     println("\n$passed passed, $failures failed")

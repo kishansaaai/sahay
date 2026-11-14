@@ -35,6 +35,9 @@ import com.sahay.engine.forecastToTarget
 import com.sahay.engine.recover
 import com.sahay.engine.replay
 import com.sahay.engine.validateAttempts
+import com.sahay.engine.validationErrors
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -82,6 +85,12 @@ class AppState(private val app: Application) {
     private val store = SnapshotStore(app)
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     private val contents = HashMap<String, Content>()
+    private val storageQueue = Channel<suspend () -> Unit>(Channel.UNLIMITED)
+    init { scope.launch(Dispatchers.IO) { for (operation in storageQueue) operation() } }
+    var restoring by mutableStateOf(true)
+        private set
+    private var taskEpoch = 0
+
 
     var screen by mutableStateOf(Screen.Welcome)
         private set
@@ -184,10 +193,10 @@ class AppState(private val app: Application) {
      * True only when an ExecuTorch runtime is compiled in *and* a model file is present. Any generated text is reported as
      * template text otherwise, so the UI never implies a model result that did not happen.
      */
-    val modelPresent: Boolean = SahayLlm.ready && SahayLlm.runtimeAvailable &&
+    val modelPresent: Boolean get() = SahayLlm.ready && SahayLlm.runtimeAvailable &&
         File(app.filesDir, "models/${SahayLlm.MODEL_FILE}").isFile
 
-    val llmLanguage: String get() = if (language == "hi") "hi" else "en"
+    val llmLanguage: String get() = language
 
     val day: Double
         get() {
@@ -199,7 +208,17 @@ class AppState(private val app: Application) {
 
     /** Load the saved snapshot and rebuild learner state by replaying the attempt log. */
     fun restore() {
-        val snap = try { store.load() } catch (e: Exception) { null } ?: return
+        storageQueue.trySend {
+            val snap = store.load()
+            withContext(Dispatchers.Main) {
+                if (snap != null) applySnapshot(snap)
+                storageError = store.lastError
+                restoring = false
+            }
+        }
+    }
+
+    private fun applySnapshot(snap: Snapshot) {
         try {
             language = snap.language
             profile = snap.profile
@@ -249,6 +268,7 @@ class AppState(private val app: Application) {
     fun go(next: Screen) { screen = next }
 
     fun selectLanguage(code: String) {
+        require(code in setOf("en", "hi", "ta", "te", "bn", "mr"))
         if (code == language) return
         language = code
         persist()
@@ -299,6 +319,7 @@ class AppState(private val app: Application) {
     // ---- diagnostic (B07) ----
 
     fun startDiagnostic() {
+        taskEpoch++
         val p = profile ?: return
         try {
             diagnostic = Diagnostic(contentFor(domain), model, misconceptions, targets, now = day)
@@ -330,6 +351,7 @@ class AppState(private val app: Application) {
         hintLoading = true
         val c = contentFor(domain)
         val notes = c.graph.skills[q.skill]?.notes ?: ""
+        val epoch = taskEpoch
         scope.launch {
             val inp = mapOf(
                 "stem" to q.stem,
@@ -340,6 +362,7 @@ class AppState(private val app: Application) {
                 "_correct_text" to q.options[q.answer].text,
             )
             val r = runTask("hint", inp)
+            if (epoch != taskEpoch || question?.id != q.id) return@launch
             hintText = (r.output?.get("hint") as? String) ?: ""
             hintTemplate = r.source != "model"
             hintLoading = false
@@ -347,6 +370,7 @@ class AppState(private val app: Application) {
     }
 
     fun submitDiagnosticAnswer() {
+        if (diagnosticFeedback != null) return
         val q = question ?: return
         val chosen = pendingChoice ?: return
         val d = diagnostic ?: return
@@ -373,6 +397,7 @@ class AppState(private val app: Application) {
     }
 
     fun nextDiagnosticQuestion() {
+        taskEpoch++
         val d = diagnostic ?: return
         diagnosticFeedback = null
         pendingChoice = null
@@ -438,6 +463,7 @@ class AppState(private val app: Application) {
     private fun nextSeq(): Int = (attempts.maxOfOrNull { it.seq } ?: 0) + 1
 
     fun openStudy(skillId: String? = null, practice: Boolean = false) {
+        taskEpoch++
         val id = skillId ?: nextPlanItem()?.skillId ?: run {
             screen = Screen.Today
             return
@@ -477,7 +503,9 @@ class AppState(private val app: Application) {
             "analogy" to withAnalogy,
             "language" to llmLanguage,
         )
+        val epoch = taskEpoch
         val r = runTask("explain", inp)
+        if (epoch != taskEpoch || studySkillId != skillId) return
         studyText = (r.output?.get("explanation") as? String) ?: skill.notes
         studyAnalogy = (r.output?.get("analogy") as? String) ?: ""
         studyCheck = (r.output?.get("check_question") as? String) ?: ""
@@ -495,6 +523,7 @@ class AppState(private val app: Application) {
     fun chooseCheckOption(index: Int) { if (checkFeedback == null) checkPendingChoice = index }
 
     fun submitCheckAnswer() {
+        if (checkFeedback != null) return
         val q = studyQuestion ?: return
         val chosen = checkPendingChoice ?: return
         val c = contentFor(domain)
@@ -505,7 +534,7 @@ class AppState(private val app: Application) {
         fatigue.add(responseMs, correct)
         attempts = attempts + AttemptRow(
             seq = nextSeq(), questionId = q.id, skillId = q.skill, chosenIndex = chosen, correct = correct,
-            confidence = 50.0, responseMs = responseMs, hintLevel = 0, day = day,
+            confidence = 50.0, responseMs = responseMs, hintLevel = 0, day = day, confidenceRated = false,
         )
         val mid = q.options.getOrNull(chosen)?.misconception
         checkFeedback = CheckFeedback(
@@ -571,7 +600,9 @@ class AppState(private val app: Application) {
         tutorJob = scope.launch {
             try {
                 SahayLlm.stream(prompt, 220, 0.7).collect { token -> appendTutor(token) }
-            } catch (e: Throwable) {
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
                 appendTutor("\n" + str(com.sahay.app.R.string.tutor_failed, e.message ?: "error"))
             } finally {
                 finishTutorStream()
@@ -580,6 +611,7 @@ class AppState(private val app: Application) {
     }
 
     fun stopTutor() {
+        if (!tutorStreaming) return
         tutorJob?.cancel()
         tutorJob = null
         if (SahayLlm.ready) runCatching { SahayLlm.manager.stop() }
@@ -604,7 +636,7 @@ class AppState(private val app: Application) {
     }
 
     private fun tutorPrompt(skillName: String, notes: String, question: String): String {
-        val lang = if (llmLanguage == "hi") "Hindi" else "English"
+        val lang = Locale.forLanguageTag(llmLanguage).getDisplayLanguage(Locale.ENGLISH)
         val system = "You are Sahay, an offline study tutor. Stay on the topic of $skillName. Use these notes: $notes " +
             "Do not give medical, legal or financial advice. Answer in $lang in under 120 words."
         val messages = listOf(ChatMessage("system", system), ChatMessage("user", question))
@@ -620,6 +652,19 @@ class AppState(private val app: Application) {
             SahayLlm.orchestrator.run(task, input, llmLanguage)
         } else {
             LlmResult(task, Fallbacks.make(task, input, llmLanguage), "fallback", 0, listOf("runtime not initialised"))
+        }
+    }
+
+    /** OCR is untrusted data. The prompt builder escapes delimiters and the orchestrator validates every result. */
+    fun runScannedTask(task: String, text: String, onComplete: (LlmResult) -> Unit) {
+        require(task in setOf("draft_question", "syllabus_compile"))
+        val clean = text.replace(Regex("[\\p{Cc}&&[^\\n\\t]]"), " ").take(6000)
+        val input = if (task == "syllabus_compile") mapOf("ocr_text" to clean)
+            else mapOf("skill_id" to (studySkillId ?: targets.firstOrNull().orEmpty()), "notes" to clean)
+        val epoch = taskEpoch
+        scope.launch {
+            val result = runTask(task, input)
+            if (epoch == taskEpoch) onComplete(result)
         }
     }
 
@@ -717,28 +762,24 @@ class AppState(private val app: Application) {
      * Replace local state with an exported snapshot. Returns null on success or a readable reason when the snapshot is
      * malformed, belongs to another domain, or references questions this build does not bundle.
      */
-    fun importSnapshot(text: String): String? {
-        val snap = try {
-            Snapshot.fromJson(text)
-        } catch (e: Exception) {
-            return e.message ?: "invalid snapshot"
+    fun importSnapshot(text: String, onComplete: (String?) -> Unit) {
+        val snap = try { Snapshot.fromJson(text) } catch (e: Exception) { onComplete(e.message ?: "invalid snapshot"); return }
+        val p = snap.profile ?: run { onComplete("the snapshot has no learner profile"); return }
+        if (p.domain !in DOMAIN_TARGETS) { onComplete("unknown domain '${p.domain}'"); return }
+        val errors = snap.validationErrors(contentFor(p.domain))
+        if (errors.isNotEmpty()) { onComplete(errors.first()); return }
+        stopTutor()
+        taskEpoch++
+        restoring = true
+        val json = snap.toJson()
+        storageQueue.trySend {
+            val saved = store.saveJson(json)
+            withContext(Dispatchers.Main) {
+                if (saved) { storageError = null; applySnapshot(snap) }
+                restoring = false
+                onComplete(if (saved) null else store.lastError ?: "could not save snapshot")
+            }
         }
-        val p = snap.profile ?: return "the snapshot has no learner profile"
-        if (p.domain !in DOMAIN_TARGETS) return "unknown domain '${p.domain}'"
-        val c = try {
-            contentFor(p.domain)
-        } catch (e: Exception) {
-            return "content for '${p.domain}' is not bundled"
-        }
-        val known = c.graph.skills.keys
-        val unknown = snap.targets.filter { it !in known }
-        if (unknown.isNotEmpty()) return "unknown target skills: ${unknown.joinToString()}"
-        val bad = validateAttempts(c, snap.attempts)
-        if (bad.isNotEmpty()) return bad.first()
-        if (!store.saveJson(snap.toJson())) return store.lastError ?: "could not save the snapshot"
-        storageError = null
-        restore()
-        return storageError
     }
 
     fun snapshot(): Snapshot = Snapshot(
@@ -755,7 +796,21 @@ class AppState(private val app: Application) {
     fun exportJson(): String = snapshot().toJson()
 
     fun deleteAllData() {
-        store.deleteAll()
+        stopTutor()
+        taskEpoch++
+        restoring = true
+        storageQueue.trySend {
+            if (SahayLlm.ready) SahayLlm.manager.release()
+            val deleted = store.deleteAll()
+            withContext(Dispatchers.Main) {
+                if (deleted) clearLearnerState()
+                else storageError = store.lastError
+                restoring = false
+            }
+        }
+    }
+
+    private fun clearLearnerState() {
         profile = null
         attempts = emptyList()
         teachBacks = emptyList()
@@ -776,9 +831,13 @@ class AppState(private val app: Application) {
     fun storageErrorText(): String? = storageError ?: store.lastError
 
     private fun persist() {
+        if (restoring) return
         // Serialise on the caller's thread (usually main) so a mutable Plan cannot change while the writer walks it.
         val json = snapshot().toJson()
-        scope.launch(Dispatchers.IO) { store.saveJson(json) }
+        storageQueue.trySend {
+            val saved = store.saveJson(json)
+            withContext(Dispatchers.Main) { storageError = if (saved) null else store.lastError }
+        }
     }
 
     private fun nowDays(): Double = System.currentTimeMillis() / 86_400_000.0

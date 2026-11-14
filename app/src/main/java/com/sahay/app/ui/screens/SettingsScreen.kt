@@ -1,3 +1,5 @@
+@file:OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
+
 package com.sahay.app.ui.screens
 
 import android.content.ClipData
@@ -5,7 +7,7 @@ import android.content.ClipboardManager
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -60,6 +62,7 @@ fun SettingsScreen(state: AppState) {
 
         SectionCard(title = sr(R.string.language)) {
             LanguageChips(state)
+            if (state.language !in setOf("en", "hi")) Text(sr(R.string.experimental_language))
         }
 
         SectionCard(title = sr(R.string.settings_model)) {
@@ -79,7 +82,7 @@ fun SettingsScreen(state: AppState) {
                 text = sr(R.string.settings_data_summary, state.exportSummary()),
                 style = MaterialTheme.typography.bodyMedium,
             )
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
                 Button(
                     onClick = {
                         val json = state.exportJson()
@@ -110,15 +113,19 @@ fun SettingsScreen(state: AppState) {
                     if (text.isNullOrBlank()) {
                         message = emptyMessage
                     } else {
-                        val error = state.importSnapshot(text)
-                        message = if (error == null) okMessage
-                        else context.getString(R.string.settings_import_failed, error)
+                        state.importSnapshot(text) { error ->
+                            message = if (error == null) okMessage
+                            else context.getString(R.string.settings_import_failed, error)
+                        }
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
             ) { Text(sr(R.string.settings_import)) }
             message?.let { Text(text = it, style = MaterialTheme.typography.bodyMedium) }
         }
+
+        OutlinedButton(onClick = { state.go(Screen.Scan) }, modifier = Modifier.fillMaxWidth()) { Text(sr(R.string.scan_title)) }
+        OutlinedButton(onClick = { state.go(Screen.Share) }, modifier = Modifier.fillMaxWidth()) { Text(sr(R.string.share_title)) }
 
         SectionCard(title = sr(R.string.settings_delete)) {
             Text(text = sr(R.string.settings_delete_body), style = MaterialTheme.typography.bodySmall)

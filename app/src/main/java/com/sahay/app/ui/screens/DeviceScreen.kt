@@ -9,6 +9,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -24,8 +26,12 @@ import com.sahay.engine.GovMode
  */
 @Composable
 fun DeviceScreen(state: AppState) {
-    val snapshot = state.deviceSnapshot()
+    var reading by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(state.deviceSnapshot()) }
+    androidx.compose.runtime.LaunchedEffect(state) {
+        while (true) { reading = state.deviceSnapshot(); kotlinx.coroutines.delay(2000) }
+    }
 
+    val snapshot = reading
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -71,6 +77,14 @@ fun DeviceScreen(state: AppState) {
             }
         }
 
+        SectionCard(title = sr(R.string.device_events)) {
+            val llm = com.sahay.app.llm.SahayLlm
+            val stats = if (snapshot != null) llm.lastStats else null
+            Text(sr(R.string.device_speed, stats?.let { if (it.decodeMs > 0) "%.2f".format(it.tokens * 1000 / it.decodeMs) else sr(R.string.device_unmeasured) } ?: sr(R.string.device_unmeasured)))
+            Text(sr(R.string.device_energy, llm.lastChargeMah?.let { "%.3f".format(it) } ?: sr(R.string.device_unmeasured)))
+            Text(sr(R.string.device_threads_note))
+            if (llm.ready) llm.governor.log.takeLast(10).forEach { Text("${it.from} → ${it.to}: ${it.reason}") }
+        }
         SectionCard(title = sr(R.string.settings_model)) {
             Text(
                 text = sr(R.string.settings_model_file, sr(if (state.modelPresent) R.string.settings_present else R.string.settings_absent)),

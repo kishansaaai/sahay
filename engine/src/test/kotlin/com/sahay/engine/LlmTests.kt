@@ -114,6 +114,24 @@ fun llmTests(contentDir: String): Pair<Int, Int> {
         val f = Fake(); val m = ModelManager(f, "m", "t"); var n = 0
         val st = m.generate("hi", 100, 0.2) { n++ < 3 }; check(st.stopped && st.tokens == 3, "${st.tokens}")
     }
+    test("cancelled queued request never loads or generates") {
+        val fake = Fake(); val manager = ModelManager(fake, "m", "t")
+        var cancelled = false
+        try { manager.generate("p", 4, 0.2, isCancelled = { true }) { true } }
+        catch (e: java.util.concurrent.CancellationException) { cancelled = true }
+        check(cancelled && fake.loads == 0 && fake.gens == 0, "cancelled request ran")
+    }
+    test("request cancellation cannot stop another request") {
+        val fake = Fake(); val manager = ModelManager(fake, "m", "t")
+        val active = Any(); val unrelated = Any()
+        manager.generate("p", 4, 0.2, request = active) {
+            manager.stop(unrelated)
+            check(!fake.stopped, "unrelated request interrupted generation")
+            manager.stop(active)
+            true
+        }
+        check(fake.stopped, "own cancellation did not reach runtime")
+    }
     test("200 consecutive generations keep the model loaded once (no reload churn)") {
         val f = Fake(); val m = ModelManager(f, "m", "t"); repeat(200) { m.generate("p", 3, 0.2) { true } }; check(f.loads == 1 && f.gens == 200, "loads ${f.loads}")
     }

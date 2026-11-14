@@ -24,7 +24,7 @@ class Governor(
     private val minDwellMs: Long = 20_000,
     private val fullContext: Int = 2048,
 ) {
-    var mode: GovMode = GovMode.FULL
+    @Volatile var mode: GovMode = GovMode.FULL
         private set
     private var changedAt = Long.MIN_VALUE / 2
     private val events = ArrayList<GovEvent>()

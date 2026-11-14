@@ -3,6 +3,7 @@ package com.sahay.engine
 import java.io.File
 import java.io.InputStream
 import java.security.MessageDigest
+import java.util.concurrent.CancellationException
 
 /** Receives tokens as they are generated. Return false from [onToken] to ask the runtime to stop. */
 fun interface TokenListener { fun onToken(token: String): Boolean }
@@ -61,6 +62,7 @@ class ModelManager(
     @Volatile var loadCount = 0
         private set
     @Volatile private var generating = false
+    @Volatile private var activeRequest: Any? = null
 
     val isLoaded: Boolean get() = runtime.isLoaded
 
@@ -75,17 +77,25 @@ class ModelManager(
     /** Run a tiny generation so the first real request is fast. Call at app start from a background thread. */
     fun warmUp() = synchronized(lock) {
         ensureLoaded()
-        if (!warmedUp) { runtime.generate(warmupPrompt, 4, 0.0) { true }; warmedUp = true }
+        if (!warmedUp) {
+            generating = true
+            try { runtime.generate(warmupPrompt, 4, 0.0) { true }; warmedUp = true }
+            finally { generating = false }
+        }
     }
 
-    fun generate(prompt: String, maxNewTokens: Int, temperature: Double, listener: TokenListener): GenStats = synchronized(lock) {
+    fun generate(prompt: String, maxNewTokens: Int, temperature: Double, request: Any? = null, isCancelled: () -> Boolean = { false }, listener: TokenListener): GenStats = synchronized(lock) {
+        require(maxNewTokens > 0) { "generation limit must be positive" }
+        if (isCancelled()) throw CancellationException("generation cancelled before load")
         ensureLoaded()
+        if (isCancelled()) throw CancellationException("generation cancelled before start")
+        activeRequest = request
         generating = true
-        try { runtime.generate(prompt, maxNewTokens, temperature, listener) } finally { generating = false }
+        try { runtime.generate(prompt, maxNewTokens, temperature) { !isCancelled() && listener.onToken(it) } } finally { generating = false; activeRequest = null }
     }
 
     /** Safe to call from any thread while a generation runs; does not wait for the lock. */
-    fun stop() { if (generating) runtime.stop() }
+    fun stop(request: Any? = null) { if (generating && (request == null || activeRequest === request)) runtime.stop() }
 
     /** Forward Android onTrimMemory. At level 10 (RUNNING_LOW) or worse, stop any generation and free the model. */
     fun onTrimMemory(level: Int) {
