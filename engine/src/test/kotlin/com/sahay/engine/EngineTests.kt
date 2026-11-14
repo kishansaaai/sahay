@@ -351,6 +351,67 @@ fun main(args: Array<String>) {
         check(f.daysToTarget == 0, "zero days")
     }
 
+    // ---- share code and teacher heatmap (B17) ----
+    fun sampleSnapshot(n: Int = 12, reasonLen: Int = 80): Snapshot {
+        val skills = C.graph.skills.keys.sorted()
+        val items = (0 until n).map { i ->
+            val reason = ("Because ${skills[i % skills.size]} unlocks the next step. ")
+                .repeat((reasonLen / 44).coerceAtLeast(1)).take(reasonLen)
+            PlanItem(
+                type = listOf("learn", "practice", "revise")[i % 3],
+                skillId = skills[i % skills.size],
+                day = i,
+                minutes = 20 + (i % 4) * 5,
+                status = if (i == 0) "done" else "planned",
+                reason = reason,
+            )
+        }
+        val q = C.bySkill.getValue("dsa.arrays")[0]
+        return Snapshot(
+            profile = LearnerProfileRow(
+                goal = "become a backend engineer", domain = "dsa", level = "beginner",
+                hoursPerWeek = 8.0, studyDays = 5, deadlineDay = 30, targetMastery = 0.9,
+                interests = listOf("cricket"), language = "en", createdAt = 20_000.0,
+            ),
+            targets = listOf("dsa.topo", "dsa.dp_1d"),
+            attempts = listOf(AttemptRow(1, q.id, q.skill, q.answer, true, 80.0, 5_000.0, 0, 20_000.5)),
+            plan = Plan(1, 20_000.0, "fits the deadline", items.toMutableList(), emptyList()),
+            planChangeNote = "one skill moved",
+            language = "en",
+        )
+    }
+
+    test("share code round-trips a snapshot without loss") {
+        val snap = sampleSnapshot()
+        val back = ShareCode.decode(ShareCode.encode(snap))
+        check(back.toJson() == snap.toJson(), "snapshot JSON differs after the round trip")
+    }
+    test("share code fits a typical plan in one QR symbol") {
+        val code = ShareCode.encode(sampleSnapshot(n = 14, reasonLen = 80))
+        check(ShareCode.qrFits(code), "code is ${code.toByteArray().size} bytes, above the QR ceiling")
+    }
+    test("share code rejects damaged or foreign text") {
+        for (text in listOf("", "hello", ShareCode.PREFIX + "!!!", ShareCode.PREFIX + "AAAA")) {
+            var rejected = false
+            try { ShareCode.decode(text) } catch (e: ShareCode.InvalidShareCode) { rejected = true }
+            check(rejected, "accepted '$text'")
+        }
+    }
+    test("base64url matches the RFC 4648 vector") {
+        check(Base64Url.encode("hello".toByteArray()) == "aGVsbG8", "encode mismatch")
+        check(Base64Url.decode("aGVsbG8").toString(Charsets.UTF_8) == "hello", "decode mismatch")
+    }
+    test("heatmap merges students without inventing mastery") {
+        val a = sampleSnapshot()
+        val q = C.bySkill.getValue("dsa.arrays")[0]
+        val b = a.copy(attempts = listOf(AttemptRow(1, q.id, q.skill, q.answer, false, 50.0, 9_000.0, 2, 20_001.0)))
+        val rows = heatmap(C, listOf(a, b))
+        check(rows.isNotEmpty(), "no skills in the heatmap")
+        check(rows.all { it.students in 1..2 }, "student counts outside 1..2")
+        check(rows.all { it.meanMastery in 0.0..1.0 }, "mastery outside 0..1")
+        check(rows.map { it.skillId }.toSet().size == rows.size, "duplicate skill rows")
+    }
+
     val (lp, lf) = llmTests(args[0]); passed += lp; failures += lf
 
     println("\n$passed passed, $failures failed")

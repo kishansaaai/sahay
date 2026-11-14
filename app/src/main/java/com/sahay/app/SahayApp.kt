@@ -31,6 +31,7 @@ import com.sahay.app.ui.screens.IntakeScreen
 import com.sahay.app.ui.screens.RecoverScreen
 import com.sahay.app.ui.screens.RoadmapScreen
 import com.sahay.app.ui.screens.SettingsScreen
+import com.sahay.app.ui.screens.ShareScreen
 import com.sahay.app.ui.screens.StudyScreen
 import com.sahay.app.ui.screens.TodayScreen
 import com.sahay.app.ui.screens.TutorScreen
@@ -100,6 +101,7 @@ fun SahayApp() {
                         Screen.Recover -> RecoverScreen(state)
                         Screen.Device -> DeviceScreen(state)
                         Screen.Settings -> SettingsScreen(state)
+                        Screen.Share -> ShareScreen(state)
                         else -> NotInBuildScreen()
                     }
                 }
@@ -116,6 +118,7 @@ private fun goBack(state: AppState) {
         Screen.Recover -> state.go(Screen.Today)
         Screen.Device -> state.go(Screen.Settings)
         Screen.Settings -> state.go(Screen.Today)
+        Screen.Share -> state.go(Screen.Today)
         else -> state.go(Screen.Today)
     }
 }
@@ -133,6 +136,7 @@ private fun screenTitle(screen: Screen): String = when (screen) {
     Screen.Recover -> sr(R.string.recover_title)
     Screen.Device -> sr(R.string.device_title)
     Screen.Settings -> sr(R.string.settings_title)
+    Screen.Share -> sr(R.string.share_title)
     else -> sr(R.string.app_name)
 }
 

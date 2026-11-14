@@ -18,6 +18,7 @@ Full licence texts of anything we redistribute live next to this file.
 | KleidiAI (Arm) | Apache-2.0 | Arm-optimised kernels, if the build enables them |
 | Official ExecuTorch Llama Android demo app | BSD-style licence (same repository) | Reference for the JNI wrapper (A01, A04); our wrapper is original code written against its public API |
 | Kotlin, kotlinx.coroutines, AndroidX, Jetpack Compose | Apache-2.0 | App and engine |
+| ZXing core (`com.google.zxing:core`) | Apache-2.0 | QR symbol generation and image decoding for plan sharing (B17/X3). Library only; no source copied into the repository. |
 | Python 3 standard library only | PSF | llm/, eval/, export/, bench/ scripts (no third-party packages needed to run the tests) |
 | Hugging Face transformers, peft, datasets (offline LoRA, A18, optional) | Apache-2.0 | export/finetune/ only; never shipped in the app |
 

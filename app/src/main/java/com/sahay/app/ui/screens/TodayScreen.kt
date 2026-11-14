@@ -105,5 +105,9 @@ fun TodayScreen(state: AppState) {
             OutlinedButton(onClick = { state.go(com.sahay.app.state.Screen.Settings) }) { Text(sr(R.string.today_settings)) }
             OutlinedButton(onClick = { state.go(com.sahay.app.state.Screen.Device) }) { Text(sr(R.string.today_device)) }
         }
+        OutlinedButton(
+            onClick = { state.go(com.sahay.app.state.Screen.Share) },
+            modifier = Modifier.fillMaxWidth(),
+        ) { Text(sr(R.string.today_share)) }
     }
 }
