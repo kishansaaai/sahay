@@ -5,6 +5,36 @@ import kotlin.math.min
 import kotlin.math.round
 
 /**
+ * Apply the learner-state effects of one answer (knowledge tracing, misconception evidence and the prerequisite inference).
+ * Shared by the live [Diagnostic], the study/practice screens and replay-from-attempts (B04), so a stored attempt reproduces
+ * the same state as the live session. [closure] is the skill closure of the current goal targets.
+ */
+fun applyAnswer(
+    content: Content, model: LearnerModel, mis: MisconceptionEngine, closure: Collection<String>,
+    q: Question, chosenIndex: Int, confidence: Double, responseMs: Double, hintLevel: Int, now: Double,
+): Boolean {
+    val g = content.graph
+    val correct = q.options[chosenIndex].misconception == null
+    model.observe(q.skill, correct, confidence, responseMs, hintLevel, now, nOptions = q.options.size)
+    mis.observe(q, chosenIndex, confidence, now)
+    if (correct) {
+        for (p in g.prereqClosure(q.skill)) {
+            val st = model.state(p)
+            st.p = max(st.p, Diagnostic.INFER_FLOOR)
+        }
+    } else {
+        val sp = model.state(q.skill).p
+        for (d in closure) {
+            if (q.skill in g.prereqClosure(d)) {
+                val st = model.state(d)
+                st.p = min(st.p, max(sp, model.params.p0))
+            }
+        }
+    }
+    return correct
+}
+
+/**
  * Adaptive diagnostic (PRD 6 C3): 10 to 15 questions chosen to resolve the most uncertainty about the goal skills.
  * Port of diagnostic.py.
  */
@@ -43,29 +73,15 @@ class Diagnostic(
         return qs.minWithOrNull(compareBy<Question> { Math.abs(it.difficulty - level) }.thenBy { it.id })
     }
 
-    fun record(q: Question, chosenIndex: Int, confidence: Double, responseMs: Double): Boolean {
-        val g = c.graph
-        val correct = q.options[chosenIndex].misconception == null
-        model.observe(q.skill, correct, confidence, responseMs, 0, now, nOptions = q.options.size)
-        mis.observe(q, chosenIndex, confidence, now)
+    fun record(q: Question, chosenIndex: Int, confidence: Double, responseMs: Double, hintLevel: Int = 0): Boolean {
+        val correct = applyAnswer(c, model, mis, closure, q, chosenIndex, confidence, responseMs, hintLevel, now)
         askedSkills.add(q.skill)
         askedQ.add(q.id)
         history.add(q.id to correct)
         if (correct) {
             level = min(5, if (q.difficulty >= level) level + 1 else level)
-            for (p in g.prereqClosure(q.skill)) {
-                val st = model.state(p)
-                st.p = max(st.p, INFER_FLOOR)
-            }
         } else {
             level = max(1, level - 1)
-            val sp = model.state(q.skill).p
-            for (d in closure) {
-                if (q.skill in g.prereqClosure(d)) {
-                    val st = model.state(d)
-                    st.p = min(st.p, max(sp, model.params.p0))
-                }
-            }
         }
         return correct
     }

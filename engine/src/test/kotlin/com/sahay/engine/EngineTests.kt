@@ -276,6 +276,53 @@ fun main(args: Array<String>) {
         check(f.suggestion().action == NONE, "flagged ${f.index()}")
     }
 
+    // ---- storage / snapshot (B04) ----
+    test("snapshot round-trips through JSON") {
+        val prof = LearnerProfileRow("Learn DSA for placements", "dsa", "beginner", 6.0, 5, 70, 0.8, listOf("cricket"), "en", 0.0)
+        val plan = buildPlan(C, LearnerModel(), MisconceptionEngine(), prof.toPlannerProfile(), 0.0, listOf("dsa.arrays"))
+        val q = C.bySkill.getValue("dsa.arrays")[0]
+        val wrong = q.options.indexOfFirst { it.misconception != null }
+        val snap = Snapshot(
+            profile = prof, targets = listOf("dsa.arrays"),
+            attempts = listOf(AttemptRow(1, q.id, q.skill, wrong, false, 90.0, 40000.0, 0, 1.0)),
+            plan = plan, planChangeNote = "plan built", language = "en",
+        )
+        val back = Snapshot.fromJson(snap.toJson())
+        check(back.toJson() == snap.toJson(), "round trip differs")
+        check(back.attempts.single().questionId == q.id, "attempt kept")
+        check(back.plan!!.items.size == plan.items.size, "plan items kept")
+    }
+    test("replay reproduces live state from attempts") {
+        val targets = listOf("dsa.dp_1d")
+        val m = LearnerModel(); val mis = MisconceptionEngine()
+        val d = Diagnostic(C, m, mis, targets)
+        val rows = ArrayList<AttemptRow>(); var seq = 1
+        val rng = Random(11)
+        while (!d.done()) {
+            val q = d.nextQuestion()!!
+            val correct = rng.nextDouble() < 0.6
+            val idx = if (correct) q.answer else q.options.indices.filter { q.options[it].misconception != null }.random(rng)
+            val conf = rng.nextInt(10, 95).toDouble(); val ms = rng.nextInt(8000, 60000).toDouble()
+            d.record(q, idx, conf, ms)
+            rows.add(AttemptRow(seq++, q.id, q.skill, idx, correct, conf, ms, 0, 0.0))
+        }
+        val rep = replay(C, targets, rows)
+        for (s in C.graph.closure(targets)) near(rep.model.state(s).p, m.state(s).p, 1e-12, "p for $s")
+        check(rep.calibration.n == rows.size, "calibration rows")
+        check(rep.model.skills.isNotEmpty(), "state rebuilt")
+    }
+    test("snapshot import rejects malformed and unknown schema") {
+        for (t in listOf("{}", "{\"schema\":\"nope\"}", "not json")) {
+            val threw = try { Snapshot.fromJson(t); false } catch (e: IllegalArgumentException) { true } catch (e: Exception) { false }
+            check(threw, "accepted $t")
+        }
+    }
+    test("replay skips unknown questions without aborting") {
+        val rep = replay(C, listOf("dsa.arrays"), listOf(AttemptRow(1, "missing.question", "dsa.arrays", 0, true, 50.0, 1000.0, 0, 0.0)))
+        check(rep.model.state("dsa.arrays").p == LearnerModel().state("dsa.arrays").p, "unknown attempt must not change state")
+        check(validateAttempts(C, listOf(AttemptRow(1, "missing.question", "dsa.arrays", 0, true, 50.0, 1000.0, 0, 0.0))).size == 1, "validator reports it")
+    }
+
     val (lp, lf) = llmTests(args[0]); passed += lp; failures += lf
 
     println("\n$passed passed, $failures failed")

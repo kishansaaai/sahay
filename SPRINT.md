@@ -126,3 +126,11 @@ Never cut: B1-B4 base layer, C1-C7 learning core, hint ladder, simulator, recove
 | A17 | Documented | `bench/PREFIX_REUSE.md` records the API facts (prefill exists, no partial rollback, so no reuse for divergent prompts) and the shorter-prompt fallback | Send the mentor email; shorter-system-prompt measurement on the phone |
 | A18 | Not started | `export/finetune/` validator and training script | Reviewed licensed data, Colab run, evaluation |
 | A19 | Code done | `ModelVerifier`, checksum asset bundling, `scripts/verify_model.py`, `releases/README.md` | Attach the model to a GitHub release |
+
+## Stream B status (Pradhyut) - updated 2026-11-14
+
+"Code done" means written and compile-checked by CI. No screen has been rendered and nothing has run on a phone in this environment, so UI rows stay "Code done" until a device test happens.
+
+| ID | Status | Done in repo | Still needed |
+| --- | --- | --- | --- |
+| B04 | Code done | `engine/Store.kt` snapshot model, attempt replay and JSON import/export with tests; `app/data/SnapshotStore.kt` atomic file store and one-tap delete | Render with a screen, device test of save/load across process death |
