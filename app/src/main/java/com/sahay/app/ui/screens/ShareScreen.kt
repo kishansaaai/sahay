@@ -41,6 +41,7 @@ import com.google.zxing.common.HybridBinarizer
 import com.google.zxing.qrcode.QRCodeWriter
 import com.sahay.app.R
 import com.sahay.app.state.AppState
+import com.sahay.app.state.HeatRow
 import com.sahay.app.ui.MasteryBar
 import com.sahay.app.ui.SectionCard
 import com.sahay.app.ui.sr
@@ -72,7 +73,7 @@ fun ShareScreen(state: AppState) {
     var importMessage by remember { mutableStateOf<String?>(null) }
     var scanMessage by remember { mutableStateOf<String?>(null) }
     var teacherText by remember { mutableStateOf("") }
-    var heat by remember { mutableStateOf<List<AppState.HeatRow>>(emptyList()) }
+    var heat by remember { mutableStateOf<List<HeatRow>>(emptyList()) }
     var teacherMessage by remember { mutableStateOf<String?>(null) }
     var teacherCount by remember { mutableStateOf(0) }
 
