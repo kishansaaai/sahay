@@ -242,7 +242,7 @@
     <string name="voice_listening">Listening…</string>
     <string name="voice_read">Read reply</string>
     <string name="voice_permission">Microphone access is needed only for voice input. You can keep typing instead.</string>
-    <string name="voice_unavailable">No speech recogniser is installed on this phone, so voice input is off.</string>
+    <string name="voice_unavailable">On-device speech recognition is unavailable. It requires Android 12 or newer and a downloaded language pack; you can keep typing.</string>
     <string name="voice_error">Speech recognition stopped (code %1$d). Phones without an on-device recogniser cannot transcribe in airplane mode.</string>
     <string name="voice_no_voice">This phone has no text-to-speech voice for the selected language.</string>
     <string name="voice_note">Voice is a prototype: it uses the speech services already on the phone and has not been tested on a device.</string>

@@ -46,3 +46,16 @@ python scripts/ci_checks.py --merged-manifest app/build/intermediates/merged_man
 
 Lint keeps intentional additional-language fallbacks as warnings. It continues to fail on other errors.
 An unsigned release build is compilation evidence, not a distributable signed release.
+
+
+## Local verification result (2026-11-14)
+
+- 69 Kotlin engine/runtime/transport checks passed; Python and Kotlin engine/prompt parity passed in GitHub CI.
+- Six Robolectric tests passed: Room transactions/migration/deletion, QR bitmap encode/decode, bounded image loading,
+  and the live intake/diagnostic/practice/import/restart/delete state loop.
+- LLM reference tests passed (26); repository/content and locale-placeholder checks passed.
+- Debug APK and unsigned release APK built successfully. The opt-in ExecuTorch v0.7.0 integration compiled successfully.
+- Both debug and release merged manifests passed the no-INTERNET check.
+- Debug lint passed with zero errors. Warnings remain, including the deliberately partial additional-language packs.
+
+These are automated/software checks. The physical-phone and human-review acceptance items in the table remain open.
