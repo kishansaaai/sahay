@@ -144,3 +144,13 @@ Never cut: B1-B4 base layer, C1-C7 learning core, hint ladder, simulator, recove
 | B11 | Code done | `RecoverScreen` and `AppState.recoverPlan()`: budget chips, engine knapsack replan, before/after counts, every dropped skill with its reason | Device render; recovery on a real multi-day attempt log |
 | B13 | Code done | `SettingsScreen`: language chips, model/runtime presence, snapshot summary, clipboard and share-sheet export, validated clipboard import, one-tap delete with confirmation; `SahayLlm.init()` now starts the device monitor | Device render; export/import round-trip on a phone; confirm delete removes downloaded model files |
 | B20 | Partly done | Accessibility basics only: nav icons excluded from semantics, mastery bar carries one content description, all screens use text labels; no dedicated TalkBack or large-text pass | TalkBack walk-through of every screen, large-text and contrast check, fix whatever that pass finds |
+
+
+## Stream B follow-up - 2026-11-14
+
+See [docs/STREAM_B_STATUS.md](docs/STREAM_B_STATUS.md) for every open Pradhyut21 issue (#23–#41), implementation evidence and remaining acceptance checks.
+Room persistence replaces the JSON-only store and migrates existing snapshots. Streaming generation now handles back pressure, cancellation ownership,
+governor caps and no prompt echo. Scan, multipart QR/classroom and strict offline voice flows are implemented as prototypes. Core navigation for four
+additional languages is present; their detailed copy still falls back to English. English and Hindi resources have matching keys and placeholders.
+Release-candidate signing uses team-provided secrets; beta and demo materials are prepared. No phone benchmark, native-language review, signed release,
+TalkBack result or video upload is claimed without its evidence. Other streams' issues remain outside this follow-up.

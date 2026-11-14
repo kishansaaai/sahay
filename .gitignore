@@ -33,3 +33,6 @@ eval/results/ci/
 *.jks
 *.keystore
 keystore.properties
+
+# Kotlin compiler state
+.kotlin/
