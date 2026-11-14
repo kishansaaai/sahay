@@ -1,5 +1,8 @@
+@file:OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
+
 package com.sahay.app.ui.screens
 
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,6 +22,14 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.core.content.ContextCompat
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.DisposableEffect
+import com.sahay.app.media.OfflineVoice
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -42,6 +53,13 @@ fun TutorScreen(state: AppState) {
     var input by remember { mutableStateOf("") }
     var showSource by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
+    val context = LocalContext.current
+    var voiceError by remember { mutableStateOf<String?>(null) }
+    val voice = remember(context) { OfflineVoice(context, { input = it }, { voiceError = it }) }
+    DisposableEffect(voice) { onDispose { voice.close() } }
+    val permission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        if (granted) voice.listen(state.language) else voiceError = context.getString(R.string.voice_permission)
+    }
 
     LaunchedEffect(state.chat.size, state.chat.lastOrNull()?.text) {
         if (state.chat.isNotEmpty()) listState.animateScrollToItem(state.chat.lastIndex)
@@ -53,6 +71,7 @@ fun TutorScreen(state: AppState) {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
+        if (state.language !in setOf("en", "hi")) Text(sr(R.string.experimental_language), style = MaterialTheme.typography.bodySmall)
         Text(text = sr(R.string.tutor_title), style = MaterialTheme.typography.headlineSmall)
 
         val contextName = state.contextSkillName()
@@ -89,7 +108,7 @@ fun TutorScreen(state: AppState) {
                 value = input,
                 onValueChange = { input = it },
                 modifier = Modifier.weight(1f),
-                placeholder = { Text(sr(R.string.tutor_placeholder)) },
+                label = { Text(sr(R.string.tutor_placeholder)) },
                 maxLines = 4,
             )
             Button(
@@ -99,6 +118,19 @@ fun TutorScreen(state: AppState) {
                 },
                 enabled = input.isNotBlank() && !state.tutorStreaming,
             ) { Text(sr(R.string.tutor_send)) }
+        }
+        Text(sr(R.string.voice_prototype), style = MaterialTheme.typography.bodySmall)
+        voiceError?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedButton(enabled = !state.tutorStreaming, onClick = {
+                voiceError = null
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED)
+                    voice.listen(state.language) else permission.launch(Manifest.permission.RECORD_AUDIO)
+            }) { Text(sr(R.string.voice_listen)) }
+            OutlinedButton(enabled = !state.tutorStreaming && state.chat.any { it.from == "sahay" }, onClick = {
+                voice.speak(state.chat.lastOrNull { it.from == "sahay" }?.text.orEmpty(), state.language)
+            }) { Text(sr(R.string.voice_read)) }
+            TextButton(onClick = { voice.stop() }) { Text(sr(R.string.tutor_stop)) }
         }
         if (state.tutorStreaming) {
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {

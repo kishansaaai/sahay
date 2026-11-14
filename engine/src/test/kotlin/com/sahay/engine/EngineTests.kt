@@ -371,6 +371,42 @@ fun main(args: Array<String>) {
         val snapshot = Snapshot(plan = Plan(1, 0.0, "", mutableListOf(PlanItem("learn", "missing", day = null))))
         check(snapshot.validationErrors(C).isNotEmpty(), "invalid plan accepted")
     }
+    test("multipart QR round trip is lossless, out of order and idempotent") {
+        val q = C.questions.values.first()
+        val rows = (1..400).map { AttemptRow(it, q.id, q.skill, q.answer, true, 50.0 + it % 50, 1000.0 + it, 0, it.toDouble()) }
+        val snap = Snapshot(attempts = rows, planChangeNote = "हिन्दी தமிழ் తెలుగు বাংলা मराठी")
+        val pages = PlanSharing.encode(snap)
+        check(pages.size > 1, "not multipart")
+        val collector = PlanSharing.Collector()
+        collector.add(pages.last()); collector.add(pages.last())
+        check(collector.received == 1, "duplicate counted")
+        var result: Snapshot? = null
+        pages.reversed().forEach { collector.add(it)?.let { result = it } }
+        check(result?.toJson() == snap.toJson(), "round trip changed learner data")
+    }
+    test("QR rejects mixing transfers and bounds malformed counts") {
+        val first = PlanSharing.encode(Snapshot(planChangeNote = "one")).first()
+        val second = PlanSharing.encode(Snapshot(planChangeNote = "two")).first()
+        val collector = PlanSharing.Collector(); collector.add(first)
+        var rejected = false
+        try { collector.add(second) } catch (e: IllegalArgumentException) { rejected = true }
+        check(rejected, "mixed transfers accepted")
+        rejected = false
+        try { PlanSharing.Collector().add(first.replace("|0|1|", "|0|999999|")) } catch (e: IllegalArgumentException) { rejected = true }
+        check(rejected, "unbounded page count")
+    }
+    test("teacher heatmap merges five learners without replacing personal state") {
+        val profile = LearnerProfileRow("goal", "dsa", "beginner", 6.0, 5, 70, 0.8, emptyList(), "en", 0.0)
+        val snap = Snapshot(profile = profile, targets = listOf("dsa.arrays"))
+        val heatmap = ClassHeatmap()
+        repeat(5) { heatmap.merge("learner-$it", snap, C) }
+        check(heatmap.rows().size == 5, "missing learners")
+        heatmap.merge("learner-0", snap, C)
+        check(heatmap.rows().size == 5, "duplicate learner")
+        check(heatmap.rows().all { it.values["dsa.arrays"] == 0.2 }, "wrong mastery")
+        heatmap.clear(); check(heatmap.rows().isEmpty(), "clear failed")
+    }
+
     val (lp, lf) = llmTests(args[0]); passed += lp; failures += lf
 
     println("\n$passed passed, $failures failed")
