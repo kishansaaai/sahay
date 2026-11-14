@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Platform theme: the app is Compose-first, so only public android: attributes are used here.
+         Colours match ui/theme/Theme.kt. -->
     <style name="Theme.Sahay" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="colorPrimary">@color/sahay_primary</item>
-        <item name="colorPrimaryContainer">@color/sahay_primary_container</item>
-        <item name="colorSecondary">@color/sahay_secondary</item>
+        <item name="android:colorPrimary">@color/sahay_primary</item>
+        <item name="android:colorAccent">@color/sahay_secondary</item>
         <item name="android:colorBackground">@color/sahay_background</item>
-        <item name="android:colorSurface">@color/sahay_surface</item>
         <item name="android:textColorPrimary">@color/sahay_on_background</item>
+        <item name="android:statusBarColor">@color/sahay_primary</item>
+        <item name="android:navigationBarColor">@color/sahay_background</item>
     </style>
 </resources>
