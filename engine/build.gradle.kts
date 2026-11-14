@@ -1,7 +1,7 @@
 // Pure-Kotlin JVM module: no Android or third-party dependencies, so it also runs on a laptop and in CI.
 // Include from the root build with: include(":engine")   (Stream B owns the root Gradle setup, issue B01).
 plugins {
-    kotlin("jvm") version "2.0.21"
+    alias(libs.plugins.kotlin.jvm)
 }
 
 repositories { mavenCentral() }
