@@ -1,6 +1,9 @@
 package com.sahay.app.ui.screens
 
 import android.net.Uri
+import android.content.ClipboardManager
+import android.content.ClipData
+import com.sahay.app.state.HeatRow
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -30,6 +33,9 @@ fun ShareScreen(state: AppState) {
     var pages by remember { mutableStateOf(emptyList<String>()) }
     var page by remember { mutableStateOf(0) }
     var reading by remember { mutableStateOf(false) }
+    var pasted by remember { mutableStateOf("") }
+    var teacherText by remember { mutableStateOf("") }
+    var classRows by remember { mutableStateOf(emptyList<HeatRow>()) }
     var collector by remember { mutableStateOf(PlanSharing.Collector()) }
     var progress by remember { mutableStateOf("") }
     var incoming by remember { mutableStateOf<Snapshot?>(null) }
@@ -47,7 +53,9 @@ fun ShareScreen(state: AppState) {
                     val bitmap = MediaInput.bitmap(context, uri)
                     try { MediaInput.qr(bitmap) } finally { bitmap.recycle() }
                 }
-                incoming = withContext(Dispatchers.Default) { collector.add(encoded) }
+                incoming = withContext(Dispatchers.Default) {
+                    if (encoded.trim().startsWith(ShareCode.PREFIX)) ShareCode.decode(encoded) else collector.add(encoded)
+                }
                 progress = "${collector.received} / ${collector.total}"
                 error = null
             } catch (e: Exception) { error = e.message ?: "QR could not be read" }
@@ -73,6 +81,25 @@ fun ShareScreen(state: AppState) {
             OutlinedButton(onClick = { page-- }, enabled = page > 0) { Text(sr(R.string.back)) }
             OutlinedButton(onClick = { page++ }, enabled = page < pages.lastIndex) { Text(sr(R.string.next)) }
         }
+        OutlinedButton(enabled = state.profile != null, onClick = {
+            val clipboard = context.getSystemService(ClipboardManager::class.java)
+            clipboard?.setPrimaryClip(ClipData.newPlainText("Sahay share code", ShareCode.encode(state.snapshot())))
+        }) { Text(sr(R.string.share_copy)) }
+        OutlinedTextField(value = pasted, onValueChange = { pasted = it.take(3_000_000) }, label = { Text(sr(R.string.share_import_hint)) }, modifier = Modifier.fillMaxWidth(), maxLines = 5)
+        OutlinedButton(enabled = pasted.isNotBlank() && !reading, onClick = {
+            reading = true
+            scope.launch {
+                try {
+                    incoming = withContext(Dispatchers.Default) {
+                        if (pasted.trim().startsWith(ShareCode.PREFIX)) ShareCode.decode(pasted)
+                        else if (pasted.trim().startsWith("{")) Snapshot.fromJson(pasted)
+                        else collector.add(pasted.trim())
+                    }
+                    progress = "${collector.received} / ${collector.total}"; error = null
+                } catch (e: Exception) { error = e.message }
+                finally { reading = false }
+            }
+        }) { Text(sr(R.string.share_import)) }
         HorizontalDivider()
         Button(enabled = !reading, onClick = { camera.launch(uri) }) { Text(sr(R.string.share_scan)) }
         OutlinedButton(enabled = !reading, onClick = { picker.launch("image/*") }) { Text(sr(R.string.scan_image)) }
@@ -90,6 +117,15 @@ fun ShareScreen(state: AppState) {
                     heatmap.merge(pseudonym, snapshot, state.contentFor(domain)); rows = heatmap.rows(); error = null
                 } catch (e: Exception) { error = e.message }
             }) { Text(sr(R.string.share_merge)) }
+        }
+        OutlinedTextField(value = teacherText, onValueChange = { teacherText = it.take(3_000_000) }, label = { Text(sr(R.string.share_teacher_note)) }, modifier = Modifier.fillMaxWidth(), minLines = 3)
+        OutlinedButton(enabled = teacherText.isNotBlank(), onClick = {
+            val (result, failure) = state.classHeatmap(teacherText.lines().map { it.trim() }.filter { it.isNotBlank() })
+            classRows = result; error = failure
+        }) { Text(sr(R.string.share_teacher_title)) }
+        classRows.forEach { row ->
+            val label = "${row.name}: ${AppState.percent(row.meanMastery)}% (${row.students})"
+            Text(label); MasteryBar(row.meanMastery, label = label)
         }
         if (rows.isNotEmpty()) {
             Text(sr(R.string.share_heatmap), style = MaterialTheme.typography.titleMedium)

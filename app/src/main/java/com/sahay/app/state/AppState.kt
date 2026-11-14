@@ -27,11 +27,13 @@ import com.sahay.engine.PlanItem
 import com.sahay.engine.Question
 import com.sahay.engine.ReplayState
 import com.sahay.engine.SessionRow
+import com.sahay.engine.ShareCode
 import com.sahay.engine.Snapshot
 import com.sahay.engine.TeachBackRow
 import com.sahay.engine.applyAnswer
 import com.sahay.engine.buildPlan
 import com.sahay.engine.forecastToTarget
+import com.sahay.engine.heatmap
 import com.sahay.engine.recover
 import com.sahay.engine.replay
 import com.sahay.engine.validateAttempts
@@ -73,6 +75,9 @@ data class DeviceSnapshot(
     val deferNonUrgent: Boolean,
     val cachedOnly: Boolean,
 )
+
+/** One skill line of the merged class heatmap (B17). */
+data class HeatRow(val skillId: String, val name: String, val students: Int, val meanMastery: Double)
 
 /**
  * Single application-scoped state holder (issue B03 shell, B04 store, B05 to B13 screens).
@@ -783,7 +788,7 @@ class AppState(private val app: Application) {
      * malformed, belongs to another domain, or references questions this build does not bundle.
      */
     fun importSnapshot(text: String, onComplete: (String?) -> Unit) {
-        val snap = try { Snapshot.fromJson(text) } catch (e: Exception) { onComplete(e.message ?: "invalid snapshot"); return }
+        val snap = try { if (text.trim().startsWith(ShareCode.PREFIX)) ShareCode.decode(text) else Snapshot.fromJson(text) } catch (e: Exception) { onComplete(e.message ?: "invalid snapshot"); return }
         val p = snap.profile ?: run { onComplete("the snapshot has no learner profile"); return }
         if (p.domain !in DOMAIN_TARGETS) { onComplete("unknown domain '${p.domain}'"); return }
         val errors = snap.validationErrors(contentFor(p.domain))
@@ -801,6 +806,37 @@ class AppState(private val app: Application) {
                 onComplete(if (saved) null else store.lastError ?: "could not save snapshot")
             }
         }
+    }
+
+    /**
+     * Merge student share codes into a class heatmap (B17). Every code is decoded and checked first, and all students
+     * must share one domain because the teacher phone replays each attempt log against one content pack. Returns the
+     * rows plus a readable reason when the input was rejected.
+     */
+    fun classHeatmap(codes: List<String>): Pair<List<HeatRow>, String?> {
+        val snaps = ArrayList<Snapshot>()
+        var domain: String? = null
+        codes.forEachIndexed { index, raw ->
+            val snap = try {
+                ShareCode.decode(raw)
+            } catch (e: Exception) {
+                return emptyList<HeatRow>() to "code ${index + 1}: ${e.message ?: "unreadable"}"
+            }
+            val p = snap.profile ?: return emptyList<HeatRow>() to "code ${index + 1} has no learner profile"
+            if (p.domain !in DOMAIN_TARGETS) return emptyList<HeatRow>() to "code ${index + 1} uses an unknown domain"
+            if (domain == null) domain = p.domain
+            else if (domain != p.domain) {
+                return emptyList<HeatRow>() to "codes mix domains ($domain and ${p.domain})"
+            }
+            val errors = snap.validationErrors(contentFor(p.domain))
+            if (errors.isNotEmpty()) return emptyList<HeatRow>() to "code ${index + 1}: ${errors.first()}"
+            snaps.add(snap)
+        }
+        if (snaps.isEmpty()) return emptyList<HeatRow>() to null
+        val rows = heatmap(contentFor(domain!!), snaps).map {
+            HeatRow(it.skillId, it.name, it.students, it.meanMastery)
+        }
+        return rows to null
     }
 
     fun snapshot(): Snapshot = Snapshot(

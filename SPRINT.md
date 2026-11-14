@@ -134,7 +134,7 @@ Never cut: B1-B4 base layer, C1-C7 learning core, hint ladder, simulator, recove
 | ID | Status | Done in repo | Still needed |
 | --- | --- | --- | --- |
 | B03 | Code done | `SahayApp` shell: three tabs, back handling, runtime language switch via a locale-overridden `LocalContext`, `SahayApplication` owner, theme | Render on a phone; confirm rotation keeps state |
-| B04 | Code done | `engine/Store.kt` snapshot model, attempt replay and JSON import/export with tests; `app/data/SnapshotStore.kt` atomic file store and one-tap delete | Render with a screen, device test of save/load across process death |
+| B04 | Code done | `engine/Store.kt` snapshot model, attempt replay and JSON import/export with tests; Room-backed `app/data/SnapshotStore.kt`, legacy migration and ordered one-tap delete | Render with a screen, device test of save/load across process death |
 | B05 | Code done | `IntakeScreen`: chat-style stepper, free-text goal mapped to a domain with a chip fallback, level/hours/deadline/interests, review then create profile | Render on a phone; Hindi copy review |
 | B06 | Code done | `TutorScreen`: streaming tokens, Stop, source note, missing-model notice; template reply when no `.pte` | Device run with the model; check Stop under 500 ms |
 | B07 | Code done | `DiagnosticScreen`: confidence slider, 3-level hint ladder with template fallback, misconception note, attempt rows with confidence/time/hint level | Device run; measure question count and minutes against the C08 target |
@@ -144,6 +144,9 @@ Never cut: B1-B4 base layer, C1-C7 learning core, hint ladder, simulator, recove
 | B11 | Code done | `RecoverScreen` and `AppState.recoverPlan()`: budget chips, engine knapsack replan, before/after counts, every dropped skill with its reason | Device render; recovery on a real multi-day attempt log |
 | B13 | Code done | `SettingsScreen`: language chips, model/runtime presence, snapshot summary, clipboard and share-sheet export, validated clipboard import, one-tap delete with confirmation; `SahayLlm.init()` now starts the device monitor | Device render; export/import round-trip on a phone; confirm delete removes downloaded model files |
 | B20 | Partly done | Accessibility basics only: nav icons excluded from semantics, mastery bar carries one content description, all screens use text labels; no dedicated TalkBack or large-text pass | TalkBack walk-through of every screen, large-text and contrast check, fix whatever that pass finds |
+| B16 | Code done | CI builds `app-debug.apk` on every push, on manual dispatch and daily at 02:30 UTC; the artifact also carries `apk-sha256.txt`; `docs/TESTING.md` has the download and install steps. Artifact confirmed present for a main run (8.8 MB archive) | Someone installs it on a phone and works through the test script; that is the only thing that turns "produced by CI" into "installable" |
+| B17 | Code done | `engine/ShareCode.kt` lossless compressed share code with tests, `engine.heatmap()` merge with tests, `ShareScreen` QR (ZXing), paste and screenshot import, teacher heatmap. ZXing credited in LICENSES | Scan a real QR from one phone to another; check a 14-item plan fits; merge five real student codes |
+| B18 | Prototype | Platform `SpeechRecognizer`/`TextToSpeech` wrappers, microphone permission at runtime, dictation and read-aloud in the tutor, visible prototype and availability notices | Three phones in airplane mode, Hindi voice availability, permission denial and latency; only then does it stop being marked Prototype |
 
 
 ## Stream B follow-up - 2026-11-14

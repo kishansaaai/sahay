@@ -237,6 +237,44 @@
     <string name="gov_saver">बचत: बैटरी और गर्मी बचाने के लिए छोटे उत्तर</string>
     <string name="gov_pause">ठंडा हो रहा है: अभी सहेजा टेक्स्ट</string>
 
+    <string name="voice_dictate">बोलें</string>
+    <string name="voice_stop">सुनना बंद करें</string>
+    <string name="voice_listening">सुन रहा है…</string>
+    <string name="voice_read">उत्तर सुनें</string>
+    <string name="voice_permission">केवल आवाज़ से प्रश्न पूछने के लिए माइक्रोफ़ोन चाहिए। आप लिखकर भी पूछ सकते हैं।</string>
+    <string name="voice_unavailable">इस फ़ोन में वाक् पहचानकर्ता नहीं है, इसलिए वॉइस इनपुट बंद है।</string>
+    <string name="voice_error">वाक् पहचान रुक गई (कोड %1$d)। जिन फ़ोन में ऑन-डिवाइस पहचानकर्ता नहीं है, वे हवाई जहाज़ मोड में नहीं लिख सकते।</string>
+    <string name="voice_no_voice">चुनी गई भाषा के लिए इस फ़ोन में टेक्स्ट-टू-स्पीच आवाज़ नहीं है।</string>
+    <string name="voice_note">वॉइस एक प्रोटोटाइप है: यह फ़ोन की अपनी वाक् सेवाओं का उपयोग करता है और किसी डिवाइस पर परखा नहीं गया है।</string>
+
+    <string name="today_share">योजना साझा करें</string>
+
+    <string name="share_title">QR योजनाएँ और कक्षा</string>
+    <string name="share_intro">नीचे दिया कोड इस रोडमैप को संपीड़ित पाठ के रूप में रखता है, उसी प्रारूप में जो निर्यात में है। कुछ भी अपलोड नहीं होता: कोड एक फ़ोन पर दिखाएँ और दूसरे पर पढ़ें।</string>
+    <string name="share_qr_title">आपकी योजना QR कोड के रूप में</string>
+    <string name="share_qr_missing">पहले एक योजना बनाएँ।</string>
+    <string name="share_qr_too_big">यह योजना एक भरोसेमंद QR कोड के लिए बहुत बड़ी है। सेटिंग्स में कॉपी निर्यात का उपयोग करें।</string>
+    <string name="share_qr_desc">साझा योजना वाला QR कोड</string>
+    <string name="share_qr_failed">QR कोड नहीं बन सका।</string>
+    <string name="share_copy">शेयर कोड कॉपी करें</string>
+    <string name="share_copied">शेयर कोड कॉपी हो गया।</string>
+    <string name="share_code_label">वही कोड पाठ के रूप में</string>
+    <string name="share_import_title">योजना आयात करें</string>
+    <string name="share_import_note">आयात इस फ़ोन पर प्रोफ़ाइल, योजना और उत्तर बदल देता है। लिखने से पहले कोड की जाँच होती है।</string>
+    <string name="share_import_hint">शेयर कोड चिपकाएँ</string>
+    <string name="share_import">आयात करें</string>
+    <string name="share_import_ok">योजना आयात हुई और शिक्षार्थी स्थिति फिर बनी।</string>
+    <string name="share_import_failed">आयात अस्वीकृत: %1$s</string>
+    <string name="share_image">स्क्रीनशॉट से पढ़ें</string>
+    <string name="share_image_failed">उस चित्र में कोई QR कोड नहीं मिला।</string>
+    <string name="share_teacher_title">कक्षा हीटमैप</string>
+    <string name="share_teacher_note">अधिकतम पाँच छात्र कोड चिपकाएँ, एक प्रति पंक्ति। महारत यहीं, हर छात्र के साझा किए प्रयासों से बनती है; कुछ भी अपलोड नहीं होता।</string>
+    <string name="share_teacher_hint">प्रति पंक्ति एक शेयर कोड</string>
+    <string name="share_teacher_build">हीटमैप बनाएँ</string>
+    <string name="share_teacher_empty">कम से कम एक छात्र कोड चिपकाएँ।</string>
+    <string name="share_teacher_students">%1$d छात्र</string>
+    <string name="share_teacher_row">%1$s: %2$d%% (%3$d/%4$d छात्र)</string>
+
     <string name="not_in_build">यह स्क्रीन अभी इस बिल्ड में नहीं है।</string>
     <string name="scan_title">स्कैन करके सीखें</string>
     <string name="scan_note">पाठ्यक्रम या किताब के पन्ने का फोटो लें या चुनें। लैटिन और देवनागरी लिपि का OCR ऑफ़लाइन चलता है। बनाने से पहले पाठ सुधारें।</string>
@@ -248,7 +286,7 @@
     <string name="scan_draft">बनाया गया मसौदा। स्रोत से जाँचें; इससे आपका रोडमैप या दक्षता नहीं बदलती।</string>
     <string name="scan_unavailable">कोई मान्य परिणाम उपलब्ध नहीं है। पाठ सुधारें या मॉडल इंस्टॉल करके फिर कोशिश करें।</string>
     <string name="scan_dependencies">%1$d पूर्वापेक्षा संबंध (चक्र रहित सत्यापित)</string>
-    <string name="share_title">QR योजनाएँ और कक्षा</string>
+
     <string name="share_notice">केवल अपने चुने हुए व्यक्ति के साथ साझा करें। QR पन्नों में उत्तर और लक्ष्य सहित पूरा विद्यार्थी रिकॉर्ड होता है। सभी पन्ने किसी भी क्रम में स्कैन करें।</string>
     <string name="share_create">QR पन्ने बनाएँ</string>
     <string name="share_page">QR पन्ना %1$d / %2$d</string>
@@ -262,9 +300,9 @@
     <string name="share_class_note">यह कक्षा दृश्य अस्थायी है और हर विद्यार्थी के अंतिम उत्तर पर दक्षता दिखाता है। यह आपका निजी डेटा नहीं बदलता।</string>
     <string name="share_clear">कक्षा दृश्य मिटाएँ</string>
     <string name="voice_prototype">ऑफ़लाइन आवाज़ का प्रोटोटाइप। उपलब्धता डाउनलोड किए गए भाषा पैक पर निर्भर है। पहचान के लिए Android 12 या नया चाहिए।</string>
-    <string name="voice_permission">केवल आवाज़ से प्रश्न पूछने के लिए माइक्रोफ़ोन चाहिए। आप लिखकर भी पूछ सकते हैं।</string>
+
     <string name="voice_listen">बोलें</string>
-    <string name="voice_read">उत्तर सुनें</string>
+
     <string name="dashboard_misconceptions">सक्रिय गलत धारणाएँ</string>
     <string name="dashboard_no_misconceptions">कोई सक्रिय गलत धारणा दर्ज नहीं है।</string>
     <string name="device_speed">अंतिम उत्तर: %1$s टोकन/सेकंड</string>

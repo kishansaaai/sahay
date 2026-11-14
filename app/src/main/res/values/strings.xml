@@ -237,6 +237,44 @@
     <string name="gov_saver">Saver: shorter answers to protect battery and heat</string>
     <string name="gov_pause">Cooling down: using saved text for now</string>
 
+    <string name="voice_dictate">Speak</string>
+    <string name="voice_stop">Stop listening</string>
+    <string name="voice_listening">Listening…</string>
+    <string name="voice_read">Read reply</string>
+    <string name="voice_permission">Microphone access is needed only for voice input. You can keep typing instead.</string>
+    <string name="voice_unavailable">No speech recogniser is installed on this phone, so voice input is off.</string>
+    <string name="voice_error">Speech recognition stopped (code %1$d). Phones without an on-device recogniser cannot transcribe in airplane mode.</string>
+    <string name="voice_no_voice">This phone has no text-to-speech voice for the selected language.</string>
+    <string name="voice_note">Voice is a prototype: it uses the speech services already on the phone and has not been tested on a device.</string>
+
+    <string name="today_share">Share plan</string>
+
+    <string name="share_title">QR plans and classroom</string>
+    <string name="share_intro">The code below carries this roadmap as compressed text, in the same format as the export. Nothing is uploaded: show the code on one phone and read it on another.</string>
+    <string name="share_qr_title">Your plan as a QR code</string>
+    <string name="share_qr_missing">Create a plan first.</string>
+    <string name="share_qr_too_big">This plan is too large for one reliable QR code. Use Copy export in Settings instead.</string>
+    <string name="share_qr_desc">QR code containing the shared plan</string>
+    <string name="share_qr_failed">The QR code could not be drawn.</string>
+    <string name="share_copy">Copy share code</string>
+    <string name="share_copied">Share code copied.</string>
+    <string name="share_code_label">The same code as text</string>
+    <string name="share_import_title">Import a plan</string>
+    <string name="share_import_note">Importing replaces the learner profile, plan and answers on this phone. The code is checked before anything is written.</string>
+    <string name="share_import_hint">Paste a share code</string>
+    <string name="share_import">Import</string>
+    <string name="share_import_ok">Plan imported and learner state rebuilt.</string>
+    <string name="share_import_failed">Import rejected: %1$s</string>
+    <string name="share_image">Read from a screenshot</string>
+    <string name="share_image_failed">No QR code was found in that image.</string>
+    <string name="share_teacher_title">Class heatmap</string>
+    <string name="share_teacher_note">Paste up to five student codes, one per line. Mastery is rebuilt here from the attempts each student shared; nothing is uploaded.</string>
+    <string name="share_teacher_hint">One share code per line</string>
+    <string name="share_teacher_build">Build heatmap</string>
+    <string name="share_teacher_empty">Paste at least one student code.</string>
+    <string name="share_teacher_students">%1$d students</string>
+    <string name="share_teacher_row">%1$s: %2$d%% (%3$d of %4$d students)</string>
+
     <string name="not_in_build">This screen is not part of this build yet.</string>
     <string name="scan_title">Scan and learn</string>
     <string name="scan_note">Photograph or choose a syllabus or textbook page. OCR works offline for Latin and Devanagari scripts. Edit the text before generating.</string>
@@ -248,7 +286,7 @@
     <string name="scan_draft">Generated draft. Check against the source; this does not change your roadmap or mastery.</string>
     <string name="scan_unavailable">No validated result is available. Edit the text or install the model and try again.</string>
     <string name="scan_dependencies">%1$d prerequisite links (validated as acyclic)</string>
-    <string name="share_title">QR plans and classroom</string>
+
     <string name="share_notice">Share only with someone you choose. QR pages contain your full learner snapshot, including answers and your goal. Scan every page in any order.</string>
     <string name="share_create">Create QR pages</string>
     <string name="share_page">QR page %1$d of %2$d</string>
@@ -262,9 +300,9 @@
     <string name="share_class_note">This class view is temporary and uses mastery at each learner’s last recorded answer. It does not replace your personal data.</string>
     <string name="share_clear">Clear class view</string>
     <string name="voice_prototype">Offline voice prototype. Availability depends on downloaded language packs. Recognition requires Android 12 or newer.</string>
-    <string name="voice_permission">Microphone access is needed only for voice input. You can keep typing instead.</string>
+
     <string name="voice_listen">Speak</string>
-    <string name="voice_read">Read reply</string>
+
     <string name="dashboard_misconceptions">Active misconceptions</string>
     <string name="dashboard_no_misconceptions">No active misconceptions recorded.</string>
     <string name="device_speed">Last generation: %1$s tokens/s</string>
