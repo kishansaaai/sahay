@@ -123,6 +123,6 @@ Never cut: B1-B4 base layer, C1-C7 learning core, hint ladder, simulator, recove
 | A14 | Tooling done | sustained run mode, `bench/thermal_chart.py` | The 20-minute runs |
 | A15 | Tooling done | `bench/ENERGY.md`, `energy_calc.py` | The measurements |
 | A16 | Tooling done | `eval/` fixed sets (500 per task), rubric scripts, compare | Run with the real model; human reviewers |
-| A17 | Not started | `bench/PREFIX_REUSE.md` with mentor email | Send the email, measure |
+| A17 | Documented | `bench/PREFIX_REUSE.md` records the API facts (prefill exists, no partial rollback, so no reuse for divergent prompts) and the shorter-prompt fallback | Send the mentor email; shorter-system-prompt measurement on the phone |
 | A18 | Not started | `export/finetune/` validator and training script | Reviewed licensed data, Colab run, evaluation |
 | A19 | Code done | `ModelVerifier`, checksum asset bundling, `scripts/verify_model.py`, `releases/README.md` | Attach the model to a GitHub release |

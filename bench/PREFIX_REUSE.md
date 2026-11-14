@@ -3,7 +3,7 @@
 Every prompt starts with the same system prompt (`content/prompts/system.txt`, about 130 tokens by our estimate, limit 300), so in principle the
 prefix's KV cache could be computed once and reused. Whether the ExecuTorch Android runner supports it is unknown to us.
 
-## Step 1: ask the mentors (do this first)
+## Step 1: ask the mentors (still to send; the email below is drafted, not sent)
 
 Email tech-queries@armbharatchallenge.com, subject starting `PS4`:
 
@@ -16,6 +16,21 @@ Email tech-queries@armbharatchallenge.com, subject starting `PS4`:
 
 Record the date sent and the reply here: ____
 
+## What the ExecuTorch Android API allows (checked 2026-11-14)
+
+`LlmModule` in `org.pytorch.executorch.extension.llm` (the class the official demo and our `ExecuTorchRuntime` use) exposes only these cache-related calls:
+
+| Call | Effect |
+| --- | --- |
+| `prefillPrompt(String)` | runs the prefill phase for a prompt into the KV cache |
+| `generate(prompt, seqLen, callback)` | prefills that prompt itself, then decodes |
+| `resetContext()` | clears the KV cache and sets the start position back to 0 |
+| `stop()` | stops the current `generate()` |
+
+No call trims the cache back to a shorter shared prefix: the only reset is a full `resetContext()`. A prompt can therefore reuse a prefilled prefix only when it is an exact extension of the prefilled text. Sahay's prompts share the ~130-token system prompt and then diverge (task template, skill, learner state), so they are not exact extensions and prefix reuse is not possible through this API. Doing it properly needs a custom runner loop over the C++ `IRunner` (prefill the shared head, then feed only the unmatched suffix while tracking positions), which is out of scope for Phase 1.
+
+Sources: `docs.pytorch.org/executorch/stable/llm/run-on-android.html` (LlmModule: generate, stop, resetContext) and the `LlmModule` Javadoc (`prefillPrompt`, `resetContext`).
+
 ## Step 2: measure (if supported)
 
 - Condition A: full prompt each time. Condition B: prefix cached. Same 10 prompts, 10 runs each, cool start, same conditions as A06.
@@ -24,4 +39,7 @@ Record the date sent and the reply here: ____
 
 ## Step 3: result or reason
 
-If unsupported, document why (mentor reply, API missing) and keep the shorter-prompt number. Status: not started.
+**Status: documented on 2026-11-14, experiment not run.** The public `LlmModule` API has no partial cache rollback (see above), so a
+with/without comparison cannot be built without a custom runner. What is still worth measuring is the cheaper variant from Step 2: the
+time-to-first-token saving from shortening the system prompt from about 130 tokens to about 60, scaled by the prompt-processing speed from
+A06. That needs the phone, so it stays open together with A06. The mentor email in Step 1 still has to be sent and its reply recorded.
