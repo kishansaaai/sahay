@@ -38,9 +38,11 @@ class SnapshotStore(context: Context) {
     }
 
     /** Write to a temporary file first so a crash mid-write cannot truncate the only copy. */
-    fun save(snapshot: Snapshot): Boolean = try {
+    fun save(snapshot: Snapshot): Boolean = saveJson(snapshot.toJson())
+
+    fun saveJson(json: String): Boolean = try {
         val tmp = File(file.parentFile, "$FILE_NAME.tmp")
-        tmp.writeText(snapshot.toJson(), Charsets.UTF_8)
+        tmp.writeText(json, Charsets.UTF_8)
         if (file.exists() && !file.delete()) throw java.io.IOException("could not replace ${file.name}")
         if (!tmp.renameTo(file)) {
             file.writeText(tmp.readText(Charsets.UTF_8), Charsets.UTF_8)

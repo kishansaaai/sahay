@@ -5,6 +5,7 @@
     <!-- Launcher icons come with the real design assets; AGP 8 requires the namespace in build.gradle.kts. -->
 
     <application
+        android:name=".SahayApplication"
         android:allowBackup="false"
         android:label="@string/app_name"
         android:supportsRtl="true"
