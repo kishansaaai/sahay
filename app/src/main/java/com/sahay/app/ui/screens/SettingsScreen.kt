@@ -43,6 +43,11 @@ fun SettingsScreen(state: AppState) {
     val clipboard = context.getSystemService(ClipboardManager::class.java)
     var message by remember { mutableStateOf<String?>(null) }
     var confirmDelete by remember { mutableStateOf(false) }
+    // Resolved here because sr() is @Composable and cannot be called from the button callbacks below.
+    val copiedMessage = sr(R.string.settings_export_copied)
+    val shareTitle = sr(R.string.settings_share_title)
+    val emptyMessage = sr(R.string.settings_import_empty)
+    val okMessage = sr(R.string.settings_import_ok)
 
     Column(
         modifier = Modifier
@@ -79,7 +84,7 @@ fun SettingsScreen(state: AppState) {
                     onClick = {
                         val json = state.exportJson()
                         clipboard?.setPrimaryClip(ClipData.newPlainText("Sahay snapshot", json))
-                        message = sr(R.string.settings_export_copied)
+                        message = copiedMessage
                     },
                 ) { Text(sr(R.string.settings_copy)) }
                 OutlinedButton(
@@ -89,7 +94,7 @@ fun SettingsScreen(state: AppState) {
                             putExtra(Intent.EXTRA_SUBJECT, "Sahay snapshot")
                             putExtra(Intent.EXTRA_TEXT, state.exportJson())
                         }
-                        val chooser = Intent.createChooser(send, sr(R.string.settings_share_title))
+                        val chooser = Intent.createChooser(send, shareTitle)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         context.startActivity(chooser)
                     },
@@ -103,11 +108,11 @@ fun SettingsScreen(state: AppState) {
                         ?.coerceToText(context)
                         ?.toString()
                     if (text.isNullOrBlank()) {
-                        message = sr(R.string.settings_import_empty)
+                        message = emptyMessage
                     } else {
                         val error = state.importSnapshot(text)
-                        message = if (error == null) sr(R.string.settings_import_ok)
-                        else sr(R.string.settings_import_failed, error)
+                        message = if (error == null) okMessage
+                        else context.getString(R.string.settings_import_failed, error)
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
