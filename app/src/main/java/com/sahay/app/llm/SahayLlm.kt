@@ -38,12 +38,21 @@ object SahayLlm {
     lateinit var orchestrator: LlmOrchestrator; private set
     lateinit var monitor: DeviceMonitor; private set
 
+    /** True once [init] finished; screens must not touch the lateinit members before this. */
+    @Volatile var ready: Boolean = false
+        private set
+
+    /** False when the build has no ExecuTorch runtime, so the UI can say that generated text is unavailable. */
+    @Volatile var runtimeAvailable: Boolean = false
+        private set
+
     fun createRuntime(): LlmRuntime = try {
         Class.forName("com.sahay.app.llm.ExecuTorchRuntime").getDeclaredConstructor().newInstance() as LlmRuntime
     } catch (e: ReflectiveOperationException) { UnavailableRuntime() }
 
     fun init(context: Context, runtime: LlmRuntime = createRuntime()) {
         val app = context.applicationContext
+        runtimeAvailable = runtime !is UnavailableRuntime
         val dir = File(app.filesDir, "models")
         val model = File(dir, MODEL_FILE)
         val checksums = ModelVerifier.parse(app.assets.open("model_checksums.txt").bufferedReader().use { it.readText() })
@@ -62,6 +71,7 @@ object SahayLlm {
             override fun onConfigurationChanged(newConfig: Configuration) {}
             override fun onLowMemory() = manager.onTrimMemory(ComponentCallbacks2.TRIM_MEMORY_COMPLETE)
         })
+        ready = true
     }
 
     /** Streaming generation for the chat screen. Collect on a background dispatcher; cancelling the collector stops generation. */

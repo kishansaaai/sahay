@@ -133,4 +133,10 @@ Never cut: B1-B4 base layer, C1-C7 learning core, hint ladder, simulator, recove
 
 | ID | Status | Done in repo | Still needed |
 | --- | --- | --- | --- |
+| B03 | Code done | `SahayApp` shell: three tabs, back handling, runtime language switch via a locale-overridden `LocalContext`, `SahayApplication` owner, theme | Render on a phone; confirm rotation keeps state |
 | B04 | Code done | `engine/Store.kt` snapshot model, attempt replay and JSON import/export with tests; `app/data/SnapshotStore.kt` atomic file store and one-tap delete | Render with a screen, device test of save/load across process death |
+| B05 | Code done | `IntakeScreen`: chat-style stepper, free-text goal mapped to a domain with a chip fallback, level/hours/deadline/interests, review then create profile | Render on a phone; Hindi copy review |
+| B06 | Code done | `TutorScreen`: streaming tokens, Stop, source note, missing-model notice; template reply when no `.pte` | Device run with the model; check Stop under 500 ms |
+| B07 | Code done | `DiagnosticScreen`: confidence slider, 3-level hint ladder with template fallback, misconception note, attempt rows with confidence/time/hint level | Device run; measure question count and minutes against the C08 target |
+| B08 | Code done | `RoadmapScreen`: week cards, four item types, plan change note, dropped items, "why this" dialog with reason/prereqs/note | Device render; check long roadmaps scroll |
+| B09 | Code done | `TodayScreen` and `StudyScreen`: next action with minutes, mastery and streak, explanation + analogy, check question that updates mastery and re-plans | Device run; model-quality check of explanations |
