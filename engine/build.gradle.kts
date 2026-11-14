@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.jvm)
 }
 
-repositories { mavenCentral() }
+// Repositories come from settings.gradle.kts (FAIL_ON_PROJECT_REPOS).
 
 sourceSets {
     main { kotlin.srcDir("src/main/kotlin") }
