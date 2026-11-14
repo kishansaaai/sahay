@@ -41,3 +41,7 @@ An Android app that builds and re-plans a personal study roadmap using a quantiz
 - Original work of the registered team only; credit every dataset, library and model in LICENSES/.
 - Never commit model weights (`*.pte`, checkpoints); use the export script and release assets.
 - No analytics SDKs and no INTERNET permission (CI enforces the manifest check).
+
+## Languages
+
+English and Hindi are complete. Tamil, Telugu, Bengali and Marathi are **beta**: only the first-run and navigation screens are translated (40 strings each), the rest shows in English, tutor replies are English or Hindi, and no native speaker has reviewed the translations yet. `python scripts/check_strings.py` checks every locale file.

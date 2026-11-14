@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Beta locale (B19): core first-run strings only, written by the assistant and NOT yet reviewed by a native speaker.
+     Every other string falls back to English. Review checklist: docs/BETA.md. -->
+<resources>
+    <string name="tagline">పరికరంలోనే నడిచే అనుకూల అభ్యాస సహచరి</string>
+    <string name="offline_note">అంతా ఈ ఫోన్‌లోనే ఉంటుంది. యాప్ నెట్‌వర్క్‌ను చేరుకోలేదు.</string>
+    <string name="back">వెనుకకు</string>
+    <string name="next">తదుపరి</string>
+    <string name="continue_label">కొనసాగించు</string>
+    <string name="done">పూర్తయింది</string>
+    <string name="cancel">రద్దు చేయి</string>
+    <string name="close">మూసివేయి</string>
+    <string name="loading">లోడ్ అవుతోంది</string>
+    <string name="language">భాష</string>
+    <string name="nav_today">నేడు</string>
+    <string name="nav_roadmap">రోడ్‌మ్యాప్</string>
+    <string name="nav_tutor">ట్యూటర్</string>
+    <string name="nav_dashboard">డ్యాష్‌బోర్డ్</string>
+    <string name="nav_settings">సెట్టింగ్‌లు</string>
+    <string name="welcome_title">సహాయ్‌కు స్వాగతం</string>
+    <string name="welcome_body">మీ లక్ష్యం చుట్టూ ప్రణాళిక వేసి, మీరు మిస్ అయిన భావనలను గుర్తించి, ప్రతి మార్పునూ వివరించే ప్రశాంతమైన స్టడీ కోచ్. పూర్తిగా ఆఫ్‌లైన్‌లో పనిచేస్తుంది.</string>
+    <string name="welcome_start">ప్రారంభించండి</string>
+    <string name="intake_title">మీ లక్ష్యం గురించి సహాయ్‌కు చెప్పండి</string>
+    <string name="intake_finish">డయాగ్నస్టిక్ ప్రారంభించు</string>
+    <string name="today_title">నేడు</string>
+    <string name="today_next">మీ తదుపరి అడుగు</string>
+    <string name="today_start">ఇది చదువు</string>
+    <string name="today_practice">ఒక ప్రశ్న సాధన చేయి</string>
+    <string name="today_recover">నేను కొన్ని రోజులు మిస్ అయ్యాను</string>
+    <string name="today_settings">సెట్టింగ్‌లు</string>
+    <string name="today_tutor">ట్యూటర్‌ను అడుగు</string>
+    <string name="today_scan">సిలబస్ లేదా పేజీని స్కాన్ చేయి</string>
+    <string name="roadmap_title">మీ రోడ్‌మ్యాప్</string>
+    <string name="dashboard_title">డ్యాష్‌బోర్డ్</string>
+    <string name="tutor_title">ట్యూటర్</string>
+    <string name="settings_title">సెట్టింగ్‌లు</string>
+    <string name="diag_title">ఒక చిన్న డయాగ్నస్టిక్</string>
+    <string name="diag_submit">జవాబు</string>
+    <string name="diag_hint">నాకు ఒక సూచన ఇవ్వు</string>
+    <string name="scan_title">స్కాన్</string>
+    <string name="scan_take_photo">ఫోటో తీయి</string>
+    <string name="scan_pick_image">చిత్రాన్ని ఎంచుకో</string>
+    <string name="scan_clear">స్కాన్‌ను తొలగించు</string>
+    <string name="locale_beta_note">ఈ అనువాదాన్ని ఇంకా మాతృభాషా వ్యక్తి సరిచూడలేదు.</string>
+</resources>

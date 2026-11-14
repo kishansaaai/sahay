@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Beta locale (B19): core first-run strings only, written by the assistant and NOT yet reviewed by a native speaker.
+     Every other string falls back to English. Review checklist: docs/BETA.md. -->
+<resources>
+    <string name="tagline">डिव्हाइसवरच चालणारा अनुकूल शिक्षण सोबती</string>
+    <string name="offline_note">सर्व काही याच फोनवर राहते. अ‍ॅप नेटवर्कपर्यंत पोहोचू शकत नाही.</string>
+    <string name="back">मागे</string>
+    <string name="next">पुढे</string>
+    <string name="continue_label">सुरू ठेवा</string>
+    <string name="done">पूर्ण</string>
+    <string name="cancel">रद्द करा</string>
+    <string name="close">बंद करा</string>
+    <string name="loading">लोड होत आहे</string>
+    <string name="language">भाषा</string>
+    <string name="nav_today">आज</string>
+    <string name="nav_roadmap">रोडमॅप</string>
+    <string name="nav_tutor">शिक्षक</string>
+    <string name="nav_dashboard">डॅशबोर्ड</string>
+    <string name="nav_settings">सेटिंग्ज</string>
+    <string name="welcome_title">सहायमध्ये आपले स्वागत आहे</string>
+    <string name="welcome_body">तुमच्या ध्येयाभोवती नियोजन करणारा, तुमच्याकडून राहिलेल्या संकल्पना शोधणारा आणि प्रत्येक बदल समजावून सांगणारा शांत अभ्यास प्रशिक्षक. हे पूर्णपणे ऑफलाइन चालते.</string>
+    <string name="welcome_start">सुरुवात करा</string>
+    <string name="intake_title">तुमच्या ध्येयाबद्दल सहायला सांगा</string>
+    <string name="intake_finish">चाचणी सुरू करा</string>
+    <string name="today_title">आज</string>
+    <string name="today_next">तुमचे पुढचे पाऊल</string>
+    <string name="today_start">हे शिका</string>
+    <string name="today_practice">एक प्रश्न सोडवून पहा</string>
+    <string name="today_recover">माझे काही दिवस चुकले</string>
+    <string name="today_settings">सेटिंग्ज</string>
+    <string name="today_tutor">शिक्षकाला विचारा</string>
+    <string name="today_scan">अभ्यासक्रम किंवा पान स्कॅन करा</string>
+    <string name="roadmap_title">तुमचा रोडमॅप</string>
+    <string name="dashboard_title">डॅशबोर्ड</string>
+    <string name="tutor_title">शिक्षक</string>
+    <string name="settings_title">सेटिंग्ज</string>
+    <string name="diag_title">एक छोटी चाचणी</string>
+    <string name="diag_submit">उत्तर द्या</string>
+    <string name="diag_hint">मला एक सूचना द्या</string>
+    <string name="scan_title">स्कॅन</string>
+    <string name="scan_take_photo">फोटो काढा</string>
+    <string name="scan_pick_image">प्रतिमा निवडा</string>
+    <string name="scan_clear">स्कॅन साफ करा</string>
+    <string name="locale_beta_note">हे भाषांतर अद्याप मराठी भाषकाने तपासलेले नाही.</string>
+</resources>

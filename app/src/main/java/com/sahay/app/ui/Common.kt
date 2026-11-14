@@ -71,18 +71,32 @@ fun ProgressDots(total: Int, current: Int) {
 
 @Composable
 fun LanguageChips(state: AppState, modifier: Modifier = Modifier) {
-    // Only languages with a bundled translation are offered; showing a chip that falls back to English would
-    // misrepresent the build. B19 adds the remaining locales.
+    // Hindi and English are complete. The other four locales translate only the main screens (B19), so their chips carry
+    // a "beta" tag and a note below says so; nothing pretends they are finished.
+    val beta = sr(R.string.beta_tag)
     val options = listOf(
-        "en" to sr(R.string.english),
-        "hi" to sr(R.string.hindi),
+        Triple("en", sr(R.string.english), false),
+        Triple("hi", sr(R.string.hindi), false),
+        Triple("ta", sr(R.string.tamil), true),
+        Triple("te", sr(R.string.telugu), true),
+        Triple("bn", sr(R.string.bengali), true),
+        Triple("mr", sr(R.string.marathi), true),
     )
-    Row(
-        modifier = modifier.horizontalScroll(rememberScrollState()),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        options.forEach { (code, label) ->
-            FilterChip(selected = state.language == code, onClick = { state.selectLanguage(code) }, label = { Text(label) })
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Row(
+            modifier = Modifier.horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            options.forEach { (code, label, isBeta) ->
+                FilterChip(
+                    selected = state.language == code,
+                    onClick = { state.selectLanguage(code) },
+                    label = { Text(if (isBeta) "$label · $beta" else label) },
+                )
+            }
+        }
+        if (options.any { it.third && it.first == state.language }) {
+            Text(text = sr(R.string.locale_beta_note), style = MaterialTheme.typography.bodySmall)
         }
     }
 }

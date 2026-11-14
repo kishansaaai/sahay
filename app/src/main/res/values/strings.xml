@@ -136,7 +136,7 @@
     <string name="study_retry">Try another question</string>
     <string name="study_misconception">Watched for: %1$s</string>
     <string name="study_no_skill">Pick an item from today\'s plan first.</string>
-    <string name="languages_in_build">This build includes English and Hindi strings. The other languages are still being translated.</string>
+    <string name="languages_in_build">English and Hindi are complete. Tamil, Telugu, Bengali and Marathi are beta: only the main screens are translated, the rest stays in English, and tutor replies are English or Hindi.</string>
 
     <string name="tutor_title">Tutor</string>
     <string name="tutor_empty">Ask about the skill you are studying. Answers stay on the phone.</string>
@@ -313,4 +313,6 @@
     <string name="scan_misconception">Common mistake: %1$s</string>
     <string name="scan_clear">Clear scan</string>
     <string name="today_scan">Scan syllabus or page</string>
+    <string name="beta_tag">beta</string>
+    <string name="locale_beta_note">Beta language: only the main screens are translated, and a native speaker has not reviewed them yet.</string>
 </resources>

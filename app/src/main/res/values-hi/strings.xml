@@ -136,7 +136,7 @@
     <string name="study_retry">दूसरा प्रश्न</string>
     <string name="study_misconception">इस पर नज़र: %1$s</string>
     <string name="study_no_skill">पहले आज की योजना से कोई आइटम चुनें।</string>
-    <string name="languages_in_build">इस बिल्ड में अंग्रेज़ी और हिन्दी के शब्द हैं। बाकी भाषाओं का अनुवाद अभी चल रहा है।</string>
+    <string name="languages_in_build">अंग्रेज़ी और हिन्दी पूरी हैं। तमिल, तेलुगु, बांग्ला और मराठी बीटा हैं: केवल मुख्य स्क्रीन अनूदित हैं, बाक़ी अंग्रेज़ी में रहता है, और ट्यूटर के उत्तर अंग्रेज़ी या हिन्दी में आते हैं।</string>
 
     <string name="tutor_title">ट्यूटर</string>
     <string name="tutor_empty">जिस कौशल को पढ़ रहे हैं उसके बारे में पूछें। उत्तर फ़ोन पर ही रहते हैं।</string>
@@ -313,4 +313,6 @@
     <string name="scan_misconception">आम भूल: %1$s</string>
     <string name="scan_clear">स्कैन साफ़ करें</string>
     <string name="today_scan">सिलेबस या पन्ना स्कैन करें</string>
+    <string name="beta_tag">बीटा</string>
+    <string name="locale_beta_note">बीटा भाषा: केवल मुख्य स्क्रीन अनूदित हैं, और किसी मूल भाषी ने उनकी जाँच अभी नहीं की है।</string>
 </resources>

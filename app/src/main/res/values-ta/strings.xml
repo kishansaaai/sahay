@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Beta locale (B19): core first-run strings only, written by the assistant and NOT yet reviewed by a native speaker.
+     Every other string falls back to English. Review checklist: docs/BETA.md. -->
+<resources>
+    <string name="tagline">சாதனத்திலேயே இயங்கும் தகவமைப்பு கற்றல் துணை</string>
+    <string name="offline_note">எல்லாம் இந்த ஃபோனிலேயே இருக்கும். ஆப்ஸ் இணையத்தை அணுக முடியாது.</string>
+    <string name="back">பின்</string>
+    <string name="next">அடுத்து</string>
+    <string name="continue_label">தொடர்க</string>
+    <string name="done">முடிந்தது</string>
+    <string name="cancel">ரத்து செய்</string>
+    <string name="close">மூடு</string>
+    <string name="loading">ஏற்றுகிறது</string>
+    <string name="language">மொழி</string>
+    <string name="nav_today">இன்று</string>
+    <string name="nav_roadmap">பாதை வரைபடம்</string>
+    <string name="nav_tutor">ஆசிரியர்</string>
+    <string name="nav_dashboard">டாஷ்போர்டு</string>
+    <string name="nav_settings">அமைப்புகள்</string>
+    <string name="welcome_title">சஹாய்க்கு வரவேற்கிறோம்</string>
+    <string name="welcome_body">உங்கள் இலக்கைச் சுற்றி திட்டமிடும், நீங்கள் தவறவிட்ட கருத்துகளைக் கண்டறியும், ஒவ்வொரு மாற்றத்தையும் விளக்கும் அமைதியான படிப்பு பயிற்சியாளர். முழுவதும் ஆஃப்லைனில் இயங்கும்.</string>
+    <string name="welcome_start">தொடங்குங்கள்</string>
+    <string name="intake_title">உங்கள் இலக்கைப் பற்றி சஹாயிடம் சொல்லுங்கள்</string>
+    <string name="intake_finish">தேர்வைத் தொடங்கு</string>
+    <string name="today_title">இன்று</string>
+    <string name="today_next">உங்கள் அடுத்த படி</string>
+    <string name="today_start">இதைப் படி</string>
+    <string name="today_practice">ஒரு கேள்வியைப் பயிற்சி செய்</string>
+    <string name="today_recover">சில நாட்கள் தவறவிட்டேன்</string>
+    <string name="today_settings">அமைப்புகள்</string>
+    <string name="today_tutor">ஆசிரியரிடம் கேள்</string>
+    <string name="today_scan">பாடத்திட்டம் அல்லது பக்கத்தை ஸ்கேன் செய்</string>
+    <string name="roadmap_title">உங்கள் பாதை வரைபடம்</string>
+    <string name="dashboard_title">டாஷ்போர்டு</string>
+    <string name="tutor_title">ஆசிரியர்</string>
+    <string name="settings_title">அமைப்புகள்</string>
+    <string name="diag_title">ஒரு சிறு தேர்வு</string>
+    <string name="diag_submit">பதில்</string>
+    <string name="diag_hint">எனக்கு ஒரு குறிப்பு கொடு</string>
+    <string name="scan_title">ஸ்கேன்</string>
+    <string name="scan_take_photo">புகைப்படம் எடு</string>
+    <string name="scan_pick_image">படத்தைத் தேர்ந்தெடு</string>
+    <string name="scan_clear">ஸ்கேனை அழி</string>
+    <string name="locale_beta_note">இந்த மொழிபெயர்ப்பு இன்னும் தாய்மொழி பேசுபவரால் சரிபார்க்கப்படவில்லை.</string>
+</resources>

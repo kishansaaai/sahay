@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Beta locale (B19): core first-run strings only, written by the assistant and NOT yet reviewed by a native speaker.
+     Every other string falls back to English. Review checklist: docs/BETA.md. -->
+<resources>
+    <string name="tagline">ডিভাইসেই চলা অভিযোজিত শেখার সঙ্গী</string>
+    <string name="offline_note">সবকিছু এই ফোনেই থাকে। অ্যাপ নেটওয়ার্কে পৌঁছাতে পারে না।</string>
+    <string name="back">পিছনে</string>
+    <string name="next">পরবর্তী</string>
+    <string name="continue_label">চালিয়ে যান</string>
+    <string name="done">সম্পন্ন</string>
+    <string name="cancel">বাতিল</string>
+    <string name="close">বন্ধ করুন</string>
+    <string name="loading">লোড হচ্ছে</string>
+    <string name="language">ভাষা</string>
+    <string name="nav_today">আজ</string>
+    <string name="nav_roadmap">রোডম্যাপ</string>
+    <string name="nav_tutor">টিউটর</string>
+    <string name="nav_dashboard">ড্যাশবোর্ড</string>
+    <string name="nav_settings">সেটিংস</string>
+    <string name="welcome_title">সহায়-এ স্বাগতম</string>
+    <string name="welcome_body">আপনার লক্ষ্য ঘিরে পরিকল্পনা করে, আপনি যেসব ধারণা বাদ দিয়েছেন তা চিহ্নিত করে এবং প্রতিটি পরিবর্তন ব্যাখ্যা করে এমন একজন শান্ত পড়াশোনার কোচ। এটি পুরোপুরি অফলাইনে চলে।</string>
+    <string name="welcome_start">শুরু করুন</string>
+    <string name="intake_title">আপনার লক্ষ্য সম্পর্কে সহায়-কে বলুন</string>
+    <string name="intake_finish">ডায়াগনস্টিক শুরু করুন</string>
+    <string name="today_title">আজ</string>
+    <string name="today_next">আপনার পরবর্তী ধাপ</string>
+    <string name="today_start">এটি পড়ুন</string>
+    <string name="today_practice">একটি প্রশ্ন অনুশীলন করুন</string>
+    <string name="today_recover">আমি কয়েক দিন বাদ দিয়েছি</string>
+    <string name="today_settings">সেটিংস</string>
+    <string name="today_tutor">টিউটরকে জিজ্ঞাসা করুন</string>
+    <string name="today_scan">সিলেবাস বা পৃষ্ঠা স্ক্যান করুন</string>
+    <string name="roadmap_title">আপনার রোডম্যাপ</string>
+    <string name="dashboard_title">ড্যাশবোর্ড</string>
+    <string name="tutor_title">টিউটর</string>
+    <string name="settings_title">সেটিংস</string>
+    <string name="diag_title">একটি ছোট ডায়াগনস্টিক</string>
+    <string name="diag_submit">উত্তর দিন</string>
+    <string name="diag_hint">আমাকে একটি ইঙ্গিত দিন</string>
+    <string name="scan_title">স্ক্যান</string>
+    <string name="scan_take_photo">ছবি তুলুন</string>
+    <string name="scan_pick_image">একটি ছবি বেছে নিন</string>
+    <string name="scan_clear">স্ক্যান মুছুন</string>
+    <string name="locale_beta_note">এই অনুবাদ এখনও মাতৃভাষী কেউ যাচাই করেননি।</string>
+</resources>
