@@ -18,6 +18,11 @@ Full licence texts of anything we redistribute live next to this file.
 | KleidiAI (Arm) | Apache-2.0 | Arm-optimised kernels, if the build enables them |
 | Official ExecuTorch Llama Android demo app | BSD-style licence (same repository) | Reference for the JNI wrapper (A01, A04); our wrapper is original code written against its public API |
 | Kotlin, kotlinx.coroutines, AndroidX, Jetpack Compose | Apache-2.0 | App and engine |
+| AndroidX Room | Apache-2.0 | Transactional on-device learner database; schema exported in app/schemas/ |
+| Kotlin Symbol Processing (KSP) | Apache-2.0 | Build-time Room code generation only |
+| ZXing core 3.5.3 | Apache-2.0 | Offline QR encode/decode; https://github.com/zxing/zxing |
+| Google ML Kit Text Recognition (Latin and Devanagari, bundled) | Google APIs Terms and ML Kit Terms | On-device OCR; https://developers.google.com/ml-kit/terms . Bundled models are used; merged manifest removes network permissions. Review the SDK terms before redistribution. |
+| Robolectric 4.14.1, JUnit 4.13.2 | MIT, EPL-1.0 respectively | Local tests only, never shipped in the APK |
 | Python 3 standard library only | PSF | llm/, eval/, export/, bench/ scripts (no third-party packages needed to run the tests) |
 | Hugging Face transformers, peft, datasets (offline LoRA, A18, optional) | Apache-2.0 | export/finetune/ only; never shipped in the app |
 
