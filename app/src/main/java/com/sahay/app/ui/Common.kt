@@ -61,11 +61,14 @@ fun ProgressDots(total: Int, current: Int) {
 
 @Composable
 fun LanguageChips(state: AppState, modifier: Modifier = Modifier) {
-    // Only languages with a bundled translation are offered; showing a chip that falls back to English would
-    // misrepresent the build. B19 adds the remaining locales.
+    // Additional locales have core navigation translations; detailed copy falls back to English.
     val options = listOf(
         "en" to sr(R.string.english),
         "hi" to sr(R.string.hindi),
+        "ta" to sr(R.string.tamil),
+        "te" to sr(R.string.telugu),
+        "bn" to sr(R.string.bengali),
+        "mr" to sr(R.string.marathi),
     )
     Row(
         modifier = modifier.horizontalScroll(rememberScrollState()),

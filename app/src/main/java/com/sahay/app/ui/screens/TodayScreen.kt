@@ -1,8 +1,10 @@
+@file:OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
+
 package com.sahay.app.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -63,7 +65,7 @@ fun TodayScreen(state: AppState) {
                     fraction = state.averageMastery(),
                     label = sr(R.string.today_mastery, AppState.percent(state.averageMastery())),
                 )
-                Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                     Text(text = sr(R.string.today_streak, state.streakDays()), style = MaterialTheme.typography.bodySmall)
                     Text(text = sr(R.string.today_attempts, state.attempts.size), style = MaterialTheme.typography.bodySmall)
                 }
@@ -86,22 +88,22 @@ fun TodayScreen(state: AppState) {
                     text = sr(R.string.minutes, item.minutes) + "  " + sr(R.string.mastery_label, AppState.percent(state.mastery(item.skillId ?: ""))),
                     style = MaterialTheme.typography.bodyMedium,
                 )
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     Button(onClick = { state.openStudy(item.skillId, practice = false) }) { Text(sr(R.string.today_start)) }
                     OutlinedButton(onClick = { state.openStudy(item.skillId, practice = true) }) { Text(sr(R.string.today_practice)) }
                 }
             }
         }
 
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
             OutlinedButton(onClick = { state.go(com.sahay.app.state.Screen.Roadmap) }) { Text(sr(R.string.nav_roadmap)) }
             OutlinedButton(onClick = { state.openTutor(item?.skillId) }) { Text(sr(R.string.today_tutor)) }
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
             OutlinedButton(onClick = { state.go(com.sahay.app.state.Screen.Recover) }) { Text(sr(R.string.today_recover)) }
             OutlinedButton(onClick = { state.go(com.sahay.app.state.Screen.Dashboard) }) { Text(sr(R.string.nav_dashboard)) }
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
             OutlinedButton(onClick = { state.go(com.sahay.app.state.Screen.Settings) }) { Text(sr(R.string.today_settings)) }
             OutlinedButton(onClick = { state.go(com.sahay.app.state.Screen.Device) }) { Text(sr(R.string.today_device)) }
         }
