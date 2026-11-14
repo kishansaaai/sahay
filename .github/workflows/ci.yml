@@ -2,6 +2,11 @@ name: ci
 on:
   push:
   pull_request:
+  # Manual run for a fresh debug APK without pushing a commit (B16).
+  workflow_dispatch:
+  # Daily integration build so the main-branch APK never goes stale (B16).
+  schedule:
+    - cron: "30 2 * * *"
 jobs:
   checks:
     runs-on: ubuntu-latest
@@ -62,9 +67,16 @@ jobs:
           if [ -x "$S" ]; then yes | "$S" "platforms;android-35" "build-tools;35.0.0" > /dev/null; fi
       - name: Build debug APK (compiles app/ and engine/)
         run: gradle :app:assembleDebug --no-daemon --stacktrace
+      - name: Write APK checksum for testers
+        run: |
+          cd app/build/outputs/apk/debug
+          sha256sum ./*.apk | tee apk-sha256.txt
+          ls -l ./*.apk
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
           name: sahay-debug-apk
-          path: app/build/outputs/apk/debug/*.apk
+          path: |
+            app/build/outputs/apk/debug/*.apk
+            app/build/outputs/apk/debug/apk-sha256.txt
           if-no-files-found: error
