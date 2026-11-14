@@ -5,6 +5,7 @@ from pathlib import Path
 PROMPT_DIR = Path(__file__).resolve().parents[2] / "content" / "prompts"
 TASKS = ["goal_parse", "plan_narrate", "explain", "hint", "draft_question", "teachback_grade", "syllabus_compile"]
 LANGS = ("en", "hi")
+EXPERIMENTAL_LANGS = {"ta": "Tamil", "te": "Telugu", "bn": "Bengali", "mr": "Marathi"}
 SYSTEM_TOKEN_LIMIT = 300
 
 _cache = {}
@@ -35,13 +36,14 @@ def _data(obj):
 
 def build_messages(task, inp, language="en", error=None, previous=None):
     """Chat messages for [task]. On retry pass the invalid [previous] reply and the exact validation [error]."""
-    if language not in LANGS:
+    if language not in LANGS and language not in EXPERIMENTAL_LANGS:
         raise ValueError("language must be one of %s" % (LANGS,))
     t = load_task(task)
-    ex = [e for e in t["examples"] if e["lang"] == language]
+    template_language = "hi" if language == "hi" else "en"
+    ex = [e for e in t["examples"] if e["lang"] == template_language]
     shown = "\n\n".join("Input: %s\nOutput: %s" % (_data(e["input"]), json.dumps(e["output"], ensure_ascii=False, separators=(",", ":"))) for e in ex)
     user = "%s\nLanguage: %s\nSchema: %s\n\n%s\n\nInput: %s\nOutput:" % (
-        t["instruction"][language], "Hindi" if language == "hi" else "English",
+        t["instruction"][template_language], {"en": "English", "hi": "Hindi", **EXPERIMENTAL_LANGS}[language],
         json.dumps(t["schema"], ensure_ascii=False, separators=(",", ":")), shown, _data(inp))
     msgs = [{"role": "system", "content": system_prompt()}, {"role": "user", "content": user}]
     if error is not None:

@@ -84,6 +84,14 @@ fun llmTests(contentDir: String): Pair<Int, Int> {
         val s = o.stats.rows.getValue("hint"); check(s.firstTry == 1 && s.afterRetry == 1 && s.fallback == 1, "${s.firstTry} ${s.afterRetry} ${s.fallback}")
     }
 
+    test("streaming explanation decodes split escapes without exposing JSON syntax") {
+        val decoder = StreamingText("explanation")
+        val json = """{"task":"explain","explanation":"A \"quote\" and \u0939\nnext", "analogy":""}"""
+        var text = ""
+        for (char in json) decoder.accept(char.toString())?.let { text = it }
+        check(text == "A \"quote\" and ह\nnext", "decoded: $text")
+    }
+
     // ---- model manager (A04/A05/A19) ----
     class Fake : LlmRuntime {
         var loaded = false; var loads = 0; var gens = 0; var stopped = false

@@ -179,6 +179,7 @@ class AppState(private val app: Application) {
     var checkPendingChoice by mutableStateOf<Int?>(null)
         private set
     private var checkShownAt = SystemClock.elapsedRealtime()
+    private var studyJob: Job? = null
 
     // Tutor screen.
     var chat by mutableStateOf<List<ChatLine>>(emptyList())
@@ -188,6 +189,7 @@ class AppState(private val app: Application) {
     var tutorSkillId by mutableStateOf<String?>(null)
         private set
     private var tutorJob: Job? = null
+    private var tutorTurn = 0
 
     /**
      * True only when an ExecuTorch runtime is compiled in *and* a model file is present. Any generated text is reported as
@@ -481,12 +483,14 @@ class AppState(private val app: Application) {
         studyQuestion = pickQuestion(id)
         checkShownAt = SystemClock.elapsedRealtime()
         screen = Screen.Study
-        scope.launch { loadExplanation(id, false) }
+        studyJob?.cancel()
+        studyJob = scope.launch { loadExplanation(id, false) }
     }
 
     fun requestAnalogy() {
         val id = studySkillId ?: return
-        scope.launch { loadExplanation(id, true) }
+        studyJob?.cancel()
+        studyJob = scope.launch { loadExplanation(id, true) }
     }
 
     private suspend fun loadExplanation(skillId: String, withAnalogy: Boolean) {
@@ -504,7 +508,11 @@ class AppState(private val app: Application) {
             "language" to llmLanguage,
         )
         val epoch = taskEpoch
-        val r = runTask("explain", inp)
+        val r = runTask("explain", inp) { partial ->
+            scope.launch {
+                if (epoch == taskEpoch && studySkillId == skillId && studyLoading) studyText = partial
+            }
+        }
         if (epoch != taskEpoch || studySkillId != skillId) return
         studyText = (r.output?.get("explanation") as? String) ?: skill.notes
         studyAnalogy = (r.output?.get("analogy") as? String) ?: ""
@@ -597,24 +605,25 @@ class AppState(private val app: Application) {
         chat = chat + ChatLine(from = "sahay", text = "", streaming = true)
         tutorStreaming = true
         val prompt = tutorPrompt(skill?.name ?: id, skill?.notes ?: "", message)
+        val turn = ++tutorTurn
         tutorJob = scope.launch {
             try {
-                SahayLlm.stream(prompt, 220, 0.7).collect { token -> appendTutor(token) }
+                SahayLlm.stream(prompt, 220, 0.7).collect { token -> if (turn == tutorTurn) appendTutor(token) }
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
-                appendTutor("\n" + str(com.sahay.app.R.string.tutor_failed, e.message ?: "error"))
+                if (turn == tutorTurn) appendTutor("\n" + str(com.sahay.app.R.string.tutor_failed, e.message ?: "error"))
             } finally {
-                finishTutorStream()
+                if (turn == tutorTurn) finishTutorStream()
             }
         }
     }
 
     fun stopTutor() {
         if (!tutorStreaming) return
+        tutorTurn++
         tutorJob?.cancel()
         tutorJob = null
-        if (SahayLlm.ready) runCatching { SahayLlm.manager.stop() }
         appendTutor("\n" + str(com.sahay.app.R.string.tutor_stopped))
         finishTutorStream()
     }
@@ -647,8 +656,19 @@ class AppState(private val app: Application) {
 
     // ---- LLM task plumbing ----
 
-    private suspend fun runTask(task: String, input: Map<String, Any?>): LlmResult = withContext(Dispatchers.IO) {
-        if (SahayLlm.ready) {
+    fun stopStudy() {
+        studyJob?.cancel()
+        studyJob = null
+        studyLoading = false
+        studyText = studySource.ifBlank { studySkillId?.let { contentFor(domain).graph.skills[it]?.notes }.orEmpty() }
+        studyTemplate = true
+    }
+
+    private suspend fun runTask(task: String, input: Map<String, Any?>, onPartial: ((String) -> Unit)? = null): LlmResult = withContext(Dispatchers.IO) {
+        if (SahayLlm.ready && task == "explain" && onPartial != null) {
+            val job = coroutineContext[Job]
+            SahayLlm.explain(input, llmLanguage, { job?.isActive == false }, onPartial)
+        } else if (SahayLlm.ready) {
             SahayLlm.orchestrator.run(task, input, llmLanguage)
         } else {
             LlmResult(task, Fallbacks.make(task, input, llmLanguage), "fallback", 0, listOf("runtime not initialised"))
@@ -769,6 +789,7 @@ class AppState(private val app: Application) {
         val errors = snap.validationErrors(contentFor(p.domain))
         if (errors.isNotEmpty()) { onComplete(errors.first()); return }
         stopTutor()
+        studyJob?.cancel()
         taskEpoch++
         restoring = true
         val json = snap.toJson()
@@ -797,6 +818,7 @@ class AppState(private val app: Application) {
 
     fun deleteAllData() {
         stopTutor()
+        studyJob?.cancel()
         taskEpoch++
         restoring = true
         storageQueue.trySend {

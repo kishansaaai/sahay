@@ -109,6 +109,19 @@ object SahayLlm {
         return stats
     }
 
+    fun explain(input: Map<String, Any?>, language: String, cancelled: () -> Boolean, onPartial: (String) -> Unit): com.sahay.engine.LlmResult =
+        orchestrator.run("explain", input, language, generation = { prompt, temperature, cap ->
+            val decoder = com.sahay.engine.StreamingText("explanation")
+            val raw = StringBuilder()
+            onPartial("") // A retry starts a new provisional reply.
+            generate(prompt, cap, temperature, cancelled = cancelled) { token ->
+                raw.append(token)
+                decoder.accept(token)?.let(onPartial)
+                true
+            }
+            raw.toString()
+        })
+
     /** A blocking send applies back pressure instead of silently dropping tokens when the UI is busy. */
     fun stream(prompt: String, maxNewTokens: Int, temperature: Double): Flow<String> = callbackFlow {
         val request = Any()
