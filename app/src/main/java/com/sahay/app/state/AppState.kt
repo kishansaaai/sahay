@@ -17,6 +17,7 @@ import com.sahay.engine.Diagnostic
 import com.sahay.engine.Fallbacks
 import com.sahay.engine.FatigueMonitor
 import com.sahay.engine.GoalForecast
+import com.sahay.engine.GovMode
 import com.sahay.engine.LearnerModel
 import com.sahay.engine.LearnerProfileRow
 import com.sahay.engine.LlmResult
@@ -33,6 +34,7 @@ import com.sahay.engine.buildPlan
 import com.sahay.engine.forecastToTarget
 import com.sahay.engine.recover
 import com.sahay.engine.replay
+import com.sahay.engine.validateAttempts
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -54,6 +56,20 @@ data class ChatLine(val from: String, val text: String, val streaming: Boolean =
 
 /** Result of the last check question on the Study screen. */
 data class CheckFeedback(val correct: Boolean, val misconception: String?, val correctAnswer: String)
+
+/** One reading of the device signals that feed the governor (B13). */
+data class DeviceSnapshot(
+    val mode: GovMode,
+    val thermal: Int,
+    val batteryPct: Int,
+    val charging: Boolean,
+    val freeMemMb: Int,
+    val maxNewTokens: Int,
+    val threads: Int,
+    val contextTokens: Int,
+    val deferNonUrgent: Boolean,
+    val cachedOnly: Boolean,
+)
 
 /**
  * Single application-scoped state holder (issue B03 shell, B04 store, B05 to B13 screens).
@@ -678,6 +694,52 @@ class AppState(private val app: Application) {
     fun misconceptionText(id: String): String = contentFor(domain).misconceptions[id]?.description ?: id
 
     // ---- settings and export (B13) ----
+
+    /** Last device sample, or null before the monitor has run (or when the LLM layer failed to initialise). */
+    fun deviceSnapshot(): DeviceSnapshot? {
+        if (!SahayLlm.ready) return null
+        val s = SahayLlm.monitor.last ?: return null
+        val l = SahayLlm.governor.limits()
+        return DeviceSnapshot(
+            mode = SahayLlm.governor.mode,
+            thermal = s.thermal, batteryPct = s.batteryPct, charging = s.charging, freeMemMb = s.freeMemMb,
+            maxNewTokens = l.maxNewTokens, threads = l.threads, contextTokens = l.contextTokens,
+            deferNonUrgent = l.deferNonUrgent, cachedOnly = l.cachedOnly,
+        )
+    }
+
+    /** Small, honest summary for the settings export card. */
+    fun exportSummary(): String =
+        "${attempts.size} attempts, ${teachBacks.size} teach-backs, ${sessions.size} sessions, " +
+            "${plan?.items?.size ?: 0} plan items"
+
+    /**
+     * Replace local state with an exported snapshot. Returns null on success or a readable reason when the snapshot is
+     * malformed, belongs to another domain, or references questions this build does not bundle.
+     */
+    fun importSnapshot(text: String): String? {
+        val snap = try {
+            Snapshot.fromJson(text)
+        } catch (e: Exception) {
+            return e.message ?: "invalid snapshot"
+        }
+        val p = snap.profile ?: return "the snapshot has no learner profile"
+        if (p.domain !in DOMAIN_TARGETS) return "unknown domain '${p.domain}'"
+        val c = try {
+            contentFor(p.domain)
+        } catch (e: Exception) {
+            return "content for '${p.domain}' is not bundled"
+        }
+        val known = c.graph.skills.keys
+        val unknown = snap.targets.filter { it !in known }
+        if (unknown.isNotEmpty()) return "unknown target skills: ${unknown.joinToString()}"
+        val bad = validateAttempts(c, snap.attempts)
+        if (bad.isNotEmpty()) return bad.first()
+        if (!store.saveJson(snap.toJson())) return store.lastError ?: "could not save the snapshot"
+        storageError = null
+        restore()
+        return storageError
+    }
 
     fun snapshot(): Snapshot = Snapshot(
         profile = profile,

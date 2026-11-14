@@ -20,14 +20,17 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.dp
 import com.sahay.app.state.AppState
 import com.sahay.app.state.Screen
 import com.sahay.app.ui.screens.DashboardScreen
+import com.sahay.app.ui.screens.DeviceScreen
 import com.sahay.app.ui.screens.DiagnosticScreen
 import com.sahay.app.ui.screens.IntakeScreen
 import com.sahay.app.ui.screens.RecoverScreen
 import com.sahay.app.ui.screens.RoadmapScreen
+import com.sahay.app.ui.screens.SettingsScreen
 import com.sahay.app.ui.screens.StudyScreen
 import com.sahay.app.ui.screens.TodayScreen
 import com.sahay.app.ui.screens.TutorScreen
@@ -76,7 +79,7 @@ fun SahayApp() {
                                 NavigationBarItem(
                                     selected = state.screen == tab,
                                     onClick = { state.go(tab) },
-                                    icon = { Text(label.take(1)) },
+                                    icon = { Text(label.take(1), modifier = Modifier.clearAndSetSemantics {}) },
                                     label = { Text(label) },
                                 )
                             }
@@ -95,6 +98,8 @@ fun SahayApp() {
                         Screen.Tutor -> TutorScreen(state)
                         Screen.Dashboard -> DashboardScreen(state)
                         Screen.Recover -> RecoverScreen(state)
+                        Screen.Device -> DeviceScreen(state)
+                        Screen.Settings -> SettingsScreen(state)
                         else -> NotInBuildScreen()
                     }
                 }
@@ -109,6 +114,8 @@ private fun goBack(state: AppState) {
         Screen.Diagnostic -> state.go(if (state.profile == null) Screen.Intake else Screen.Today)
         Screen.Study -> state.go(Screen.Today)
         Screen.Recover -> state.go(Screen.Today)
+        Screen.Device -> state.go(Screen.Settings)
+        Screen.Settings -> state.go(Screen.Today)
         else -> state.go(Screen.Today)
     }
 }
@@ -124,6 +131,8 @@ private fun screenTitle(screen: Screen): String = when (screen) {
     Screen.Tutor -> sr(R.string.tutor_title)
     Screen.Dashboard -> sr(R.string.dashboard_title)
     Screen.Recover -> sr(R.string.recover_title)
+    Screen.Device -> sr(R.string.device_title)
+    Screen.Settings -> sr(R.string.settings_title)
     else -> sr(R.string.app_name)
 }
 

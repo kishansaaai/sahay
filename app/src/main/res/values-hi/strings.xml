@@ -191,5 +191,51 @@
     <string name="recover_note">योजना पहले शर्त वाले कौशल का क्रम रखती है। छोड़े गए कौशल नीचे कारण के साथ हैं।</string>
     <string name="recover_dropped">इस बार छोड़े गए</string>
 
+    <string name="yes">हाँ</string>
+    <string name="no">नहीं</string>
+
+    <string name="settings_title">सेटिंग्स</string>
+    <string name="settings_model">मॉडल और रनटाइम</string>
+    <string name="settings_model_file">मॉडल फ़ाइल: %1$s</string>
+    <string name="settings_runtime">एक्ज़ीक्यूटॉर्च रनटाइम: %1$s</string>
+    <string name="settings_present">उपलब्ध</string>
+    <string name="settings_absent">उपलब्ध नहीं</string>
+    <string name="settings_model_note">मॉडल फ़ाइल APK में कभी नहीं जोड़ी जाती। उसके बिना समझाने और ट्यूटर के उत्तर टेम्पलेट टेक्स्ट होते हैं और यह साफ़ लिखा रहता है।</string>
+    <string name="settings_data">आपका डेटा</string>
+    <string name="settings_data_summary">इस फ़ोन पर: %1$s</string>
+    <string name="settings_copy">निर्यात क्लिपबोर्ड पर कॉपी करें</string>
+    <string name="settings_export_copied">स्नैपशॉट क्लिपबोर्ड पर कॉपी हो गया।</string>
+    <string name="settings_share">निर्यात साझा करें</string>
+    <string name="settings_share_title">सहाय स्नैपशॉट साझा करें</string>
+    <string name="settings_import">क्लिपबोर्ड से आयात करें</string>
+    <string name="settings_import_empty">क्लिपबोर्ड में कोई टेक्स्ट नहीं है।</string>
+    <string name="settings_import_ok">स्नैपशॉट आयात हुआ और सीखने की स्थिति फिर बनी।</string>
+    <string name="settings_import_failed">आयात अस्वीकार: %1$s</string>
+    <string name="settings_delete">सारा डेटा मिटाएँ</string>
+    <string name="settings_delete_confirm">सारा डेटा मिटाएँ?</string>
+    <string name="settings_delete_body">इससे इस फ़ोन का स्नैपशॉट, मॉडल फ़ाइलें और सारे जवाब मिट जाएँगे। इसे वापस नहीं लाया जा सकता।</string>
+    <string name="settings_device">डिवाइस और ऊर्जा</string>
+
+    <string name="device_title">डिवाइस और ऊर्जा</string>
+    <string name="device_note">ये रीडिंग फ़ोन से आती हैं। गवर्नर की सीमाएँ अभी बिना ट्यूनिंग वाली डिफ़ॉल्ट हैं; फ़ोन पर कोई माप दर्ज नहीं हुआ है (A13)।</string>
+    <string name="device_signals">मौजूदा संकेत</string>
+    <string name="device_no_sample">अभी कोई नमूना नहीं। मॉनिटर हर पाँच सेकंड में थर्मल स्थिति, बैटरी और मेमोरी पढ़ता है।</string>
+    <string name="device_mode">गवर्नर मोड: %1$s</string>
+    <string name="device_thermal">थर्मल स्थिति: %1$d (0 का मतलब कोई नहीं)</string>
+    <string name="device_battery">बैटरी: %1$d%%</string>
+    <string name="device_charging">चार्ज हो रहा है</string>
+    <string name="device_not_charging">चार्ज नहीं हो रहा</string>
+    <string name="device_free_mem">खाली मेमोरी: %1$d MB</string>
+    <string name="device_limits">मौजूदा सीमाएँ</string>
+    <string name="device_max_tokens">ज़्यादा से ज़्यादा नए टोकन: %1$d</string>
+    <string name="device_threads">थ्रेड: %1$d</string>
+    <string name="device_context">कॉन्टेक्स्ट टोकन: %1$d</string>
+    <string name="device_defer">गैर-ज़रूरी काम टालता है: %1$s</string>
+    <string name="device_cached">सिर्फ़ सहेजा टेक्स्ट इस्तेमाल करता है: %1$s</string>
+    <string name="gov_full">पूरी रफ़्तार</string>
+    <string name="gov_balanced">संतुलित: फ़ोन गर्म है या बैटरी कम है</string>
+    <string name="gov_saver">बचत: बैटरी और गर्मी बचाने के लिए छोटे उत्तर</string>
+    <string name="gov_pause">ठंडा हो रहा है: अभी सहेजा टेक्स्ट</string>
+
     <string name="not_in_build">यह स्क्रीन अभी इस बिल्ड में नहीं है।</string>
 </resources>

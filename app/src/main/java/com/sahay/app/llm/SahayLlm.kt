@@ -66,6 +66,7 @@ object SahayLlm {
             sb.toString()
         })
         monitor = DeviceMonitor(app, governor)
+        monitor.start()
         app.registerComponentCallbacks(object : ComponentCallbacks2 {
             override fun onTrimMemory(level: Int) = manager.onTrimMemory(level)
             override fun onConfigurationChanged(newConfig: Configuration) {}
