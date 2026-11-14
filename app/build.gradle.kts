@@ -44,6 +44,14 @@ android {
         kotlinCompilerExtensionVersion = extra["kotlinVersion"].toString()
     }
 
+    sourceSets {
+        // Prompt templates (content/prompts) and model_checksums.txt are read from assets; the model itself never ships in the APK.
+        getByName("main") {
+            assets.srcDirs("../content", "src/main/assets")
+            if (providers.gradleProperty("sahay.executorch").isPresent) java.srcDir("src/executorch/java")
+        }
+    }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -60,4 +68,18 @@ dependencies {
     implementation(androidx.compose.ui.uiToolingPreview)
     implementation(androidx.lifecycle.lifecycleRuntimeKtx)
     implementation(projects.engine)
+
+    // ExecuTorch runtime (A04). Opt in with -Psahay.executorch=true once A01 has pinned the tag; see docs/setup-runtime.md.
+    if (providers.gradleProperty("sahay.executorch").isPresent) {
+        implementation("org.pytorch:executorch-android:${providers.gradleProperty("sahay.executorchVersion").getOrElse("0.7.0")}")
+    }
 }
+
+// Bundle releases/CHECKSUMS.txt as an asset so the app can verify the model at load (A19).
+val copyChecksums by tasks.registering(Copy::class) {
+    from(rootProject.file("releases/CHECKSUMS.txt"))
+    rename { "model_checksums.txt" }
+    into(layout.buildDirectory.dir("generated/assets/checksums"))
+}
+android.sourceSets.getByName("main").assets.srcDir(layout.buildDirectory.dir("generated/assets/checksums"))
+tasks.matching { it.name.startsWith("merge") && it.name.endsWith("Assets") }.configureEach { dependsOn(copyChecksums) }

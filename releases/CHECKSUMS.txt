@@ -1,0 +1,3 @@
+# SHA-256 of every model file we ship. Written by export/build_pte.py; verified by the app at load (ModelVerifier) and by scripts/verify_model.py.
+# Format: <sha256>  <file name>  <bytes>  <variant>  executorch=<tag>  <date>
+# The model files themselves are never committed; they are GitHub release assets (see releases/README.md).

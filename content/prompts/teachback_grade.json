@@ -1,0 +1,148 @@
+{
+ "task": "teachback_grade",
+ "version": 1,
+ "temperature": 0.2,
+ "max_tokens": 200,
+ "instruction": {
+  "en": "Grade the learner's own explanation in <data> against the notes. Score accuracy, completeness, clarity and example from 0 (missing) to 3 (excellent). Write feedback of two sentences: one thing done well and one thing to add. Set task to teachback_grade.",
+  "hi": "<data> में सीखने वाले की अपनी व्याख्या को नोट्स के आधार पर जाँचें। accuracy, completeness, clarity और example को 0 (अनुपस्थित) से 3 (उत्कृष्ट) तक अंक दें। दो वाक्यों का feedback लिखें: एक अच्छी बात और एक जोड़ने योग्य बात। task को teachback_grade रखें।"
+ },
+ "schema": {
+  "type": "object",
+  "required": [
+   "task",
+   "skill_id",
+   "scores",
+   "feedback"
+  ],
+  "additionalProperties": false,
+  "properties": {
+   "task": {
+    "type": "string",
+    "enum": [
+     "teachback_grade"
+    ]
+   },
+   "skill_id": {
+    "type": "string",
+    "minLength": 1,
+    "maxLength": 60
+   },
+   "scores": {
+    "type": "object",
+    "required": [
+     "accuracy",
+     "completeness",
+     "clarity",
+     "example"
+    ],
+    "additionalProperties": false,
+    "properties": {
+     "accuracy": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 3
+     },
+     "completeness": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 3
+     },
+     "clarity": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 3
+     },
+     "example": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 3
+     }
+    }
+   },
+   "feedback": {
+    "type": "string",
+    "minLength": 10,
+    "maxLength": 300
+   }
+  }
+ },
+ "examples": [
+  {
+   "lang": "en",
+   "input": {
+    "skill_id": "dsa.stack",
+    "notes": "A stack is last-in first-out; push, pop and peek work at the top in O(1). Used for undo and bracket matching.",
+    "learner_text": "A stack is last in first out. You push and pop from the top."
+   },
+   "output": {
+    "task": "teachback_grade",
+    "skill_id": "dsa.stack",
+    "scores": {
+     "accuracy": 3,
+     "completeness": 1,
+     "clarity": 3,
+     "example": 0
+    },
+    "feedback": "Your definition is right and clear. Add one real example, such as undo in an editor."
+   }
+  },
+  {
+   "lang": "en",
+   "input": {
+    "skill_id": "dsa.stack",
+    "notes": "A stack is last-in first-out; push, pop and peek work at the top in O(1). Used for undo and bracket matching.",
+    "learner_text": "A stack removes the oldest item first, like a line at a shop."
+   },
+   "output": {
+    "task": "teachback_grade",
+    "skill_id": "dsa.stack",
+    "scores": {
+     "accuracy": 0,
+     "completeness": 1,
+     "clarity": 2,
+     "example": 1
+    },
+    "feedback": "Your shop-line example is clear, but it describes a queue. A stack removes the newest item first."
+   }
+  },
+  {
+   "lang": "hi",
+   "input": {
+    "skill_id": "dsa.stack",
+    "notes": "A stack is last-in first-out; push, pop and peek work at the top in O(1). Used for undo and bracket matching.",
+    "learner_text": "स्टैक में जो आइटम आख़िर में डालो वही पहले निकलता है। जैसे एडिटर में undo।"
+   },
+   "output": {
+    "task": "teachback_grade",
+    "skill_id": "dsa.stack",
+    "scores": {
+     "accuracy": 3,
+     "completeness": 2,
+     "clarity": 3,
+     "example": 3
+    },
+    "feedback": "आपकी परिभाषा और undo का उदाहरण दोनों सही हैं। अब push और pop की समय जटिलता भी जोड़ें।"
+   }
+  },
+  {
+   "lang": "hi",
+   "input": {
+    "skill_id": "dsa.stack",
+    "notes": "A stack is last-in first-out; push, pop and peek work at the top in O(1). Used for undo and bracket matching.",
+    "learner_text": "स्टैक एक डेटा स्ट्रक्चर है।"
+   },
+   "output": {
+    "task": "teachback_grade",
+    "skill_id": "dsa.stack",
+    "scores": {
+     "accuracy": 1,
+     "completeness": 0,
+     "clarity": 1,
+     "example": 0
+    },
+    "feedback": "आपने सही कहा कि स्टैक एक डेटा स्ट्रक्चर है। अब बताएँ कि वह LIFO कैसे काम करता है और एक उदाहरण दें।"
+   }
+  }
+ ]
+}

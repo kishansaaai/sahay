@@ -1,0 +1,176 @@
+{
+ "task": "draft_question",
+ "version": 1,
+ "temperature": 0.7,
+ "max_tokens": 300,
+ "instruction": {
+  "en": "Write one multiple-choice question for the skill using only the notes (or scanned text) in <data>. Give exactly four distinct options with exactly one correct option; answer is its index from 0. For each wrong option set misconception to a short description of the mistake that leads to it; for the correct option set it to null.",
+  "hi": "<data> में दिए नोट्स (या स्कैन किए पाठ) से ही कौशल के लिए एक बहुविकल्पीय प्रश्न लिखें। ठीक चार अलग विकल्प दें जिनमें ठीक एक सही हो; answer उसका क्रमांक है (0 से शुरू)। हर ग़लत विकल्प के लिए misconception में उस भूल का छोटा विवरण लिखें; सही विकल्प के लिए null रखें।"
+ },
+ "schema": {
+  "type": "object",
+  "required": [
+   "stem",
+   "options",
+   "answer"
+  ],
+  "additionalProperties": false,
+  "properties": {
+   "stem": {
+    "type": "string",
+    "minLength": 10,
+    "maxLength": 300
+   },
+   "options": {
+    "type": "array",
+    "minItems": 4,
+    "maxItems": 4,
+    "items": {
+     "type": "object",
+     "required": [
+      "text",
+      "misconception"
+     ],
+     "additionalProperties": false,
+     "properties": {
+      "text": {
+       "type": "string",
+       "minLength": 1,
+       "maxLength": 120
+      },
+      "misconception": {
+       "type": [
+        "string",
+        "null"
+       ],
+       "maxLength": 200
+      }
+     }
+    }
+   },
+   "answer": {
+    "type": "integer",
+    "minimum": 0,
+    "maximum": 3
+   }
+  }
+ },
+ "examples": [
+  {
+   "lang": "en",
+   "input": {
+    "skill_id": "dsa.stack",
+    "notes": "A stack is last-in first-out. pop removes the most recently pushed item."
+   },
+   "output": {
+    "stem": "After push(1), push(2), push(3), what does pop() return?",
+    "options": [
+     {
+      "text": "1",
+      "misconception": "Thinks a stack removes the oldest item first"
+     },
+     {
+      "text": "2",
+      "misconception": "Confuses the middle item with the top"
+     },
+     {
+      "text": "3",
+      "misconception": null
+     },
+     {
+      "text": "Nothing",
+      "misconception": "Thinks pop only checks the top"
+     }
+    ],
+    "answer": 2
+   }
+  },
+  {
+   "lang": "en",
+   "input": {
+    "skill_id": "dsa.queue",
+    "notes": "A queue is first-in first-out. dequeue removes from the front."
+   },
+   "output": {
+    "stem": "After enqueue(1), enqueue(2), enqueue(3), what does dequeue() return?",
+    "options": [
+     {
+      "text": "3",
+      "misconception": "Thinks a queue removes the newest item first"
+     },
+     {
+      "text": "2",
+      "misconception": "Confuses the middle item with the front"
+     },
+     {
+      "text": "1",
+      "misconception": null
+     },
+     {
+      "text": "Nothing",
+      "misconception": "Thinks dequeue only checks the front"
+     }
+    ],
+    "answer": 2
+   }
+  },
+  {
+   "lang": "hi",
+   "input": {
+    "skill_id": "dsa.stack",
+    "notes": "A stack is last-in first-out. pop removes the most recently pushed item."
+   },
+   "output": {
+    "stem": "push(1), push(2), push(3) के बाद pop() क्या लौटाएगा?",
+    "options": [
+     {
+      "text": "1",
+      "misconception": "सोचता है कि स्टैक सबसे पुराना आइटम पहले हटाता है"
+     },
+     {
+      "text": "2",
+      "misconception": "बीच के आइटम को ऊपर का आइटम समझता है"
+     },
+     {
+      "text": "3",
+      "misconception": null
+     },
+     {
+      "text": "कुछ नहीं",
+      "misconception": "सोचता है कि pop सिर्फ़ ऊपर देखता है"
+     }
+    ],
+    "answer": 2
+   }
+  },
+  {
+   "lang": "hi",
+   "input": {
+    "skill_id": "dsa.queue",
+    "notes": "A queue is first-in first-out. dequeue removes from the front."
+   },
+   "output": {
+    "stem": "enqueue(1), enqueue(2), enqueue(3) के बाद dequeue() क्या लौटाएगा?",
+    "options": [
+     {
+      "text": "3",
+      "misconception": "सोचता है कि क्यू सबसे नया आइटम पहले हटाती है"
+     },
+     {
+      "text": "2",
+      "misconception": "बीच के आइटम को आगे का आइटम समझता है"
+     },
+     {
+      "text": "1",
+      "misconception": null
+     },
+     {
+      "text": "कुछ नहीं",
+      "misconception": "सोचता है कि dequeue सिर्फ़ आगे देखता है"
+     }
+    ],
+    "answer": 2
+   }
+  }
+ ]
+}
