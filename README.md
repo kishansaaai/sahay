@@ -30,7 +30,7 @@ An Android app that builds and re-plans a personal study roadmap using a quantiz
 | B1-B4 | ExecuTorch + INT4 Llama, JNI streaming, no INTERNET permission | In progress (export script, runtime wrapper, model manager, checksum check written and unit-tested; nothing verified on a phone yet; B2 manifest check is in CI) |
 | C1-C7 | Intake, skill graph, diagnostic, tracing, planner, tutor, dashboard | UI written and compile-checked only (intake, diagnostic, roadmap, today/study, tutor, dashboard, recovery); no screen rendered and no model run yet |
 | I1-I8 | Hint ladder, governor, simulator, syllabus compiler, analogies, recovery, teach-back, scan | In progress (LLM side of I1, I2 policy, I4 validator, I5, I7 grading written and unit-tested; needs device and model runs) |
-| X1-X5 | Pacing, voice, QR sharing, KV-cache, offline LoRA | Not started |
+| X1-X5 | Pacing, voice, QR sharing, KV-cache, offline LoRA | Prototype code only: voice uses the phone speech services and QR sharing has a tested share code (nothing run on a phone); pacing/KV-cache/LoRA not started |
 
 ## Rules
 
