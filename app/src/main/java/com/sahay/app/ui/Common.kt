@@ -70,7 +70,7 @@ fun LanguageChips(state: AppState, modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         options.forEach { (code, label) ->
-            FilterChip(selected = state.language == code, onClick = { state.setLanguage(code) }, label = { Text(label) })
+            FilterChip(selected = state.language == code, onClick = { state.selectLanguage(code) }, label = { Text(label) })
         }
     }
 }

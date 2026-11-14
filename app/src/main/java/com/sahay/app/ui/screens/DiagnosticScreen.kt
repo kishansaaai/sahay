@@ -74,7 +74,7 @@ fun DiagnosticScreen(state: AppState) {
             SectionTitle(sr(R.string.diag_confidence, AppState.percent(state.confidence / 100.0)))
             Slider(
                 value = state.confidence.toFloat(),
-                onValueChange = { state.setConfidence(it.toDouble()) },
+                onValueChange = { state.updateConfidence(it.toDouble()) },
                 valueRange = 0f..100f,
                 modifier = Modifier.fillMaxWidth(),
             )

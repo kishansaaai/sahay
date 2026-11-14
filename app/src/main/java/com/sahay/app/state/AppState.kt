@@ -229,7 +229,7 @@ class AppState(private val app: Application) {
 
     fun go(next: Screen) { screen = next }
 
-    fun setLanguage(code: String) {
+    fun selectLanguage(code: String) {
         if (code == language) return
         language = code
         persist()
@@ -301,7 +301,7 @@ class AppState(private val app: Application) {
 
     fun chooseOption(index: Int) { if (diagnosticFeedback == null) pendingChoice = index }
 
-    fun setConfidence(value: Double) { confidence = value.coerceIn(0.0, 100.0) }
+    fun updateConfidence(value: Double) { confidence = value.coerceIn(0.0, 100.0) }
 
     fun requestHint() {
         val q = question ?: return
