@@ -247,5 +247,33 @@
     <string name="voice_no_voice">This phone has no text-to-speech voice for the selected language.</string>
     <string name="voice_note">Voice is a prototype: it uses the speech services already on the phone and has not been tested on a device.</string>
 
+    <string name="today_share">Share plan</string>
+
+    <string name="share_title">Share plan</string>
+    <string name="share_intro">The code below carries this roadmap as compressed text, in the same format as the export. Nothing is uploaded: show the code on one phone and read it on another.</string>
+    <string name="share_qr_title">Your plan as a QR code</string>
+    <string name="share_qr_missing">Create a plan first.</string>
+    <string name="share_qr_too_big">This plan is too large for one reliable QR code. Use Copy export in Settings instead.</string>
+    <string name="share_qr_desc">QR code containing the shared plan</string>
+    <string name="share_qr_failed">The QR code could not be drawn.</string>
+    <string name="share_copy">Copy share code</string>
+    <string name="share_copied">Share code copied.</string>
+    <string name="share_code_label">The same code as text</string>
+    <string name="share_import_title">Import a plan</string>
+    <string name="share_import_note">Importing replaces the learner profile, plan and answers on this phone. The code is checked before anything is written.</string>
+    <string name="share_import_hint">Paste a share code</string>
+    <string name="share_import">Import</string>
+    <string name="share_import_ok">Plan imported and learner state rebuilt.</string>
+    <string name="share_import_failed">Import rejected: %1$s</string>
+    <string name="share_image">Read from a screenshot</string>
+    <string name="share_image_failed">No QR code was found in that image.</string>
+    <string name="share_teacher_title">Class heatmap</string>
+    <string name="share_teacher_note">Paste up to five student codes, one per line. Mastery is rebuilt here from the attempts each student shared; nothing is uploaded.</string>
+    <string name="share_teacher_hint">One share code per line</string>
+    <string name="share_teacher_build">Build heatmap</string>
+    <string name="share_teacher_empty">Paste at least one student code.</string>
+    <string name="share_teacher_students">%1$d students</string>
+    <string name="share_teacher_row">%1$s: %2$d%% (%3$d of %4$d students)</string>
+
     <string name="not_in_build">This screen is not part of this build yet.</string>
 </resources>

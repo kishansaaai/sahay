@@ -66,6 +66,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.compose.foundation)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.zxing.core)
     implementation(projects.engine)
 
     // ExecuTorch runtime (A04). Opt in with -Psahay.executorch=true once A01 has pinned the tag; see docs/setup-runtime.md.
