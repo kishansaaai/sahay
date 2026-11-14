@@ -2,6 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- No INTERNET permission: Sahay runs fully on-device (README rule #4, B02). -->
+    <!-- Voice prototype (B18): the phone's own speech recognizer and TTS engine do the work; nothing is bundled. -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <!-- Android 11 package visibility: without these queries the app cannot see the installed recognizer or TTS engine. -->
+    <queries>
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
+
     <!-- Launcher icons come with the real design assets; AGP 8 requires the namespace in build.gradle.kts. -->
 
     <application

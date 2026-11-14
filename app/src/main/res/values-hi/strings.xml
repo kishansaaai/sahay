@@ -237,5 +237,15 @@
     <string name="gov_saver">बचत: बैटरी और गर्मी बचाने के लिए छोटे उत्तर</string>
     <string name="gov_pause">ठंडा हो रहा है: अभी सहेजा टेक्स्ट</string>
 
+    <string name="voice_dictate">बोलें</string>
+    <string name="voice_stop">सुनना बंद करें</string>
+    <string name="voice_listening">सुन रहा है…</string>
+    <string name="voice_read">सुनकर पढ़ें</string>
+    <string name="voice_permission">वॉइस इनपुट के लिए माइक्रोफ़ोन अनुमति चाहिए।</string>
+    <string name="voice_unavailable">इस फ़ोन में वाक् पहचानकर्ता नहीं है, इसलिए वॉइस इनपुट बंद है।</string>
+    <string name="voice_error">वाक् पहचान रुक गई (कोड %1$d)। जिन फ़ोन में ऑन-डिवाइस पहचानकर्ता नहीं है, वे हवाई जहाज़ मोड में नहीं लिख सकते।</string>
+    <string name="voice_no_voice">चुनी गई भाषा के लिए इस फ़ोन में टेक्स्ट-टू-स्पीच आवाज़ नहीं है।</string>
+    <string name="voice_note">वॉइस एक प्रोटोटाइप है: यह फ़ोन की अपनी वाक् सेवाओं का उपयोग करता है और किसी डिवाइस पर परखा नहीं गया है।</string>
+
     <string name="not_in_build">यह स्क्रीन अभी इस बिल्ड में नहीं है।</string>
 </resources>
