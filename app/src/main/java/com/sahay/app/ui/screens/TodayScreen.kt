@@ -15,6 +15,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.sahay.app.R
@@ -52,8 +53,16 @@ fun TodayScreen(state: AppState) {
 
         Card(modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(text = sr(R.string.today_mastery, AppState.percent(state.averageMastery())), fontWeight = FontWeight.SemiBold)
-                MasteryBar(state.averageMastery())
+                Text(
+                    text = sr(R.string.today_mastery, AppState.percent(state.averageMastery())),
+                    fontWeight = FontWeight.SemiBold,
+                    // The bar below carries the same sentence as its content description; hide this copy from TalkBack.
+                    modifier = Modifier.clearAndSetSemantics {},
+                )
+                MasteryBar(
+                    fraction = state.averageMastery(),
+                    label = sr(R.string.today_mastery, AppState.percent(state.averageMastery())),
+                )
                 Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                     Text(text = sr(R.string.today_streak, state.streakDays()), style = MaterialTheme.typography.bodySmall)
                     Text(text = sr(R.string.today_attempts, state.attempts.size), style = MaterialTheme.typography.bodySmall)
@@ -91,6 +100,10 @@ fun TodayScreen(state: AppState) {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
             OutlinedButton(onClick = { state.go(com.sahay.app.state.Screen.Recover) }) { Text(sr(R.string.today_recover)) }
             OutlinedButton(onClick = { state.go(com.sahay.app.state.Screen.Dashboard) }) { Text(sr(R.string.nav_dashboard)) }
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
+            OutlinedButton(onClick = { state.go(com.sahay.app.state.Screen.Settings) }) { Text(sr(R.string.today_settings)) }
+            OutlinedButton(onClick = { state.go(com.sahay.app.state.Screen.Device) }) { Text(sr(R.string.today_device)) }
         }
     }
 }

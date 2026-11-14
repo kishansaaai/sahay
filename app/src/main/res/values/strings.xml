@@ -191,5 +191,51 @@
     <string name="recover_note">The planner keeps prerequisite order. Dropped skills are listed below with the reason.</string>
     <string name="recover_dropped">Dropped this time</string>
 
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_model">Model and runtime</string>
+    <string name="settings_model_file">Model file: %1$s</string>
+    <string name="settings_runtime">ExecuTorch runtime: %1$s</string>
+    <string name="settings_present">available</string>
+    <string name="settings_absent">not available</string>
+    <string name="settings_model_note">The model file is never bundled in the APK. Without it, explanations and the tutor use labelled template text.</string>
+    <string name="settings_data">Your data</string>
+    <string name="settings_data_summary">On this phone: %1$s</string>
+    <string name="settings_copy">Copy export to clipboard</string>
+    <string name="settings_export_copied">Snapshot copied to the clipboard.</string>
+    <string name="settings_share">Share export</string>
+    <string name="settings_share_title">Share Sahay snapshot</string>
+    <string name="settings_import">Import from clipboard</string>
+    <string name="settings_import_empty">The clipboard has no text.</string>
+    <string name="settings_import_ok">Snapshot imported and learner state rebuilt.</string>
+    <string name="settings_import_failed">Import rejected: %1$s</string>
+    <string name="settings_delete">Delete all data</string>
+    <string name="settings_delete_confirm">Delete all data?</string>
+    <string name="settings_delete_body">This removes the snapshot, the model files and every answer on this phone. It cannot be undone.</string>
+    <string name="settings_device">Device and energy</string>
+
+    <string name="device_title">Device and energy</string>
+    <string name="device_note">These readings come from the phone. The governor thresholds are still the untuned defaults; no phone measurement has been recorded yet (A13).</string>
+    <string name="device_signals">Current signals</string>
+    <string name="device_no_sample">No sample yet. The monitor reads thermal status, battery and memory every five seconds.</string>
+    <string name="device_mode">Governor mode: %1$s</string>
+    <string name="device_thermal">Thermal status: %1$d (0 means none)</string>
+    <string name="device_battery">Battery: %1$d%%</string>
+    <string name="device_charging">Charging</string>
+    <string name="device_not_charging">Not charging</string>
+    <string name="device_free_mem">Free memory: %1$d MB</string>
+    <string name="device_limits">Current limits</string>
+    <string name="device_max_tokens">Max new tokens: %1$d</string>
+    <string name="device_threads">Threads: %1$d</string>
+    <string name="device_context">Context tokens: %1$d</string>
+    <string name="device_defer">Defers non-urgent work: %1$s</string>
+    <string name="device_cached">Uses saved text only: %1$s</string>
+    <string name="gov_full">Full speed</string>
+    <string name="gov_balanced">Balanced: the phone is warm or the battery is lower</string>
+    <string name="gov_saver">Saver: shorter answers to protect battery and heat</string>
+    <string name="gov_pause">Cooling down: using saved text for now</string>
+
     <string name="not_in_build">This screen is not part of this build yet.</string>
 </resources>
