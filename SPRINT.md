@@ -127,7 +127,7 @@ Never cut: B1-B4 base layer, C1-C7 learning core, hint ladder, simulator, recove
 | A18 | Not started | `export/finetune/` validator and training script | Reviewed licensed data, Colab run, evaluation |
 | A19 | Code done | `ModelVerifier`, checksum asset bundling, `scripts/verify_model.py`, `releases/README.md` | Attach the model to a GitHub release |
 
-## Stream B status (Pradhyut) - updated 2026-11-14
+## Stream B status (Pradhyut) - updated 2026-11-15
 
 "Code done" means written and compile-checked by CI. No screen has been rendered and nothing has run on a phone in this environment, so UI rows stay "Code done" until a device test happens.
 
@@ -147,3 +147,6 @@ Never cut: B1-B4 base layer, C1-C7 learning core, hint ladder, simulator, recove
 | B16 | Code done | CI builds `app-debug.apk` on every push, on manual dispatch and daily at 02:30 UTC; the artifact also carries `apk-sha256.txt`; `docs/TESTING.md` has the download and install steps. Artifact confirmed present for a main run (8.8 MB archive) | Someone installs it on a phone and works through the test script; that is the only thing that turns "produced by CI" into "installable" |
 | B17 | Code done | `engine/ShareCode.kt` lossless compressed share code with tests, `engine.heatmap()` merge with tests, `ShareScreen` QR (ZXing), paste and screenshot import, teacher heatmap. ZXing credited in LICENSES | Scan a real QR from one phone to another; check a 14-item plan fits; merge five real student codes |
 | B18 | Prototype | Platform `SpeechRecognizer`/`TextToSpeech` wrappers, microphone permission at runtime, dictation and read-aloud in the tutor, visible prototype and availability notices | Three phones in airplane mode, Hindi voice availability, permission denial and latency; only then does it stop being marked Prototype |
+| B15 | Kit only | `docs/BETA.md` volunteer rules and what a tester records, `bench/devices.md` device table, `docs/TESTING.md` smoke script, CI debug APK to hand out | Eight phones, a filled device table, and the Hindi copy review; none of it exists yet |
+| B19 | Partly done | English and Hindi complete and key/format-checked in CI (260 keys); runtime language switch between the two | Four more languages are not translated; the chips do not offer them rather than showing machine text |
+| B22 | Script only | `docs/DEMO.md` shot list for a 4-5 minute airplane-mode recording, with the template-output rule and what to state alongside the file | Record it on a phone, write the Hindi captions, link the file and the phone details |
