@@ -1,5 +1,9 @@
 package com.sahay.app.ui.screens
 
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,18 +24,22 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.sahay.app.R
 import com.sahay.app.state.AppState
 import com.sahay.app.state.ChatLine
 import com.sahay.app.ui.sr
+import com.sahay.app.voice.Dictation
+import com.sahay.app.voice.Speaker
 
 /**
  * Streaming tutor chat (issue B06): tokens are appended as they arrive from `SahayLlm.stream`, a visible Stop button cancels
@@ -39,9 +47,35 @@ import com.sahay.app.ui.sr
  */
 @Composable
 fun TutorScreen(state: AppState) {
+    val context = LocalContext.current
     var input by remember { mutableStateOf("") }
     var showSource by remember { mutableStateOf(false) }
+    var micDenied by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
+    val dictation = remember { Dictation(context) }
+    val speaker = remember { Speaker(context) }
+    val languageTag = if (state.language == "hi") "hi-IN" else "en-IN"
+
+    DisposableEffect(Unit) {
+        onDispose {
+            dictation.destroy()
+            speaker.shutdown()
+        }
+    }
+
+    LaunchedEffect(dictation.text) {
+        if (dictation.text.isNotBlank()) input = dictation.text
+    }
+
+    val micPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        micDenied = !granted
+        if (granted) dictation.start(languageTag)
+    }
+
+    fun startVoice() {
+        val granted = context.checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
+        if (granted) dictation.start(languageTag) else micPermission.launch(Manifest.permission.RECORD_AUDIO)
+    }
 
     LaunchedEffect(state.chat.size, state.chat.lastOrNull()?.text) {
         if (state.chat.isNotEmpty()) listState.animateScrollToItem(state.chat.lastIndex)
@@ -81,7 +115,13 @@ fun TutorScreen(state: AppState) {
         }
 
         LazyColumn(state = listState, modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            itemsIndexed(state.chat) { _, line -> ChatBubble(line) }
+            itemsIndexed(state.chat) { _, line ->
+                ChatBubble(
+                    line = line,
+                    canSpeak = speaker.ready && line.from != "you",
+                    onSpeak = { speaker.speak(line.text, languageTag) },
+                )
+            }
         }
 
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
@@ -100,6 +140,28 @@ fun TutorScreen(state: AppState) {
                 enabled = input.isNotBlank() && !state.tutorStreaming,
             ) { Text(sr(R.string.tutor_send)) }
         }
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedButton(
+                onClick = { if (dictation.listening) dictation.stop() else startVoice() },
+                enabled = dictation.available,
+            ) { Text(if (dictation.listening) sr(R.string.voice_stop) else sr(R.string.voice_dictate)) }
+            if (dictation.listening) {
+                Text(text = sr(R.string.voice_listening), style = MaterialTheme.typography.bodySmall)
+            }
+        }
+        if (!dictation.available) {
+            Text(text = sr(R.string.voice_unavailable), style = MaterialTheme.typography.bodySmall)
+        }
+        if (micDenied) {
+            Text(text = sr(R.string.voice_permission), style = MaterialTheme.typography.bodySmall)
+        }
+        dictation.errorCode?.let { code ->
+            Text(text = sr(R.string.voice_error, code), style = MaterialTheme.typography.bodySmall)
+        }
+        if (speaker.languageMissing) {
+            Text(text = sr(R.string.voice_no_voice), style = MaterialTheme.typography.bodySmall)
+        }
+        Text(text = sr(R.string.voice_note), style = MaterialTheme.typography.labelSmall)
         if (state.tutorStreaming) {
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 CircularProgressIndicator()
@@ -110,7 +172,7 @@ fun TutorScreen(state: AppState) {
 }
 
 @Composable
-private fun ChatBubble(line: ChatLine) {
+private fun ChatBubble(line: ChatLine, canSpeak: Boolean, onSpeak: () -> Unit) {
     val fromMe = line.from == "you"
     Row(modifier = Modifier.fillMaxWidth()) {
         if (fromMe) Spacer(modifier = Modifier.weight(1f))
@@ -130,6 +192,9 @@ private fun ChatBubble(line: ChatLine) {
                 Text(text = line.text, style = MaterialTheme.typography.bodyMedium)
                 if (line.template) {
                     Text(text = sr(R.string.tutor_template), style = MaterialTheme.typography.labelSmall)
+                }
+                if (canSpeak) {
+                    TextButton(onClick = onSpeak) { Text(sr(R.string.voice_read), style = MaterialTheme.typography.labelSmall) }
                 }
             }
         }
