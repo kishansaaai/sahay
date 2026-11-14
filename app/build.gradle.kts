@@ -1,16 +1,17 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
     namespace = "com.sahay.app"
-    compileSdk = extra["compileSdk"] as Int
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.sahay.app"
-        minSdk = extra["minSdk"] as Int
-        targetSdk = extra["targetSdk"] as Int
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0.0"
 
@@ -40,10 +41,6 @@ android {
         compose = true
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = extra["kotlinVersion"].toString()
-    }
-
     sourceSets {
         // Prompt templates (content/prompts) and model_checksums.txt are read from assets; the model itself never ships in the APK.
         getByName("main") {
@@ -60,13 +57,15 @@ android {
 }
 
 dependencies {
-    implementation(platform(extra["composeBom"].toString()))
-    implementation(androidx.activity.compose.activity)
-    implementation(androidx.compose.ui.ui)
-    implementation(androidx.compose.ui.uiGraphics)
-    implementation(androidx.compose.material.material3)
-    implementation(androidx.compose.ui.uiToolingPreview)
-    implementation(androidx.lifecycle.lifecycleRuntimeKtx)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.graphics)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.kotlinx.coroutines.android)
     implementation(projects.engine)
 
     // ExecuTorch runtime (A04). Opt in with -Psahay.executorch=true once A01 has pinned the tag; see docs/setup-runtime.md.

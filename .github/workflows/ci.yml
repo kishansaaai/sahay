@@ -43,3 +43,28 @@ jobs:
           python3 llm/parity_python.py > /tmp/lpy.txt || exit 19
           java -cp /tmp/engine.jar:/tmp/tests com.sahay.engine.LlmParityKt content > /tmp/lkt.txt || exit 20
           diff /tmp/lpy.txt /tmp/lkt.txt || exit 21
+
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Install Android SDK packages
+        run: |
+          S="$(command -v sdkmanager || true)"
+          if [ -z "$S" ] && [ -n "$ANDROID_HOME" ]; then S="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"; fi
+          if [ -x "$S" ]; then yes | "$S" "platforms;android-35" "build-tools;35.0.0" > /dev/null; fi
+      - name: Build debug APK (compiles app/ and engine/)
+        run: gradle :app:assembleDebug --no-daemon --stacktrace
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: sahay-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
