@@ -30,6 +30,7 @@ object ShareCode {
 
     /** Decode a share code into a snapshot. Throws [InvalidShareCode] with a readable reason on any damage. */
     fun decode(text: String): Snapshot {
+        if (text.length > 3_000_000) throw InvalidShareCode("share code is too large")
         val trimmed = text.trim()
         if (!trimmed.startsWith(PREFIX)) throw InvalidShareCode("not a Sahay share code")
         val packed = try {
@@ -77,6 +78,7 @@ object ShareCode {
             val buf = ByteArray(4096)
             while (!inflater.finished()) {
                 val n = inflater.inflate(buf)
+                if (out.size() + n > 2_000_000) throw InvalidShareCode("expanded snapshot is too large")
                 if (n == 0) {
                     if (inflater.needsInput() || inflater.needsDictionary()) throw IllegalStateException("truncated")
                 } else {

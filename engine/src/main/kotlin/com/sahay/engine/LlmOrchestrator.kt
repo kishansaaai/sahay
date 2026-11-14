@@ -100,10 +100,12 @@ class PromptLibrary(private val readText: (String) -> String) {
     private fun data(inp: JMap) = "<data>" + JsonOut.write(inp.filterKeys { !it.startsWith("_") }).replace("</data>", "<\\/data>") + "</data>"
 
     fun messages(task: String, inp: JMap, language: String = "en", error: String? = null, previous: String? = null): List<ChatMessage> {
-        require(language == "en" || language == "hi") { "language must be en or hi" }
+        val names = mapOf("en" to "English", "hi" to "Hindi", "ta" to "Tamil", "te" to "Telugu", "bn" to "Bengali", "mr" to "Marathi")
+        require(language in names) { "unsupported language" }
+        val templateLanguage = if (language == "hi") "hi" else "en"
         val t = task(task)
-        val shown = t.examples.filter { it.lang == language }.joinToString("\n\n") { "Input: ${data(it.input)}\nOutput: ${JsonOut.write(it.output)}" }
-        val user = "${t.instruction.getValue(language)}\nLanguage: ${if (language == "hi") "Hindi" else "English"}\nSchema: ${JsonOut.write(t.schema)}\n\n$shown\n\nInput: ${data(inp)}\nOutput:"
+        val shown = t.examples.filter { it.lang == templateLanguage }.joinToString("\n\n") { "Input: ${data(it.input)}\nOutput: ${JsonOut.write(it.output)}" }
+        val user = "${t.instruction.getValue(templateLanguage)}\nLanguage: ${names.getValue(language)}\nSchema: ${JsonOut.write(t.schema)}\n\n$shown\n\nInput: ${data(inp)}\nOutput:"
         val msgs = arrayListOf(ChatMessage("system", system), ChatMessage("user", user))
         if (error != null) {
             msgs.add(ChatMessage("assistant", previous ?: ""))
@@ -316,13 +318,13 @@ class LlmOrchestrator(
     val stats: LlmStats = LlmStats(),
     private val maxRetries: Int = 2,
 ) {
-    fun run(task: String, inp: JMap, language: String = "en", maxTokensCap: Int = Int.MAX_VALUE): LlmResult {
+    fun run(task: String, inp: JMap, language: String = "en", maxTokensCap: Int = Int.MAX_VALUE, generation: ((String, Double, Int) -> String)? = null): LlmResult {
         val spec = lib.task(task)
         val errors = ArrayList<String>()
         var error: String? = null; var previous: String? = null
         for (attempt in 1..maxRetries + 1) {
             val prompt = lib.toLlama3(lib.messages(task, inp, language, error, previous))
-            val raw = try { generate(prompt, spec.temperature, minOf(spec.maxTokens, maxTokensCap)) } catch (e: Exception) {
+            val raw = try { (generation ?: generate)(prompt, spec.temperature, minOf(spec.maxTokens, maxTokensCap)) } catch (e: Exception) {
                 error = "generation failed: ${e.message}"; errors.add(error); previous = ""; continue
             }
             var out: JMap? = null

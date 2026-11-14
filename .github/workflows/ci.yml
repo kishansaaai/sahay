@@ -16,7 +16,9 @@ jobs:
         with:
           python-version: '3.12'
       - name: Repository checks (no INTERNET permission, content JSON valid)
-        run: python scripts/ci_checks.py
+        run: |
+          python scripts/ci_checks.py
+          python scripts/check_locales.py
       - name: Content validation (acyclic graphs, one correct option, misconception tags)
         run: python scripts/validate_content.py
       - name: Learning engine unit tests
@@ -66,7 +68,11 @@ jobs:
           if [ -z "$S" ] && [ -n "$ANDROID_HOME" ]; then S="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"; fi
           if [ -x "$S" ]; then yes | "$S" "platforms;android-35" "build-tools;35.0.0" > /dev/null; fi
       - name: Build debug APK (compiles app/ and engine/)
-        run: gradle :app:assembleDebug --no-daemon --stacktrace
+        run: ./gradlew :app:assembleDebug :app:testDebugUnitTest :app:lintDebug --no-daemon --stacktrace
+      - name: Verify merged APK manifest remains offline
+        run: python scripts/ci_checks.py --merged-manifest app/build/intermediates/merged_manifests/debug/processDebugManifest/AndroidManifest.xml
+      - name: Compile the pinned ExecuTorch integration
+        run: ./gradlew :app:compileDebugKotlin -Psahay.executorch=true --no-daemon
       - name: Write APK checksum for testers
         run: |
           cd app/build/outputs/apk/debug

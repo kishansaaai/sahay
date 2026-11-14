@@ -28,3 +28,11 @@ __pycache__/
 *.pyc
 eval/results/smoke/
 eval/results/ci/
+
+# Private signing material
+*.jks
+*.keystore
+keystore.properties
+
+# Kotlin compiler state
+.kotlin/

@@ -1,0 +1,35 @@
+1
+00:00:00,000 --> 00:00:20,000
+Sahay builds a personal study roadmap on this phone. It has no internet permission.
+
+2
+00:00:20,000 --> 00:00:55,000
+Choose your goal, experience, weekly hours, deadline, interests and language.
+
+3
+00:00:55,000 --> 00:01:30,000
+The diagnostic records answers, confidence, response time and hints.
+
+4
+00:01:30,000 --> 00:02:00,000
+The learning engine orders prerequisites and explains every change to the plan.
+
+5
+00:02:00,000 --> 00:02:40,000
+Explanations use the source note. Template output is labelled when the model is unavailable.
+
+6
+00:02:40,000 --> 00:03:15,000
+The dashboard shows mastery and confidence. Recovery lists dropped skills and reasons.
+
+7
+00:03:15,000 --> 00:03:50,000
+Review scanned text before generating. Scan every QR page to transfer the complete record.
+
+8
+00:03:50,000 --> 00:04:15,000
+Device readings are measured locally. Export or delete your data in Settings.
+
+9
+00:04:15,000 --> 00:04:30,000
+Airplane mode stays on. We report only measured results and identify unfinished prototypes.

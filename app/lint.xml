@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!-- Additional locales intentionally translate core navigation first and use Android's English fallback.
+         Keep these findings visible as warnings until native reviewers complete the detailed copy (B19). -->
+    <issue id="MissingTranslation" severity="warning" />
+</lint>

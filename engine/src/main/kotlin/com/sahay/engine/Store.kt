@@ -23,6 +23,7 @@ data class AttemptRow(
     val responseMs: Double,
     val hintLevel: Int,
     val day: Double,
+    val confidenceRated: Boolean = true,
 )
 
 data class TeachBackRow(
@@ -127,8 +128,8 @@ fun replay(content: Content, targets: Collection<String>, attempts: List<Attempt
         val q = content.questions[a.questionId] ?: continue
         if (a.chosenIndex !in q.options.indices) continue
         applyAnswer(content, model, mis, closure, q, a.chosenIndex, a.confidence, a.responseMs, a.hintLevel, a.day)
-        cal.add(a.confidence, a.correct)
-        fatigue.add(a.responseMs, a.correct)
+        if (a.confidenceRated) cal.add(a.confidence, a.chosenIndex == q.answer)
+        fatigue.add(a.responseMs, a.chosenIndex == q.answer)
     }
     return ReplayState(model, mis, cal, fatigue)
 }
@@ -136,11 +137,55 @@ fun replay(content: Content, targets: Collection<String>, attempts: List<Attempt
 /** True when every attempt references a known question and a valid option (used before accepting an import). */
 fun validateAttempts(content: Content, attempts: List<AttemptRow>): List<String> {
     val errors = ArrayList<String>()
-    for (a in attempts) {
+    val seen = HashSet<Int>()
+    var lastDay = -1.0
+    for (a in attempts.sortedBy { it.seq }) {
+        if (a.seq <= 0 || !seen.add(a.seq)) errors.add("attempt ${a.seq}: sequence must be unique and positive")
+        if (!a.day.isFinite() || a.day < 0 || a.day < lastDay) errors.add("attempt ${a.seq}: days must be finite, non-negative and ordered")
+        lastDay = a.day
+        if (!a.confidence.isFinite() || a.confidence !in 0.0..100.0) errors.add("attempt ${a.seq}: confidence must be 0 to 100")
+        if (!a.responseMs.isFinite() || a.responseMs < 0) errors.add("attempt ${a.seq}: invalid response time")
+        if (a.hintLevel !in 0..3) errors.add("attempt ${a.seq}: invalid hint level")
         val q = content.questions[a.questionId]
         if (q == null) errors.add("attempt ${a.seq}: unknown question '${a.questionId}'")
-        else if (a.chosenIndex !in q.options.indices) errors.add("attempt ${a.seq}: option ${a.chosenIndex} is out of range")
+        else {
+            if (a.chosenIndex !in q.options.indices) errors.add("attempt ${a.seq}: option ${a.chosenIndex} is out of range")
+            if (a.skillId != q.skill) errors.add("attempt ${a.seq}: skill does not match question")
+            if (a.correct != (a.chosenIndex == q.answer)) errors.add("attempt ${a.seq}: correctness does not match answer")
+        }
     }
+    return errors
+}
+
+/** Validate every reference before replacing a learner's local data. */
+fun Snapshot.validationErrors(content: Content): List<String> {
+    val errors = validateAttempts(content, attempts).toMutableList()
+    val p = profile
+    if (p != null) {
+        if (p.domain != content.domain) errors.add("profile domain does not match content")
+        if (!p.hoursPerWeek.isFinite() || p.hoursPerWeek <= 0 || p.hoursPerWeek > 168) errors.add("weekly hours must be in (0, 168]")
+        if (p.studyDays !in 1..7 || p.deadlineDay !in 1..3650) errors.add("invalid study days or deadline")
+        if (!p.targetMastery.isFinite() || p.targetMastery <= 0 || p.targetMastery > 1) errors.add("invalid target mastery")
+        if (!p.createdAt.isFinite() || p.createdAt < 0) errors.add("invalid profile creation time")
+    }
+    val known = content.graph.skills.keys
+    if (targets.any { it !in known } || targets.distinct().size != targets.size) errors.add("unknown or duplicate target skills")
+    plan?.let { plan ->
+        if (plan.version < 1 || !plan.createdDay.isFinite() || plan.createdDay < 0) errors.add("invalid plan version or day")
+        for (item in plan.items + plan.dropped) {
+            if (item.skillId !in known || item.minutes < 0 || item.day?.let { it < 0 } == true ||
+                item.type !in setOf("learn", "practice", "revise", "repair") ||
+                item.status !in setOf("planned", "done", "skipped", "dropped")) errors.add("invalid plan item")
+            if (item in plan.items && item.day == null) errors.add("scheduled plan item needs a day")
+            if (item.misconceptionId != null && content.misconceptions[item.misconceptionId]?.skill != item.skillId) errors.add("unknown or mismatched plan misconception")
+        }
+    }
+    if (teachBacks.map { it.seq }.distinct().size != teachBacks.size) errors.add("duplicate teach-back sequence")
+    for (t in teachBacks) if (t.seq < 1 || t.skillId !in known || listOf(t.accuracy, t.completeness, t.clarity, t.example).any { it !in 0..3 } ||
+        !t.day.isFinite() || t.day < 0) errors.add("invalid teach-back row")
+    if (sessions.map { it.id }.distinct().size != sessions.size) errors.add("duplicate session id")
+    for (s in sessions) if (s.id < 1 || !s.startDay.isFinite() || s.startDay < 0 || !s.endDay.isFinite() || s.endDay < s.startDay ||
+        !s.meanTokensPerSec.isFinite() || s.meanTokensPerSec < 0 || !s.energyMahEstimate.isFinite() || s.energyMahEstimate < 0 || s.governorEvents < 0) errors.add("invalid session row")
     return errors
 }
 
@@ -152,8 +197,16 @@ private fun asMap(v: Any?, what: String): Map<String, Any?> =
 private fun asList(v: Any?, what: String): List<Any?> =
     v as? List<Any?> ?: throw IllegalArgumentException("$what must be a JSON array")
 
-private fun num(v: Any?, what: String): Double = (v as? Number)?.toDouble() ?: throw IllegalArgumentException("$what must be a number")
-private fun int(v: Any?, what: String): Int = num(v, what).toInt()
+private fun num(v: Any?, what: String): Double {
+    val n = (v as? Number)?.toDouble() ?: throw IllegalArgumentException("$what must be a number")
+    require(n.isFinite()) { "$what must be finite" }
+    return n
+}
+private fun int(v: Any?, what: String): Int {
+    val n = num(v, what)
+    require(n >= Int.MIN_VALUE && n <= Int.MAX_VALUE && n == n.toInt().toDouble()) { "$what must be an integer" }
+    return n.toInt()
+}
 private fun str(v: Any?, what: String): String = v as? String ?: throw IllegalArgumentException("$what must be a string")
 private fun bool(v: Any?, what: String): Boolean = v as? Boolean ?: throw IllegalArgumentException("$what must be true or false")
 
@@ -178,7 +231,7 @@ private fun profileFromMap(m: Map<String, Any?>): LearnerProfileRow = LearnerPro
 
 private fun attemptToMap(a: AttemptRow): Map<String, Any?> = mapOf(
     "seq" to a.seq, "question_id" to a.questionId, "skill_id" to a.skillId, "chosen_index" to a.chosenIndex,
-    "correct" to a.correct, "confidence" to a.confidence, "response_ms" to a.responseMs, "hint_level" to a.hintLevel, "day" to a.day,
+    "correct" to a.correct, "confidence" to a.confidence, "response_ms" to a.responseMs, "hint_level" to a.hintLevel, "day" to a.day, "confidence_rated" to a.confidenceRated,
 )
 
 private fun attemptFromMap(m: Map<String, Any?>): AttemptRow = AttemptRow(
@@ -191,6 +244,7 @@ private fun attemptFromMap(m: Map<String, Any?>): AttemptRow = AttemptRow(
     responseMs = num(m["response_ms"], "attempt.response_ms"),
     hintLevel = int(m["hint_level"] ?: 0, "attempt.hint_level"),
     day = num(m["day"], "attempt.day"),
+    confidenceRated = bool(m["confidence_rated"] ?: true, "attempt.confidence_rated"),
 )
 
 private fun teachBackToMap(t: TeachBackRow): Map<String, Any?> = mapOf(
@@ -255,7 +309,7 @@ private fun planItemFromMap(m: Map<String, Any?>): PlanItem {
         type = type,
         skillId = m["skill_id"] as? String,
         misconceptionId = m["misconception_id"] as? String,
-        day = (m["day"] as? Number)?.toInt(),
+        day = m["day"]?.let { int(it, "plan_item.day") },
         minutes = int(m["minutes"] ?: 0, "plan_item.minutes"),
         status = (m["status"] as? String) ?: "planned",
         reason = (m["reason"] as? String) ?: "",

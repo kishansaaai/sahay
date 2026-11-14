@@ -29,7 +29,7 @@ adb install -r app-debug.apk
 
 Or copy the APK to the phone and open it. Android will warn that the app comes from an unknown source; allow it for the file manager you used. Debug builds also trigger Play Protect warnings on some phones; that is expected for a debug-signed APK.
 
-The app declares no permissions at all today. The voice prototype (B18/#37) adds microphone access when it lands; nothing else needs one.
+The voice prototype requests microphone access only when you choose Speak. There is no INTERNET permission, including after dependency manifest merging. The system camera handles capture without granting this app camera permission.
 
 ## What to check on the phone
 
@@ -48,3 +48,5 @@ Nothing in this list has been verified yet by the team. Treat it as a test scrip
 ## Reporting
 
 Record the phone model, Android version, the APK's SHA-256 from `apk-sha256.txt`, and the exact steps. Use the device table in `bench/` for timings and battery numbers. Numbers measured on one phone must not be presented as results on another.
+
+For scan, QR/classroom, voice, large-text and Hindi test cases, use [BETA.md](BETA.md). Release candidates have a separate [signing procedure](../releases/SIGNING.md).

@@ -30,8 +30,9 @@ import com.sahay.app.ui.screens.DiagnosticScreen
 import com.sahay.app.ui.screens.IntakeScreen
 import com.sahay.app.ui.screens.RecoverScreen
 import com.sahay.app.ui.screens.RoadmapScreen
-import com.sahay.app.ui.screens.SettingsScreen
 import com.sahay.app.ui.screens.ShareScreen
+import com.sahay.app.ui.screens.ScanScreen
+import com.sahay.app.ui.screens.SettingsScreen
 import com.sahay.app.ui.screens.StudyScreen
 import com.sahay.app.ui.screens.TodayScreen
 import com.sahay.app.ui.screens.TutorScreen
@@ -50,12 +51,10 @@ fun SahayApp() {
     val state = app.state
     SahayTheme {
         val base = LocalContext.current
-        val localized = remember(state.language) {
-            if (state.language == "en") base else {
-                val config = Configuration(base.resources.configuration)
-                config.setLocale(Locale.forLanguageTag(state.language))
-                base.createConfigurationContext(config)
-            }
+        val localized = remember(base, state.language, base.resources.configuration) {
+            val config = Configuration(base.resources.configuration)
+            config.setLocale(Locale.forLanguageTag(state.language))
+            base.createConfigurationContext(config)
         }
         CompositionLocalProvider(LocalContext provides localized) {
             val onTab = state.screen in TABS
@@ -89,7 +88,9 @@ fun SahayApp() {
                 },
             ) { padding ->
                 Box(modifier = Modifier.padding(padding).fillMaxSize()) {
-                    when (state.screen) {
+                    if (state.restoring) {
+                        Text(sr(R.string.loading), modifier = Modifier.padding(24.dp))
+                    } else when (state.screen) {
                         Screen.Welcome -> WelcomeScreen(state)
                         Screen.Intake -> IntakeScreen(state)
                         Screen.Diagnostic -> DiagnosticScreen(state)
@@ -101,8 +102,8 @@ fun SahayApp() {
                         Screen.Recover -> RecoverScreen(state)
                         Screen.Device -> DeviceScreen(state)
                         Screen.Settings -> SettingsScreen(state)
+                        Screen.Scan -> ScanScreen(state)
                         Screen.Share -> ShareScreen(state)
-                        else -> NotInBuildScreen()
                     }
                 }
             }
@@ -118,7 +119,6 @@ private fun goBack(state: AppState) {
         Screen.Recover -> state.go(Screen.Today)
         Screen.Device -> state.go(Screen.Settings)
         Screen.Settings -> state.go(Screen.Today)
-        Screen.Share -> state.go(Screen.Today)
         else -> state.go(Screen.Today)
     }
 }
@@ -136,8 +136,8 @@ private fun screenTitle(screen: Screen): String = when (screen) {
     Screen.Recover -> sr(R.string.recover_title)
     Screen.Device -> sr(R.string.device_title)
     Screen.Settings -> sr(R.string.settings_title)
+    Screen.Scan -> sr(R.string.scan_title)
     Screen.Share -> sr(R.string.share_title)
-    else -> sr(R.string.app_name)
 }
 
 @Composable

@@ -1,7 +1,11 @@
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.RegularFileProperty
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -18,8 +22,18 @@ android {
         // No INTERNET permission — on-device only (see B02, README rule #4)
     }
 
+    val signingValues = listOf("SAHAY_KEYSTORE", "SAHAY_KEYSTORE_PASSWORD", "SAHAY_KEY_ALIAS", "SAHAY_KEY_PASSWORD")
+        .associateWith { providers.environmentVariable(it).orNull }
+    val releaseSigning = if (signingValues.values.all { !it.isNullOrBlank() }) signingConfigs.create("distribution") {
+        storeFile = file(signingValues.getValue("SAHAY_KEYSTORE")!!)
+        storePassword = signingValues.getValue("SAHAY_KEYSTORE_PASSWORD")
+        keyAlias = signingValues.getValue("SAHAY_KEY_ALIAS")
+        keyPassword = signingValues.getValue("SAHAY_KEY_PASSWORD")
+    } else null
+
     buildTypes {
         release {
+            signingConfig = releaseSigning
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -36,6 +50,8 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    testOptions { unitTests.isIncludeAndroidResources = true }
 
     buildFeatures {
         compose = true
@@ -56,7 +72,17 @@ android {
     }
 }
 
+ksp { arg("room.schemaLocation", "$projectDir/schemas") }
+
 dependencies {
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+    implementation(libs.zxing.core)
+    implementation(libs.mlkit.latin)
+    implementation(libs.mlkit.devanagari)
+    testImplementation(libs.junit)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.test.core)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.ui)
@@ -66,7 +92,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.compose.foundation)
     implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.zxing.core)
     implementation(projects.engine)
 
     // ExecuTorch runtime (A04). Opt in with -Psahay.executorch=true once A01 has pinned the tag; see docs/setup-runtime.md.
@@ -75,11 +100,25 @@ dependencies {
     }
 }
 
-// Bundle releases/CHECKSUMS.txt as an asset so the app can verify the model at load (A19).
-val copyChecksums by tasks.registering(Copy::class) {
-    from(rootProject.file("releases/CHECKSUMS.txt"))
-    rename { "model_checksums.txt" }
-    into(layout.buildDirectory.dir("generated/assets/checksums"))
+// AGP wires the generator into all asset consumers, including lint and unit tests.
+abstract class ChecksumAssetsTask : DefaultTask() {
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val checksumFile: RegularFileProperty
+    @get:OutputDirectory
+    abstract val outputDir: DirectoryProperty
+    @TaskAction fun generate() {
+        val destination = outputDir.file("model_checksums.txt").get().asFile
+        destination.parentFile.mkdirs()
+        checksumFile.get().asFile.copyTo(destination, overwrite = true)
+    }
 }
-android.sourceSets.getByName("main").assets.srcDir(layout.buildDirectory.dir("generated/assets/checksums"))
-tasks.matching { it.name.startsWith("merge") && it.name.endsWith("Assets") }.configureEach { dependsOn(copyChecksums) }
+val copyChecksums by tasks.registering(ChecksumAssetsTask::class) {
+    checksumFile.set(rootProject.layout.projectDirectory.file("releases/CHECKSUMS.txt"))
+    outputDir.set(layout.buildDirectory.dir("generated/assets/checksums"))
+}
+androidComponents {
+    onVariants { variant ->
+        variant.sources.assets?.addGeneratedSourceDirectory(copyChecksums, ChecksumAssetsTask::outputDir)
+    }
+}

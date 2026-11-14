@@ -112,6 +112,11 @@ fun DashboardScreen(state: AppState) {
             }
         }
 
+        SectionCard(title = sr(R.string.dashboard_misconceptions)) {
+            val active = state.activeMisconceptions()
+            if (active.isEmpty()) Text(sr(R.string.dashboard_no_misconceptions))
+            else active.forEach { Text(state.misconceptionText(it)) }
+        }
         SectionCard(title = sr(R.string.dashboard_skills)) {
             if (skills.isEmpty()) {
                 Text(text = sr(R.string.dashboard_no_skills), style = MaterialTheme.typography.bodyMedium)

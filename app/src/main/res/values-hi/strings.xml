@@ -18,7 +18,7 @@
     <string name="telugu">తెలుగు</string>
     <string name="bengali">বাংলা</string>
     <string name="marathi">मराठी</string>
-    <string name="experimental_language">इस भाषा में ट्यूटर का उत्तर प्रयोगात्मक है। इसकी अभी जाँच नहीं हुई है।</string>
+    <string name="experimental_language">इस भाषा में शिक्षक का उत्तर प्रयोगात्मक है। अनुवाद की समीक्षा पूरी होने तक विस्तृत इंटरफ़ेस और टेम्पलेट उत्तर अंग्रेज़ी में हो सकते हैं।</string>
 
     <string name="nav_today">आज</string>
     <string name="nav_roadmap">योजना</string>
@@ -79,7 +79,7 @@
     <string name="diag_answered">%1$d प्रश्नों के उत्तर दिए</string>
     <string name="diag_done_title">जाँच पूरी हुई</string>
     <string name="diag_done_body">आपकी कमियों की पहली तस्वीर मिल गई है। योजना इसी पर बनी है, और हर अगली जाँच योजना बदल देगी।</string>
-    <string name="diag_template_note">टेम्पलेट पाठ: इस बिल्ड में मॉडल फ़ाइल नहीं है।</string>
+    <string name="diag_template_note">टेम्पलेट पाठ: उत्तर बनाना उपलब्ध नहीं था या सत्यापित नहीं हो सका।</string>
     <string name="diag_no_question">कोई प्रश्न तैयार नहीं है। जाँचें कि सामग्री फ़ाइलें ऐप में शामिल हैं।</string>
 
     <string name="roadmap_title">आपकी योजना</string>
@@ -120,7 +120,7 @@
 
     <string name="study_title">अध्ययन</string>
     <string name="study_practice_title">अभ्यास</string>
-    <string name="study_generating">व्याख्या लिखी जा रही है</string>
+    <string name="study_generating">स्पष्टीकरण लिखा जा रहा है (पूरा होने तक मसौदा)</string>
     <string name="study_stop">रोकें</string>
     <string name="study_explanation">व्याख्या</string>
     <string name="study_analogy">उपमा</string>
@@ -128,7 +128,7 @@
     <string name="study_hide_analogy">उपमा छिपाएँ</string>
     <string name="study_source_note">स्रोत नोट</string>
     <string name="study_check_question">खुद को जाँचें</string>
-    <string name="study_template_notice">यह कौशल नोट से बना टेम्पलेट पाठ है, मॉडल का उत्तर नहीं। मॉडल फ़ाइल नहीं है।</string>
+    <string name="study_template_notice">यह कौशल नोट से बना टेम्पलेट पाठ है। उत्तर बनाना उपलब्ध नहीं था, रोका गया या सत्यापित नहीं हो सका।</string>
     <string name="study_no_question">इस कौशल के लिए कोई जाँच प्रश्न नहीं है।</string>
     <string name="study_answer_correct">सही। योजना बदल दी गई है।</string>
     <string name="study_answer_wrong">पूरा सही नहीं। नीचे का नोट पढ़ें और अगला प्रयास करें।</string>
@@ -136,7 +136,7 @@
     <string name="study_retry">दूसरा प्रश्न</string>
     <string name="study_misconception">इस पर नज़र: %1$s</string>
     <string name="study_no_skill">पहले आज की योजना से कोई आइटम चुनें।</string>
-    <string name="languages_in_build">इस बिल्ड में अंग्रेज़ी और हिन्दी के शब्द हैं। बाकी भाषाओं का अनुवाद अभी चल रहा है।</string>
+    <string name="languages_in_build">अंग्रेज़ी और हिन्दी में पूरा इंटरफ़ेस उपलब्ध है। तमिल, तेलुगु, बांग्ला और मराठी में मुख्य बटन अनूदित हैं; बाकी पाठ अंग्रेज़ी में दिखता है।</string>
 
     <string name="tutor_title">ट्यूटर</string>
     <string name="tutor_empty">जिस कौशल को पढ़ रहे हैं उसके बारे में पूछें। उत्तर फ़ोन पर ही रहते हैं।</string>
@@ -240,16 +240,16 @@
     <string name="voice_dictate">बोलें</string>
     <string name="voice_stop">सुनना बंद करें</string>
     <string name="voice_listening">सुन रहा है…</string>
-    <string name="voice_read">सुनकर पढ़ें</string>
-    <string name="voice_permission">वॉइस इनपुट के लिए माइक्रोफ़ोन अनुमति चाहिए।</string>
-    <string name="voice_unavailable">इस फ़ोन में वाक् पहचानकर्ता नहीं है, इसलिए वॉइस इनपुट बंद है।</string>
+    <string name="voice_read">उत्तर सुनें</string>
+    <string name="voice_permission">केवल आवाज़ से प्रश्न पूछने के लिए माइक्रोफ़ोन चाहिए। आप लिखकर भी पूछ सकते हैं।</string>
+    <string name="voice_unavailable">इस फ़ोन पर ऑफ़लाइन आवाज़ की पहचान उपलब्ध नहीं है। Android 12 या नया और डाउनलोड किया भाषा पैक चाहिए; आप लिखकर पूछ सकते हैं।</string>
     <string name="voice_error">वाक् पहचान रुक गई (कोड %1$d)। जिन फ़ोन में ऑन-डिवाइस पहचानकर्ता नहीं है, वे हवाई जहाज़ मोड में नहीं लिख सकते।</string>
     <string name="voice_no_voice">चुनी गई भाषा के लिए इस फ़ोन में टेक्स्ट-टू-स्पीच आवाज़ नहीं है।</string>
     <string name="voice_note">वॉइस एक प्रोटोटाइप है: यह फ़ोन की अपनी वाक् सेवाओं का उपयोग करता है और किसी डिवाइस पर परखा नहीं गया है।</string>
 
     <string name="today_share">योजना साझा करें</string>
 
-    <string name="share_title">योजना साझा करें</string>
+    <string name="share_title">QR योजनाएँ और कक्षा</string>
     <string name="share_intro">नीचे दिया कोड इस रोडमैप को संपीड़ित पाठ के रूप में रखता है, उसी प्रारूप में जो निर्यात में है। कुछ भी अपलोड नहीं होता: कोड एक फ़ोन पर दिखाएँ और दूसरे पर पढ़ें।</string>
     <string name="share_qr_title">आपकी योजना QR कोड के रूप में</string>
     <string name="share_qr_missing">पहले एक योजना बनाएँ।</string>
@@ -276,4 +276,38 @@
     <string name="share_teacher_row">%1$s: %2$d%% (%3$d/%4$d छात्र)</string>
 
     <string name="not_in_build">यह स्क्रीन अभी इस बिल्ड में नहीं है।</string>
+    <string name="scan_title">स्कैन करके सीखें</string>
+    <string name="scan_note">पाठ्यक्रम या किताब के पन्ने का फोटो लें या चुनें। लैटिन और देवनागरी लिपि का OCR ऑफ़लाइन चलता है। बनाने से पहले पाठ सुधारें।</string>
+    <string name="scan_camera">फोटो लें</string>
+    <string name="scan_image">चित्र चुनें</string>
+    <string name="scan_edit">निकाले गए पाठ की जाँच करें और सुधारें</string>
+    <string name="scan_syllabus">कौशल ग्राफ़ का मसौदा बनाएँ</string>
+    <string name="scan_quiz">अभ्यास प्रश्न बनाएँ</string>
+    <string name="scan_draft">बनाया गया मसौदा। स्रोत से जाँचें; इससे आपका रोडमैप या दक्षता नहीं बदलती।</string>
+    <string name="scan_unavailable">कोई मान्य परिणाम उपलब्ध नहीं है। पाठ सुधारें या मॉडल इंस्टॉल करके फिर कोशिश करें।</string>
+    <string name="scan_dependencies">%1$d पूर्वापेक्षा संबंध (चक्र रहित सत्यापित)</string>
+
+    <string name="share_notice">केवल अपने चुने हुए व्यक्ति के साथ साझा करें। QR पन्नों में उत्तर और लक्ष्य सहित पूरा विद्यार्थी रिकॉर्ड होता है। सभी पन्ने किसी भी क्रम में स्कैन करें।</string>
+    <string name="share_create">QR पन्ने बनाएँ</string>
+    <string name="share_page">QR पन्ना %1$d / %2$d</string>
+    <string name="share_scan">QR पन्ना स्कैन करें</string>
+    <string name="share_reset">आने वाला स्थानांतरण रीसेट करें</string>
+    <string name="share_ready">सभी पन्ने प्राप्त हुए और चेकसम सही है। इस रिकॉर्ड का उपयोग चुनें।</string>
+    <string name="share_replace">मेरे डेटा को इस रिकॉर्ड से बदलें</string>
+    <string name="share_learner">कक्षा दृश्य के लिए विद्यार्थी का उपनाम</string>
+    <string name="share_merge">कक्षा में विद्यार्थी जोड़ें या अपडेट करें</string>
+    <string name="share_heatmap">कक्षा की दक्षता</string>
+    <string name="share_class_note">यह कक्षा दृश्य अस्थायी है और हर विद्यार्थी के अंतिम उत्तर पर दक्षता दिखाता है। यह आपका निजी डेटा नहीं बदलता।</string>
+    <string name="share_clear">कक्षा दृश्य मिटाएँ</string>
+    <string name="voice_prototype">ऑफ़लाइन आवाज़ का प्रोटोटाइप। उपलब्धता डाउनलोड किए गए भाषा पैक पर निर्भर है। पहचान के लिए Android 12 या नया चाहिए।</string>
+
+    <string name="voice_listen">बोलें</string>
+
+    <string name="dashboard_misconceptions">सक्रिय गलत धारणाएँ</string>
+    <string name="dashboard_no_misconceptions">कोई सक्रिय गलत धारणा दर्ज नहीं है।</string>
+    <string name="device_speed">अंतिम उत्तर: %1$s टोकन/सेकंड</string>
+    <string name="device_energy">चार्ज काउंटर बदलाव: %1$s mAh (पूरे फ़ोन का अनुमान)</string>
+    <string name="device_unmeasured">मापा नहीं गया</string>
+    <string name="device_events">गवर्नर बदलाव और कारण</string>
+    <string name="device_threads_note">थ्रेड और संदर्भ मान नीति के लक्ष्य हैं। पिन किया Java रनर चलते समय नेटिव थ्रेड पूल नहीं बदल सकता।</string>
 </resources>

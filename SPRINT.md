@@ -134,7 +134,7 @@ Never cut: B1-B4 base layer, C1-C7 learning core, hint ladder, simulator, recove
 | ID | Status | Done in repo | Still needed |
 | --- | --- | --- | --- |
 | B03 | Code done | `SahayApp` shell: three tabs, back handling, runtime language switch via a locale-overridden `LocalContext`, `SahayApplication` owner, theme | Render on a phone; confirm rotation keeps state |
-| B04 | Code done | `engine/Store.kt` snapshot model, attempt replay and JSON import/export with tests; `app/data/SnapshotStore.kt` atomic file store and one-tap delete | Render with a screen, device test of save/load across process death |
+| B04 | Code done | `engine/Store.kt` snapshot model, attempt replay and JSON import/export with tests; Room-backed `app/data/SnapshotStore.kt`, legacy migration and ordered one-tap delete | Render with a screen, device test of save/load across process death |
 | B05 | Code done | `IntakeScreen`: chat-style stepper, free-text goal mapped to a domain with a chip fallback, level/hours/deadline/interests, review then create profile | Render on a phone; Hindi copy review |
 | B06 | Code done | `TutorScreen`: streaming tokens, Stop, source note, missing-model notice; template reply when no `.pte` | Device run with the model; check Stop under 500 ms |
 | B07 | Code done | `DiagnosticScreen`: confidence slider, 3-level hint ladder with template fallback, misconception note, attempt rows with confidence/time/hint level | Device run; measure question count and minutes against the C08 target |
@@ -148,5 +148,14 @@ Never cut: B1-B4 base layer, C1-C7 learning core, hint ladder, simulator, recove
 | B17 | Code done | `engine/ShareCode.kt` lossless compressed share code with tests, `engine.heatmap()` merge with tests, `ShareScreen` QR (ZXing), paste and screenshot import, teacher heatmap. ZXing credited in LICENSES | Scan a real QR from one phone to another; check a 14-item plan fits; merge five real student codes |
 | B18 | Prototype | Platform `SpeechRecognizer`/`TextToSpeech` wrappers, microphone permission at runtime, dictation and read-aloud in the tutor, visible prototype and availability notices | Three phones in airplane mode, Hindi voice availability, permission denial and latency; only then does it stop being marked Prototype |
 | B15 | Kit only | `docs/BETA.md` volunteer rules and what a tester records, `bench/devices.md` device table, `docs/TESTING.md` smoke script, CI debug APK to hand out | Eight phones, a filled device table, and the Hindi copy review; none of it exists yet |
-| B19 | Partly done | English and Hindi complete and key/format-checked in CI (260 keys); runtime language switch between the two | Four more languages are not translated; the chips do not offer them rather than showing machine text |
 | B22 | Script only | `docs/DEMO.md` shot list for a 4-5 minute airplane-mode recording, with the template-output rule and what to state alongside the file | Record it on a phone, write the Hindi captions, link the file and the phone details |
+
+
+## Stream B follow-up - 2026-11-14
+
+See [docs/STREAM_B_STATUS.md](docs/STREAM_B_STATUS.md) for every open Pradhyut21 issue (#23–#41), implementation evidence and remaining acceptance checks.
+Room persistence replaces the JSON-only store and migrates existing snapshots. Streaming generation now handles back pressure, cancellation ownership,
+governor caps and no prompt echo. Scan, multipart QR/classroom and strict offline voice flows are implemented as prototypes. Core navigation for four
+additional languages is present; their detailed copy still falls back to English. English and Hindi resources have matching keys and placeholders.
+Release-candidate signing uses team-provided secrets; beta and demo materials are prepared. No phone benchmark, native-language review, signed release,
+TalkBack result or video upload is claimed without its evidence. Other streams' issues remain outside this follow-up.

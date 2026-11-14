@@ -12,6 +12,14 @@ import com.sahay.engine.ModelVerifier
 import com.sahay.engine.PromptLibrary
 import com.sahay.engine.TokenListener
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.trySendBlocking
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import com.sahay.engine.GenStats
+import android.os.BatteryManager
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import java.io.File
@@ -32,6 +40,12 @@ class UnavailableRuntime : LlmRuntime {
 object SahayLlm {
     const val MODEL_FILE = "llama3_2_1b_int4.pte"
     const val TOKENIZER_FILE = "tokenizer.model"
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    @Volatile var lastStats: GenStats? = null; private set
+    @Volatile var lastChargeMah: Double? = null; private set
+    private var battery: BatteryManager? = null
+    private fun charge(): Int? = battery?.getIntProperty(BatteryManager.BATTERY_PROPERTY_CHARGE_COUNTER)?.takeIf { it > 0 }
+
 
     lateinit var manager: ModelManager; private set
     lateinit var governor: Governor; private set
@@ -51,7 +65,9 @@ object SahayLlm {
     } catch (e: ReflectiveOperationException) { UnavailableRuntime() }
 
     fun init(context: Context, runtime: LlmRuntime = createRuntime()) {
+        if (ready) return
         val app = context.applicationContext
+        battery = app.getSystemService(BatteryManager::class.java)
         runtimeAvailable = runtime !is UnavailableRuntime
         val dir = File(app.filesDir, "models")
         val model = File(dir, MODEL_FILE)
@@ -62,26 +78,61 @@ object SahayLlm {
         orchestrator = LlmOrchestrator(lib, { prompt, temperature, maxTokens ->
             if (governor.limits().cachedOnly) throw IllegalStateException("governor: paused")
             val sb = StringBuilder()
-            manager.generate(prompt, minOf(maxTokens, governor.limits().maxNewTokens), temperature) { sb.append(it); true }
+            generate(prompt, maxTokens, temperature) { sb.append(it); true }
             sb.toString()
         })
         monitor = DeviceMonitor(app, governor)
+        monitor.onMode = { mode, _ -> if (mode == GovMode.PAUSE) manager.stop() }
         monitor.start()
         app.registerComponentCallbacks(object : ComponentCallbacks2 {
-            override fun onTrimMemory(level: Int) = manager.onTrimMemory(level)
+            override fun onTrimMemory(level: Int) { scope.launch { manager.onTrimMemory(level) } }
             override fun onConfigurationChanged(newConfig: Configuration) {}
-            override fun onLowMemory() = manager.onTrimMemory(ComponentCallbacks2.TRIM_MEMORY_COMPLETE)
+            override fun onLowMemory() { scope.launch { manager.onTrimMemory(ComponentCallbacks2.TRIM_MEMORY_COMPLETE) } }
         })
         ready = true
+        if (runtimeAvailable && model.isFile) scope.launch {
+            runCatching { manager.warmUp() }.onFailure { Log.w("SahayLlm", "warm-up unavailable: ${it.message}") }
+        }
     }
 
-    /** Streaming generation for the chat screen. Collect on a background dispatcher; cancelling the collector stops generation. */
+    /** Every production path uses the same governor cap and captures measured generation statistics. */
+    private fun generate(prompt: String, maxNewTokens: Int, temperature: Double, request: Any? = null, cancelled: () -> Boolean = { false }, listener: TokenListener): GenStats {
+        val limits = governor.limits()
+        check(!limits.cachedOnly) { "governor: paused" }
+        val before = charge()
+        val stats = manager.generate(prompt, minOf(maxNewTokens, limits.maxNewTokens), temperature,
+            request = request, isCancelled = { cancelled() || governor.limits().cachedOnly }, listener = listener)
+        lastStats = stats
+        val after = charge()
+        lastChargeMah = if (before != null && after != null && after <= before && monitor.last?.charging == false)
+            (before - after) / 1000.0 else null
+        return stats
+    }
+
+    fun explain(input: Map<String, Any?>, language: String, cancelled: () -> Boolean, onPartial: (String) -> Unit): com.sahay.engine.LlmResult =
+        orchestrator.run("explain", input, language, generation = { prompt, temperature, cap ->
+            val decoder = com.sahay.engine.StreamingText("explanation")
+            val raw = StringBuilder()
+            onPartial("") // A retry starts a new provisional reply.
+            generate(prompt, cap, temperature, cancelled = cancelled) { token ->
+                raw.append(token)
+                decoder.accept(token)?.let(onPartial)
+                true
+            }
+            raw.toString()
+        })
+
+    /** A blocking send applies back pressure instead of silently dropping tokens when the UI is busy. */
     fun stream(prompt: String, maxNewTokens: Int, temperature: Double): Flow<String> = callbackFlow {
-        val t = Thread {
-            try { manager.generate(prompt, maxNewTokens, temperature) { trySend(it).isSuccess } ; close() } catch (e: Throwable) { close(e) }
+        val request = Any()
+        val worker = Thread {
+            try {
+                generate(prompt, maxNewTokens, temperature, request = request, cancelled = { isClosedForSend }) { trySendBlocking(it).isSuccess }
+                close()
+            } catch (e: Throwable) { close(e) }
         }
-        t.start()
-        awaitClose { manager.stop() }
+        worker.start()
+        awaitClose { manager.stop(request) }
     }
 
     val mode: GovMode get() = governor.mode

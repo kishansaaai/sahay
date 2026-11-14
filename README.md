@@ -11,6 +11,8 @@ An Android app that builds and re-plans a personal study roadmap using a quantiz
 - Beta programme kit: [docs/BETA.md](docs/BETA.md) and the device table in [bench/devices.md](bench/devices.md)
 - Demo video script: [docs/DEMO.md](docs/DEMO.md)
 - Technical report draft: [docs/REPORT.md](docs/REPORT.md)
+- Android issue acceptance record: [docs/STREAM_B_STATUS.md](docs/STREAM_B_STATUS.md)
+- Beta test guide: [docs/BETA.md](docs/BETA.md); demo/caption drafts: [docs/demo/README.md](docs/demo/README.md)
 
 ## Repository layout
 
@@ -33,8 +35,8 @@ An Android app that builds and re-plans a personal study roadmap using a quantiz
 | --- | --- | --- |
 | B1-B4 | ExecuTorch + INT4 Llama, JNI streaming, no INTERNET permission | In progress (export script, runtime wrapper, model manager, checksum check written and unit-tested; nothing verified on a phone yet; B2 manifest check is in CI) |
 | C1-C7 | Intake, skill graph, diagnostic, tracing, planner, tutor, dashboard | UI written and compile-checked only (intake, diagnostic, roadmap, today/study, tutor, dashboard, recovery); no screen rendered and no model run yet |
-| I1-I8 | Hint ladder, governor, simulator, syllabus compiler, analogies, recovery, teach-back, scan | In progress (LLM side of I1, I2 policy, I4 validator, I7 and I8 written and unit-tested; I5 scan is not implemented; needs device and model runs) |
-| X1-X5 | Pacing, voice, QR sharing, KV-cache, offline LoRA | Prototype code only: voice uses the phone speech services and QR sharing has a tested share code (nothing run on a phone); pacing/KV-cache/LoRA not started |
+| I1-I8 | Hint ladder, governor, simulator, syllabus compiler, analogies, recovery, teach-back, scan | In progress (LLM side of I1, I2 policy, I4 validator, I5, I7 grading written and unit-tested; needs device and model runs) |
+| X1-X5 | Pacing, voice, QR sharing, KV-cache, offline LoRA | Voice and multipart QR/classroom prototypes implemented; physical-phone validation pending. Other experimental work remains with its owning stream. |
 
 ## Rules
 

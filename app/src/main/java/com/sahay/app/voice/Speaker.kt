@@ -32,10 +32,12 @@ class Speaker(context: Context) {
     fun speak(text: String, languageTag: String): Boolean {
         val tts = engine ?: return false
         if (!ready || text.isBlank()) return false
-        val result = tts.setLanguage(Locale.forLanguageTag(languageTag))
-        languageMissing = result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED
-        if (languageMissing) return false
-        return tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, UTTERANCE_ID) == TextToSpeech.SUCCESS
+        val language = Locale.forLanguageTag(languageTag).language
+        val offline = tts.voices?.firstOrNull { it.locale.language == language && !it.isNetworkConnectionRequired }
+        languageMissing = offline == null
+        if (offline == null) return false
+        tts.voice = offline
+        return tts.speak(text.take(TextToSpeech.getMaxSpeechInputLength()), TextToSpeech.QUEUE_FLUSH, null, UTTERANCE_ID) == TextToSpeech.SUCCESS
     }
 
     fun stop() {

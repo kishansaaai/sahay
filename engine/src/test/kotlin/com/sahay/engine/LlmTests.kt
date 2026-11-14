@@ -84,6 +84,14 @@ fun llmTests(contentDir: String): Pair<Int, Int> {
         val s = o.stats.rows.getValue("hint"); check(s.firstTry == 1 && s.afterRetry == 1 && s.fallback == 1, "${s.firstTry} ${s.afterRetry} ${s.fallback}")
     }
 
+    test("streaming explanation decodes split escapes without exposing JSON syntax") {
+        val decoder = StreamingText("explanation")
+        val json = """{"task":"explain","explanation":"A \"quote\" and \u0939\nnext", "analogy":""}"""
+        var text = ""
+        for (char in json) decoder.accept(char.toString())?.let { text = it }
+        check(text == "A \"quote\" and ह\nnext", "decoded: $text")
+    }
+
     // ---- model manager (A04/A05/A19) ----
     class Fake : LlmRuntime {
         var loaded = false; var loads = 0; var gens = 0; var stopped = false
@@ -113,6 +121,24 @@ fun llmTests(contentDir: String): Pair<Int, Int> {
     test("listener can stop generation and stop() reaches the runtime") {
         val f = Fake(); val m = ModelManager(f, "m", "t"); var n = 0
         val st = m.generate("hi", 100, 0.2) { n++ < 3 }; check(st.stopped && st.tokens == 3, "${st.tokens}")
+    }
+    test("cancelled queued request never loads or generates") {
+        val fake = Fake(); val manager = ModelManager(fake, "m", "t")
+        var cancelled = false
+        try { manager.generate("p", 4, 0.2, isCancelled = { true }) { true } }
+        catch (e: java.util.concurrent.CancellationException) { cancelled = true }
+        check(cancelled && fake.loads == 0 && fake.gens == 0, "cancelled request ran")
+    }
+    test("request cancellation cannot stop another request") {
+        val fake = Fake(); val manager = ModelManager(fake, "m", "t")
+        val active = Any(); val unrelated = Any()
+        manager.generate("p", 4, 0.2, request = active) {
+            manager.stop(unrelated)
+            check(!fake.stopped, "unrelated request interrupted generation")
+            manager.stop(active)
+            true
+        }
+        check(fake.stopped, "own cancellation did not reach runtime")
     }
     test("200 consecutive generations keep the model loaded once (no reload churn)") {
         val f = Fake(); val m = ModelManager(f, "m", "t"); repeat(200) { m.generate("p", 3, 0.2) { true } }; check(f.loads == 1 && f.gens == 200, "loads ${f.loads}")

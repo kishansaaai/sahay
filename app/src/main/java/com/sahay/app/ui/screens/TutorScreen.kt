@@ -1,9 +1,12 @@
+@file:OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
+
 package com.sahay.app.ui.screens
 
 import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -54,7 +57,7 @@ fun TutorScreen(state: AppState) {
     val listState = rememberLazyListState()
     val dictation = remember { Dictation(context) }
     val speaker = remember { Speaker(context) }
-    val languageTag = if (state.language == "hi") "hi-IN" else "en-IN"
+    val languageTag = java.util.Locale.forLanguageTag(state.language).toLanguageTag()
 
     DisposableEffect(Unit) {
         onDispose {
@@ -87,6 +90,7 @@ fun TutorScreen(state: AppState) {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
+        if (state.language !in setOf("en", "hi")) Text(sr(R.string.experimental_language), style = MaterialTheme.typography.bodySmall)
         Text(text = sr(R.string.tutor_title), style = MaterialTheme.typography.headlineSmall)
 
         val contextName = state.contextSkillName()
@@ -129,7 +133,7 @@ fun TutorScreen(state: AppState) {
                 value = input,
                 onValueChange = { input = it },
                 modifier = Modifier.weight(1f),
-                placeholder = { Text(sr(R.string.tutor_placeholder)) },
+                label = { Text(sr(R.string.tutor_placeholder)) },
                 maxLines = 4,
             )
             Button(
@@ -140,7 +144,7 @@ fun TutorScreen(state: AppState) {
                 enabled = input.isNotBlank() && !state.tutorStreaming,
             ) { Text(sr(R.string.tutor_send)) }
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedButton(
                 onClick = { if (dictation.listening) dictation.stop() else startVoice() },
                 enabled = dictation.available,

@@ -1,9 +1,13 @@
+@file:OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
+
 package com.sahay.app.ui.screens
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.ui.semantics.Role
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -64,10 +68,12 @@ fun StudyScreen(state: AppState) {
 
         SectionCard(title = sr(R.string.study_explanation)) {
             if (state.studyLoading) {
-                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     CircularProgressIndicator()
                     Text(text = sr(R.string.study_generating), style = MaterialTheme.typography.bodyMedium)
+                    OutlinedButton(onClick = { state.stopStudy() }) { Text(sr(R.string.study_stop)) }
                 }
+                if (state.studyText.isNotEmpty()) Text(state.studyText, style = MaterialTheme.typography.bodyLarge)
             } else {
                 Text(text = state.studyText, style = MaterialTheme.typography.bodyLarge)
                 if (state.studyTemplate) {
@@ -75,7 +81,7 @@ fun StudyScreen(state: AppState) {
                 }
             }
 
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 OutlinedButton(
                     onClick = {
                         if (state.studyAnalogy.isBlank()) state.requestAnalogy()
@@ -96,6 +102,7 @@ fun StudyScreen(state: AppState) {
             }
         }
 
+        if (state.language !in setOf("en", "hi")) Text(sr(R.string.experimental_language), style = MaterialTheme.typography.bodySmall)
         val question = state.studyQuestion
         SectionCard(title = sr(R.string.study_check_question)) {
             if (question == null) {
@@ -107,7 +114,8 @@ fun StudyScreen(state: AppState) {
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable { state.chooseCheckOption(index) },
+                            .sizeIn(minHeight = 48.dp)
+                            .selectable(selected = selected, enabled = state.checkFeedback == null, role = Role.RadioButton, onClick = { state.chooseCheckOption(index) }),
                         colors = CardDefaults.cardColors(
                             containerColor = if (selected) MaterialTheme.colorScheme.primaryContainer
                             else MaterialTheme.colorScheme.surfaceVariant,
@@ -134,7 +142,7 @@ fun StudyScreen(state: AppState) {
                             Text(text = sr(R.string.study_misconception, it), style = MaterialTheme.typography.bodySmall)
                         }
                     }
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         OutlinedButton(onClick = { state.nextCheckQuestion() }) { Text(sr(R.string.study_retry)) }
                         Button(onClick = { state.go(com.sahay.app.state.Screen.Today) }) { Text(sr(R.string.study_done)) }
                     }

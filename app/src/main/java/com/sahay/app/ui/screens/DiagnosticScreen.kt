@@ -1,6 +1,8 @@
 package com.sahay.app.ui.screens
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.ui.semantics.Role
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +20,8 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.sahay.app.R
@@ -32,6 +36,7 @@ import com.sahay.app.ui.sr
 fun DiagnosticScreen(state: AppState) {
     val question = state.question
     val feedback = state.diagnosticFeedback
+    val confidenceLabel = sr(R.string.diag_confidence, state.confidence.toInt())
 
     Column(
         modifier = Modifier
@@ -59,7 +64,8 @@ fun DiagnosticScreen(state: AppState) {
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickable { state.chooseOption(index) },
+                                .sizeIn(minHeight = 48.dp)
+                                .selectable(selected = selected, role = Role.RadioButton, onClick = { state.chooseOption(index) }),
                             colors = CardDefaults.cardColors(
                                 containerColor = if (selected) MaterialTheme.colorScheme.primaryContainer
                                 else MaterialTheme.colorScheme.surfaceVariant,
@@ -76,7 +82,7 @@ fun DiagnosticScreen(state: AppState) {
                 value = state.confidence.toFloat(),
                 onValueChange = { state.updateConfidence(it.toDouble()) },
                 valueRange = 0f..100f,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().semantics { contentDescription = confidenceLabel },
             )
 
             state.hintLevel?.let { level ->

@@ -6,6 +6,7 @@ import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.os.Bundle
+import android.os.Build
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -13,8 +14,7 @@ import androidx.compose.runtime.setValue
 /**
  * Voice input prototype (issue B18/X2).
  *
- * Wraps the phone's own speech recognizer: nothing is bundled, no audio leaves the app except through the recognizer
- * service the user already has, and [RecognizerIntent.EXTRA_PREFER_OFFLINE] asks that service for an on-device model.
+ * Uses Android 12+ on-device recognition only. Older phones retain typed input; a network-capable recognizer is never selected.
  * Whether such a model exists is a property of the phone, so [Dictation.available] and the error codes are surfaced to the
  * UI instead of being hidden. This has never been run on a device; treat every state here as untested.
  */
@@ -23,7 +23,7 @@ class SpeechToText(context: Context) {
     private var recognizer: SpeechRecognizer? = null
     private var lastError: Int? = null
 
-    fun available(): Boolean = SpeechRecognizer.isRecognitionAvailable(app)
+    fun available(): Boolean = Build.VERSION.SDK_INT >= 31 && SpeechRecognizer.isOnDeviceRecognitionAvailable(app)
 
     /** Start one utterance. Callbacks arrive on the main thread. */
     fun start(
@@ -36,7 +36,8 @@ class SpeechToText(context: Context) {
             onError(ERROR_UNAVAILABLE)
             return
         }
-        val r = recognizer ?: SpeechRecognizer.createSpeechRecognizer(app).also { created ->
+        recognizer?.destroy()
+        val r = if (Build.VERSION.SDK_INT >= 31) SpeechRecognizer.createOnDeviceSpeechRecognizer(app).also { created ->
             created.setRecognitionListener(object : RecognitionListener {
                 override fun onReadyForSpeech(params: Bundle?) = onListening(true)
                 override fun onBeginningOfSpeech() = Unit
@@ -64,13 +65,13 @@ class SpeechToText(context: Context) {
                 }
             })
             recognizer = created
-        }
+        } else { onError(ERROR_UNAVAILABLE); return }
         lastError = null
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
             putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
             putExtra(RecognizerIntent.EXTRA_LANGUAGE, languageTag)
             putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
-            // A hint, not a guarantee: some recognizers ignore it and need a network connection of their own.
+            // The selected service is on-device; retain the hint for its language-pack handling.
             putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE, true)
         }
         r.startListening(intent)

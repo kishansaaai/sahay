@@ -5,12 +5,26 @@ composeBom = "2024.10.00"
 activityCompose = "1.9.0"
 lifecycleRuntimeKtx = "2.8.2"
 coroutines = "1.8.1"
+room = "2.6.1"
+zxing = "3.5.3"
+mlkit = "16.0.1"
+junit = "4.13.2"
+robolectric = "4.14.1"
+androidxTest = "1.6.1"
+ksp = "2.0.21-1.0.28"
 compileSdk = "35"
 minSdk = "24"
 targetSdk = "35"
-zxing = "3.5.3"
 
 [libraries]
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+zxing-core = { module = "com.google.zxing:core", version.ref = "zxing" }
+mlkit-latin = { module = "com.google.mlkit:text-recognition", version.ref = "mlkit" }
+mlkit-devanagari = { module = "com.google.mlkit:text-recognition-devanagari", version.ref = "mlkit" }
+junit = { module = "junit:junit", version.ref = "junit" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+androidx-test-core = { module = "androidx.test:core", version.ref = "androidxTest" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
@@ -20,9 +34,9 @@ androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", versi
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
-zxing-core = { group = "com.google.zxing", name = "core", version.ref = "zxing" }
 
 [plugins]
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
