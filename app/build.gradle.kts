@@ -18,8 +18,24 @@ android {
         // No INTERNET permission — on-device only (see B02, README rule #4)
     }
 
+    // Release signing (B21). The key never lives in the repo: CI passes it through these environment variables.
+    // Without them `assembleRelease` still builds, but the APK is unsigned and will not install.
+    signingConfigs {
+        val keystore = System.getenv("SAHAY_KEYSTORE")
+        if (!keystore.isNullOrBlank()) {
+            create("release") {
+                storeFile = file(keystore)
+                storePassword = System.getenv("SAHAY_KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("SAHAY_KEY_ALIAS")
+                keyPassword = System.getenv("SAHAY_KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
+            signingConfigs.findByName("release")?.let { signingConfig = it }
+            // R8 stays off until a device run proves the ExecuTorch JNI classes and ML Kit survive shrinking (B21).
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -67,6 +83,9 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.zxing.core)
+    // Bundled (not Play-services) text recognisers for the Scan screen (B12); models ship in the APK, no download.
+    implementation(libs.mlkit.text.recognition)
+    implementation(libs.mlkit.text.recognition.devanagari)
     implementation(projects.engine)
 
     // ExecuTorch runtime (A04). Opt in with -Psahay.executorch=true once A01 has pinned the tag; see docs/setup-runtime.md.

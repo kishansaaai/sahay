@@ -109,5 +109,9 @@ fun TodayScreen(state: AppState) {
             onClick = { state.go(com.sahay.app.state.Screen.Share) },
             modifier = Modifier.fillMaxWidth(),
         ) { Text(sr(R.string.today_share)) }
+        OutlinedButton(
+            onClick = { state.openScan() },
+            modifier = Modifier.fillMaxWidth(),
+        ) { Text(sr(R.string.today_scan)) }
     }
 }

@@ -1,0 +1,78 @@
+name: release-apk
+
+# B21: build the release APK, sign it when the signing secrets exist, check the merged manifest, and attach it to a
+# GitHub release when run from a tag. The model file is never part of this (see releases/README.md).
+#
+# One-time setup (repository Settings > Secrets and variables > Actions):
+#   SAHAY_KEYSTORE_B64       base64 of the .jks keystore:  base64 -w0 sahay-release.jks
+#   SAHAY_KEYSTORE_PASSWORD  keystore password
+#   SAHAY_KEY_ALIAS          key alias
+#   SAHAY_KEY_PASSWORD       key password
+# Create the keystore once with:  keytool -genkeypair -v -keystore sahay-release.jks -alias sahay -keyalg RSA -keysize 2048 -validity 10000
+# Keep a private backup of it: an APK signed with a different key cannot update an installed one.
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      SAHAY_KEYSTORE_B64: ${{ secrets.SAHAY_KEYSTORE_B64 }}
+      SAHAY_KEYSTORE_PASSWORD: ${{ secrets.SAHAY_KEYSTORE_PASSWORD }}
+      SAHAY_KEY_ALIAS: ${{ secrets.SAHAY_KEY_ALIAS }}
+      SAHAY_KEY_PASSWORD: ${{ secrets.SAHAY_KEY_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Install Android SDK packages
+        run: |
+          S="$(command -v sdkmanager || true)"
+          if [ -z "$S" ] && [ -n "$ANDROID_HOME" ]; then S="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"; fi
+          if [ -x "$S" ]; then yes | "$S" "platforms;android-35" "build-tools;35.0.0" > /dev/null; fi
+      - name: Decode keystore (skipped when no secret is set)
+        run: |
+          if [ -n "$SAHAY_KEYSTORE_B64" ]; then
+            echo "$SAHAY_KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/sahay-release.jks"
+            echo "SAHAY_KEYSTORE=$RUNNER_TEMP/sahay-release.jks" >> "$GITHUB_ENV"
+          else
+            echo "::warning::No signing secrets: the release APK will be unsigned and cannot be installed."
+          fi
+      - name: Build release APK
+        run: gradle :app:assembleRelease --no-daemon --stacktrace
+      - name: Merged manifest must have no INTERNET permission
+        run: |
+          M="$(find app/build/intermediates -path '*merged_manifests*' -name AndroidManifest.xml)"
+          [ -n "$M" ] || { echo "::error::no merged manifest found"; exit 1; }
+          python3 scripts/ci_checks.py --merged $M
+      - name: Checksum and name the APK
+        run: |
+          cd app/build/outputs/apk/release
+          ls -l
+          for f in *.apk; do mv "$f" "sahay-${GITHUB_REF_NAME//\//-}-$f"; done
+          sha256sum ./*.apk | tee apk-sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sahay-release-apk
+          path: |
+            app/build/outputs/apk/release/*.apk
+            app/build/outputs/apk/release/apk-sha256.txt
+          if-no-files-found: error
+      - name: Attach to the GitHub release (tag runs only)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            app/build/outputs/apk/release/*.apk
+            app/build/outputs/apk/release/apk-sha256.txt

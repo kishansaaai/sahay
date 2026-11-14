@@ -276,4 +276,41 @@
     <string name="share_teacher_row">%1$s: %2$d%% (%3$d/%4$d छात्र)</string>
 
     <string name="not_in_build">यह स्क्रीन अभी इस बिल्ड में नहीं है।</string>
+
+    <!-- Scan: syllabus to topics (I4) and page to quiz (I8), issue B12 -->
+    <string name="scan_title">स्कैन</string>
+    <string name="scan_intro">सिलेबस या किताब के पन्ने की फ़ोटो लें। पाठ इसी फ़ोन पर पढ़ा जाता है, इंटरनेट की ज़रूरत नहीं।</string>
+    <string name="scan_privacy">फ़ोटो इसी फ़ोन पर पढ़ी जाती है और तुरंत मिटा दी जाती है। कुछ भी अपलोड नहीं होता।</string>
+    <string name="scan_take_photo">फ़ोटो लें</string>
+    <string name="scan_pick_image">चित्र चुनें</string>
+    <string name="scan_text_label">पहचाना गया पाठ (बनाने से पहले सुधारें)</string>
+    <string name="scan_reading">इस फ़ोन पर चित्र पढ़ा जा रहा है…</string>
+    <string name="scan_no_text">कोई पाठ नहीं मिला। साफ़ फ़ोटो लें या पाठ खुद लिखें।</string>
+    <string name="scan_read_failed">वह चित्र पढ़ा नहीं जा सका: %1$s</string>
+    <string name="scan_camera_missing">कोई कैमरा ऐप नहीं मिला। चित्र चुनें या पाठ चिपकाएँ।</string>
+    <string name="scan_build_topics">सिलेबस से विषय सूची बनाएँ</string>
+    <string name="scan_make_quiz">सारांश और 5 प्रश्न</string>
+    <string name="scan_working">काम चल रहा है…</string>
+    <string name="scan_compile_failed">इस पाठ से विषय सूची नहीं बन सकी। पाठ सुधारकर फिर कोशिश करें।</string>
+    <string name="scan_template_note">यह सरल नियमों से बनी है (इस फ़ोन पर मॉडल नहीं है)। हर विषय जाँच लें।</string>
+    <string name="scan_topics_title">मिले विषय (%1$d, लगभग %2$s घंटे)</string>
+    <string name="scan_topic_include">%1$s शामिल करें</string>
+    <string name="scan_hours_less">%1$s के घंटे घटाएँ</string>
+    <string name="scan_hours_more">%1$s के घंटे बढ़ाएँ</string>
+    <string name="scan_hours">%1$s घंटे</string>
+    <string name="scan_remove">%1$s हटाएँ</string>
+    <string name="scan_errors">उपयोग से पहले ठीक करें: %1$s</string>
+    <string name="scan_use_plan">मेरी योजना इन विषयों पर केंद्रित करें</string>
+    <string name="scan_need_profile">पहले इनटेक पूरा करें, फिर स्कैन किए विषय योजना में लें।</string>
+    <string name="scan_no_match">इनमें से कोई विषय अभी सहाय के ऐसे कौशल से नहीं मिलता जिसके प्रश्न उपलब्ध हों।</string>
+    <string name="scan_focus_done">योजना अपडेट हुई: %1$d विषय मिले, %2$d सहाय की कौशल सूची में नहीं हैं।</string>
+    <string name="scan_plan_reason">आपके स्कैन किए सिलेबस पर केंद्रित।</string>
+    <string name="scan_summary_title">सारांश</string>
+    <string name="scan_quiz_title">इस पन्ने से प्रश्न</string>
+    <string name="scan_quiz_needs_model">प्रश्नों के लिए भाषा मॉडल चाहिए, जो इस फ़ोन पर लोड नहीं है।</string>
+    <string name="scan_correct">सही।</string>
+    <string name="scan_wrong">पूरी तरह नहीं। सही उत्तर है: %1$s</string>
+    <string name="scan_misconception">आम भूल: %1$s</string>
+    <string name="scan_clear">स्कैन साफ़ करें</string>
+    <string name="today_scan">सिलेबस या पन्ना स्कैन करें</string>
 </resources>

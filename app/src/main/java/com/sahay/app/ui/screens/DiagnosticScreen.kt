@@ -1,6 +1,5 @@
 package com.sahay.app.ui.screens
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,7 +9,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -18,10 +16,14 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.sahay.app.R
 import com.sahay.app.state.AppState
+import com.sahay.app.ui.OptionCard
 import com.sahay.app.ui.sr
 
 /**
@@ -56,27 +58,18 @@ fun DiagnosticScreen(state: AppState) {
                     Text(text = question.stem, style = MaterialTheme.typography.titleMedium)
                     question.options.forEachIndexed { index, option ->
                         val selected = state.pendingChoice == index
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable { state.chooseOption(index) },
-                            colors = CardDefaults.cardColors(
-                                containerColor = if (selected) MaterialTheme.colorScheme.primaryContainer
-                                else MaterialTheme.colorScheme.surfaceVariant,
-                            ),
-                        ) {
-                            Text(text = option.text, modifier = Modifier.padding(12.dp))
-                        }
+                        OptionCard(text = option.text, selected = selected, onClick = { state.chooseOption(index) })
                     }
                 }
             }
 
             SectionTitle(sr(R.string.diag_confidence, AppState.percent(state.confidence / 100.0)))
+            val confidenceLabel = sr(R.string.diag_confidence, AppState.percent(state.confidence / 100.0))
             Slider(
                 value = state.confidence.toFloat(),
                 onValueChange = { state.updateConfidence(it.toDouble()) },
                 valueRange = 0f..100f,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().semantics { contentDescription = confidenceLabel },
             )
 
             state.hintLevel?.let { level ->
@@ -138,5 +131,10 @@ private fun DiagnosticResult(state: AppState, correct: Boolean) {
 
 @Composable
 private fun SectionTitle(text: String) {
-    Text(text = text, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
+    Text(
+        text = text,
+        style = MaterialTheme.typography.titleSmall,
+        fontWeight = FontWeight.SemiBold,
+        modifier = Modifier.semantics { heading() },
+    )
 }

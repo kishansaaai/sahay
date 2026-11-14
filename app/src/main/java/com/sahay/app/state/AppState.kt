@@ -7,6 +7,7 @@ import android.os.SystemClock
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.sahay.app.R
 import com.sahay.app.data.SnapshotStore
 import com.sahay.app.llm.SahayLlm
 import com.sahay.engine.AttemptRow
@@ -22,14 +23,19 @@ import com.sahay.engine.LearnerModel
 import com.sahay.engine.LearnerProfileRow
 import com.sahay.engine.LlmResult
 import com.sahay.engine.MisconceptionEngine
+import com.sahay.engine.OcrText
 import com.sahay.engine.Plan
 import com.sahay.engine.PlanItem
 import com.sahay.engine.Question
 import com.sahay.engine.ReplayState
 import com.sahay.engine.SessionRow
 import com.sahay.engine.ShareCode
+import com.sahay.engine.ScanQuestion
+import com.sahay.engine.ScanQuiz
 import com.sahay.engine.Snapshot
+import com.sahay.engine.SyllabusDraft
 import com.sahay.engine.TeachBackRow
+import com.sahay.engine.TopicMatch
 import com.sahay.engine.applyAnswer
 import com.sahay.engine.buildPlan
 import com.sahay.engine.forecastToTarget
@@ -625,6 +631,102 @@ class AppState(private val app: Application) {
             SahayLlm.orchestrator.run(task, input, llmLanguage)
         } else {
             LlmResult(task, Fallbacks.make(task, input, llmLanguage), "fallback", 0, listOf("runtime not initialised"))
+        }
+    }
+
+    // ---- scan: syllabus to skill graph (I4) and page to quiz (I8), issue B12 ----
+
+    var scanText by mutableStateOf("")
+        private set
+    var scanBusy by mutableStateOf(false)
+        private set
+    var scanDraft by mutableStateOf<SyllabusDraft?>(null)
+        private set
+    /** True when the draft came from the rule-based fallback rather than the model; the screen says so. */
+    var scanDraftTemplate by mutableStateOf(false)
+        private set
+    var scanSummary by mutableStateOf("")
+        private set
+    var scanQuestions by mutableStateOf<List<ScanQuestion>>(emptyList())
+        private set
+    var scanMessage by mutableStateOf<String?>(null)
+        private set
+    private var scanJob: Job? = null
+
+    fun setScanText(raw: String) { scanText = raw }
+
+    fun openScan() { scanMessage = null; screen = Screen.Scan }
+
+    /** Called with the text ML Kit read from a photo; keeps whatever the learner already typed. */
+    fun addScannedText(recognised: String) {
+        val cleaned = OcrText.clean(recognised)
+        if (cleaned.isEmpty()) { scanMessage = str(R.string.scan_no_text); return }
+        scanText = if (scanText.isBlank()) cleaned else OcrText.clean(scanText + "\n" + cleaned)
+        scanMessage = null
+    }
+
+    fun reportScanProblem(message: String) { scanMessage = message }
+
+    fun clearScan() {
+        scanJob?.cancel()
+        scanText = ""; scanDraft = null; scanQuestions = emptyList(); scanSummary = ""; scanMessage = null; scanBusy = false
+    }
+
+    /** Text to skill graph draft. The model output is schema- and graph-validated by the orchestrator; the learner edits it next. */
+    fun compileSyllabus() {
+        val text = OcrText.clean(scanText)
+        if (text.isEmpty()) { scanMessage = str(R.string.scan_no_text); return }
+        scanJob?.cancel()
+        scanBusy = true; scanMessage = null
+        scanJob = scope.launch {
+            val r = runTask("syllabus_compile", mapOf("ocr_text" to text))
+            val draft = SyllabusDraft.fromOutput(r.output)
+            scanDraft = draft
+            scanDraftTemplate = r.source != "model" && r.source != "retry"
+            scanMessage = if (draft == null) str(R.string.scan_compile_failed) else null
+            scanBusy = false
+        }
+    }
+
+    fun editDraft(change: (SyllabusDraft) -> SyllabusDraft) { scanDraft = scanDraft?.let(change) }
+
+    /**
+     * Point the plan at the scanned topics that match skills in the current domain and rebuild the roadmap. Topics with
+     * no matching skill are reported, not invented: the app only has questions for skills it ships.
+     */
+    fun focusPlanOnScan() {
+        val draft = scanDraft ?: return
+        val p = profile
+        if (p == null) { scanMessage = str(R.string.scan_need_profile); return }
+        val c = contentFor(domain)
+        val topics = draft.included().map { it.name }
+        val matches = TopicMatch.map(topics, c.graph.skills.mapValues { it.value.name })
+        val skillIds = matches.values.filterNotNull().distinct()
+        if (skillIds.isEmpty()) { scanMessage = str(R.string.scan_no_match); return }
+        targets = skillIds
+        val unmatched = matches.filterValues { it == null }.keys
+        buildRoadmap(reasonPrefix = str(R.string.scan_plan_reason))
+        scanMessage = str(R.string.scan_focus_done, skillIds.size, unmatched.size) +
+            if (unmatched.isEmpty()) "" else " " + unmatched.take(6).joinToString(", ")
+        go(Screen.Roadmap)
+    }
+
+    /** Page text to a short summary and up to five checked questions. Questions the model cannot produce validly are skipped. */
+    fun makeScanQuiz() {
+        val text = OcrText.clean(scanText)
+        if (text.isEmpty()) { scanMessage = str(R.string.scan_no_text); return }
+        scanJob?.cancel()
+        scanBusy = true; scanMessage = null; scanQuestions = emptyList(); scanSummary = ""
+        scanJob = scope.launch {
+            val summary = runTask("explain", ScanQuiz.summaryInput(text, llmLanguage))
+            scanSummary = (summary.output?.get("explanation") as? String).orEmpty()
+            val made = ArrayList<ScanQuestion>()
+            ScanQuiz.windows(text).forEachIndexed { i, w ->
+                val r = runTask("draft_question", ScanQuiz.questionInput(w, i))
+                ScanQuestion.fromOutput(r.output)?.let { made.add(it); scanQuestions = made.toList() }
+            }
+            scanMessage = if (made.isEmpty()) str(R.string.scan_quiz_needs_model) else null
+            scanBusy = false
         }
     }
 

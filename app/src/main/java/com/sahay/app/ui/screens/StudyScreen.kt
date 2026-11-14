@@ -1,6 +1,5 @@
 package com.sahay.app.ui.screens
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,7 +10,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -28,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.sahay.app.R
 import com.sahay.app.state.AppState
 import com.sahay.app.ui.SectionCard
+import com.sahay.app.ui.OptionCard
 import com.sahay.app.ui.sr
 
 /**
@@ -104,17 +103,7 @@ fun StudyScreen(state: AppState) {
                 Text(text = question.stem, style = MaterialTheme.typography.titleMedium)
                 question.options.forEachIndexed { index, option ->
                     val selected = state.checkPendingChoice == index
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { state.chooseCheckOption(index) },
-                        colors = CardDefaults.cardColors(
-                            containerColor = if (selected) MaterialTheme.colorScheme.primaryContainer
-                            else MaterialTheme.colorScheme.surfaceVariant,
-                        ),
-                    ) {
-                        Text(text = option.text, modifier = Modifier.padding(12.dp))
-                    }
+                    OptionCard(text = option.text, selected = selected, onClick = { state.chooseCheckOption(index) })
                 }
                 val feedback = state.checkFeedback
                 if (feedback == null) {

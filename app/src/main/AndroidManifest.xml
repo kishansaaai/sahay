@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- No INTERNET permission: Sahay runs fully on-device (README rule #4, B02). -->
+    <!-- Scan (B12): the photo is taken by the phone's own camera app through a content URI, so Sahay needs no CAMERA permission. -->
+    <!-- ML Kit's bundled recognisers can merge in a network permission from their library manifest; this removes it so the
+         merged release manifest still has none (README rule 4). CI checks the merged manifest too. -->
+    <uses-permission android:name="android.permission.INTERNET" tools:node="remove" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" tools:node="remove" />
+
     <!-- Voice prototype (B18): the phone's own speech recognizer and TTS engine do the work; nothing is bundled. -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
@@ -13,13 +20,15 @@
         <intent>
             <action android:name="android.intent.action.TTS_SERVICE" />
         </intent>
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
     </queries>
-
-    <!-- Launcher icons come with the real design assets; AGP 8 requires the namespace in build.gradle.kts. -->
 
     <application
         android:name=".SahayApplication"
         android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sahay">
@@ -33,6 +42,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Hands the camera app a private cache file for the Scan screen photo (B12). Not exported. -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.scanfiles"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/scan_paths" />
+        </provider>
     </application>
 
 </manifest>

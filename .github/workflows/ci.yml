@@ -67,6 +67,12 @@ jobs:
           if [ -x "$S" ]; then yes | "$S" "platforms;android-35" "build-tools;35.0.0" > /dev/null; fi
       - name: Build debug APK (compiles app/ and engine/)
         run: gradle :app:assembleDebug --no-daemon --stacktrace
+      - name: Merged manifest must have no INTERNET permission (library manifests such as ML Kit are merged in)
+        run: |
+          M="$(find app/build/intermediates -path '*merged_manifests*' -name AndroidManifest.xml)"
+          echo "$M"
+          [ -n "$M" ] || { echo "::error::no merged manifest found"; exit 1; }
+          python3 scripts/ci_checks.py --merged $M
       - name: Write APK checksum for testers
         run: |
           cd app/build/outputs/apk/debug

@@ -1,6 +1,7 @@
 package com.sahay.app.ui.screens
 
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -39,6 +40,7 @@ import com.sahay.engine.PlanItem
 fun RoadmapScreen(state: AppState) {
     val plan = state.plan
     var why by remember { mutableStateOf<PlanItem?>(null) }
+    val whyLabel = sr(R.string.why_this)
 
     if (plan == null) {
         Column(modifier = Modifier.fillMaxSize().padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
@@ -88,7 +90,7 @@ fun RoadmapScreen(state: AppState) {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickable { why = item }
+                                .clickable(onClickLabel = whyLabel, role = Role.Button) { why = item }
                                 .padding(vertical = 4.dp),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                         ) {

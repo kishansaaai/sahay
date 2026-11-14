@@ -19,6 +19,7 @@ Full licence texts of anything we redistribute live next to this file.
 | Official ExecuTorch Llama Android demo app | BSD-style licence (same repository) | Reference for the JNI wrapper (A01, A04); our wrapper is original code written against its public API |
 | Kotlin, kotlinx.coroutines, AndroidX, Jetpack Compose | Apache-2.0 | App and engine |
 | ZXing core (`com.google.zxing:core`) | Apache-2.0 | QR symbol generation and image decoding for plan sharing (B17/X3). Library only; no source copied into the repository. |
+| ML Kit text recognition, bundled models (`com.google.mlkit:text-recognition`, `text-recognition-devanagari`) | Google ML Kit Terms of Service (not an open-source licence); Android client libraries are distributed under Google's terms | On-device OCR for the Scan screen (B12, I4, I8). Models ship inside the APK, no download. **Team decision needed (PRD open item on OCR licences):** the SDK includes usage logging that cannot reach Google because the app has no INTERNET permission (stripped in the manifest, checked on the merged manifest in CI), but confirm this satisfies the "no analytics SDKs" rule, or swap `OcrEngine` for Tesseract (Apache-2.0), which is the only file that touches ML Kit. |
 | Python 3 standard library only | PSF | llm/, eval/, export/, bench/ scripts (no third-party packages needed to run the tests) |
 | Hugging Face transformers, peft, datasets (offline LoRA, A18, optional) | Apache-2.0 | export/finetune/ only; never shipped in the app |
 

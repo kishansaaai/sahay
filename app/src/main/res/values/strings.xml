@@ -276,4 +276,41 @@
     <string name="share_teacher_row">%1$s: %2$d%% (%3$d of %4$d students)</string>
 
     <string name="not_in_build">This screen is not part of this build yet.</string>
+
+    <!-- Scan: syllabus to topics (I4) and page to quiz (I8), issue B12 -->
+    <string name="scan_title">Scan</string>
+    <string name="scan_intro">Photograph a syllabus or a textbook page. The text is read on this phone, with no internet needed.</string>
+    <string name="scan_privacy">Photos are read on this phone and deleted right after. Nothing is uploaded.</string>
+    <string name="scan_take_photo">Take a photo</string>
+    <string name="scan_pick_image">Choose an image</string>
+    <string name="scan_text_label">Recognised text (edit before you generate)</string>
+    <string name="scan_reading">Reading the image on this phone…</string>
+    <string name="scan_no_text">No text found. Try a clearer photo or type the text.</string>
+    <string name="scan_read_failed">Could not read that image: %1$s</string>
+    <string name="scan_camera_missing">No camera app found. Choose an image or paste text instead.</string>
+    <string name="scan_build_topics">Build topic list from syllabus</string>
+    <string name="scan_make_quiz">Summary and 5 questions</string>
+    <string name="scan_working">Working…</string>
+    <string name="scan_compile_failed">Could not build a topic list from this text. Edit it and try again.</string>
+    <string name="scan_template_note">Built by simple rules (no model on this phone). Check every topic.</string>
+    <string name="scan_topics_title">Topics found (%1$d, about %2$s hours)</string>
+    <string name="scan_topic_include">Include %1$s</string>
+    <string name="scan_hours_less">Fewer hours for %1$s</string>
+    <string name="scan_hours_more">More hours for %1$s</string>
+    <string name="scan_hours">%1$s h</string>
+    <string name="scan_remove">Remove %1$s</string>
+    <string name="scan_errors">Fix before using: %1$s</string>
+    <string name="scan_use_plan">Focus my plan on these topics</string>
+    <string name="scan_need_profile">Finish the intake first, then use scanned topics in your plan.</string>
+    <string name="scan_no_match">None of these topics match a skill that has questions in Sahay yet.</string>
+    <string name="scan_focus_done">Plan updated: %1$d topics matched, %2$d not in the Sahay skill list.</string>
+    <string name="scan_plan_reason">Focused on your scanned syllabus.</string>
+    <string name="scan_summary_title">Summary</string>
+    <string name="scan_quiz_title">Questions from this page</string>
+    <string name="scan_quiz_needs_model">Questions need the language model, which is not loaded on this phone.</string>
+    <string name="scan_correct">Correct.</string>
+    <string name="scan_wrong">Not quite. The right answer is: %1$s</string>
+    <string name="scan_misconception">Common mistake: %1$s</string>
+    <string name="scan_clear">Clear scan</string>
+    <string name="today_scan">Scan syllabus or page</string>
 </resources>

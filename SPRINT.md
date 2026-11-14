@@ -150,3 +150,15 @@ Never cut: B1-B4 base layer, C1-C7 learning core, hint ladder, simulator, recove
 | B15 | Kit only | `docs/BETA.md` volunteer rules and what a tester records, `bench/devices.md` device table, `docs/TESTING.md` smoke script, CI debug APK to hand out | Eight phones, a filled device table, and the Hindi copy review; none of it exists yet |
 | B19 | Partly done | English and Hindi complete and key/format-checked in CI (260 keys); runtime language switch between the two | Four more languages are not translated; the chips do not offer them rather than showing machine text |
 | B22 | Script only | `docs/DEMO.md` shot list for a 4-5 minute airplane-mode recording, with the template-output rule and what to state alongside the file | Record it on a phone, write the Hindi captions, link the file and the phone details |
+
+## Gap-closing update - 2026-11-15 (branch `B12-scan-and-release-gaps`)
+
+Same rule as above: "Code done" means written and covered by tests or CI compile, **not** run on a phone.
+
+| ID | Status | Done in repo | Still needed |
+| --- | --- | --- | --- |
+| B12 | Code done | `engine/Scan.kt` (OCR text hygiene, editable `SyllabusDraft` checked by the graph validator, `TopicMatch`, `ScanQuiz` windowing) with 12 unit tests; `ScanScreen` (system camera via FileProvider, gallery, or typed text; ML Kit OCR in `scan/OcrEngine.kt`; edit topics, hours and names; "focus my plan" maps topics to shipped skills and rebuilds the roadmap; summary and up to 5 questions through the existing `explain` and `draft_question` tasks); English and Hindi strings | Compile in CI; run on a phone; measure topic coverage on 5 real syllabi (target 80%) and page-to-quiz time (target 60 s); team decision on the ML Kit licence (see LICENSES/README.md); Hindi copy review. Scanned topics with no matching shipped skill are listed, not planned: a custom skill needs a question bank. |
+| B20 | Partly done | Quiz options are selectable radio-button rows with a non-colour marker, the confidence slider has a label, section titles are headings, roadmap rows have a button role and label | TalkBack walk-through of every screen, large-text and contrast check on a phone |
+| B21 | Partly done | Launcher icon (adaptive, plus a layer-list fallback for Android 7.x); release signing read from environment variables; `.github/workflows/release.yml` builds, signs when secrets exist, checks the merged manifest and attaches to a GitHub release on a `v*` tag | Create the keystore and set the four secrets; run the workflow; clean-install test on a phone. R8 is left off until a device run shows ExecuTorch and ML Kit survive shrinking. |
+| B02 | Hardened | `scripts/ci_checks.py` parses manifests (a source manifest may only name INTERNET to remove it) and the CI `android` job now checks the merged debug manifest | - |
+

@@ -413,6 +413,7 @@ fun main(args: Array<String>) {
     }
 
     val (lp, lf) = llmTests(args[0]); passed += lp; failures += lf
+    val (sp, sf) = scanTests(args[0]); passed += sp; failures += sf
 
     println("\n$passed passed, $failures failed")
     if (failures > 0) kotlin.system.exitProcess(1)
