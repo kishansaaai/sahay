@@ -323,6 +323,34 @@ fun main(args: Array<String>) {
         check(validateAttempts(C, listOf(AttemptRow(1, "missing.question", "dsa.arrays", 0, true, 50.0, 1000.0, 0, 0.0))).size == 1, "validator reports it")
     }
 
+    // ---- forecast to goal (B10) ----
+    test("forecast needs two study days") {
+        val q = C.bySkill.getValue("dsa.arrays")[0]
+        val rows = listOf(AttemptRow(1, q.id, q.skill, q.answer, true, 90.0, 9000.0, 0, 0.0))
+        val f = forecastToTarget(C, listOf("dsa.arrays"), rows, now = 0.5, targetMastery = 0.99)
+        check(f.basis == ForecastBasis.NOT_ENOUGH_DAYS, "basis ${f.basis}")
+        check(f.daysToTarget == null, "no estimate without two days")
+        check(f.currentMastery > 0.0, "current mastery ${f.currentMastery}")
+        check(f.trajectory.size == 1, "one observed day")
+    }
+    test("forecast finds an upward trend") {
+        val qs = C.bySkill.getValue("dsa.arrays")
+        val rows = ArrayList<AttemptRow>(); var seq = 1
+        for (day in 0..2) for (i in 0..1) {
+            val q = qs[(day * 2 + i) % qs.size]
+            rows.add(AttemptRow(seq++, q.id, q.skill, q.answer, true, 90.0, 9000.0, 0, day.toDouble()))
+        }
+        val f = forecastToTarget(C, listOf("dsa.arrays"), rows, now = 2.5, targetMastery = 0.95)
+        check(f.trajectory.size == 3, "three days")
+        check(f.gainPerDay > 0.0, "gain ${f.gainPerDay}")
+        check(f.basis == ForecastBasis.ESTIMATE || f.basis == ForecastBasis.TOO_FAR, "basis ${f.basis}")
+    }
+    test("forecast reports a reached target without inventing days") {
+        val f = forecastToTarget(C, listOf("dsa.arrays"), emptyList(), now = 0.0, targetMastery = 0.0)
+        check(f.basis == ForecastBasis.TARGET_REACHED, "basis ${f.basis}")
+        check(f.daysToTarget == 0, "zero days")
+    }
+
     val (lp, lf) = llmTests(args[0]); passed += lp; failures += lf
 
     println("\n$passed passed, $failures failed")

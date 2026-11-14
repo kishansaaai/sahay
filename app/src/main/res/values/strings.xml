@@ -152,5 +152,44 @@
     <string name="tutor_stopped">Stopped</string>
     <string name="tutor_template">Template reply</string>
     <string name="tutor_failed">Generation is not available: %1$s</string>
+    <string name="dashboard_title">Dashboard</string>
+    <string name="dashboard_no_profile">Finish the intake to see your dashboard.</string>
+    <string name="dashboard_mastery">Mastery</string>
+    <string name="dashboard_average">Average mastery %1$d%%</string>
+    <string name="dashboard_target">Target %1$d%%</string>
+    <string name="dashboard_gap">Gap %1$d points</string>
+    <string name="dashboard_forecast">Forecast to target</string>
+    <string name="forecast_estimate">About %1$d more study days at the current rate. This is an estimate from your answers, not a promise.</string>
+    <string name="forecast_reached">You are at or above the target mastery.</string>
+    <string name="forecast_not_enough">Two study days with answers are needed before a forecast can be shown.</string>
+    <string name="forecast_no_trend">Mastery has not risen across the recorded days yet, so no forecast is shown.</string>
+    <string name="forecast_too_far">At the current rate the target is more than a year away.</string>
+    <string name="forecast_basis">Based on %1$d recorded study day(s).</string>
+    <string name="dashboard_calibration">Confidence calibration</string>
+    <string name="dashboard_calibration_none">Calibration starts after five answers.</string>
+    <string name="dashboard_calibration_label">Your pattern: %1$s</string>
+    <string name="dashboard_calibration_n">%1$d answers with a confidence rating</string>
+    <string name="dashboard_bias">Confidence minus accuracy: %1$d points</string>
+    <string name="dashboard_brier">Brier score: %1$s (lower is better)</string>
+    <string name="calibration_overconfident">overconfident</string>
+    <string name="calibration_underconfident">underconfident</string>
+    <string name="calibration_calibrated">well calibrated</string>
+    <string name="dashboard_skills">Skills in your goal</string>
+    <string name="dashboard_no_skills">No skills are loaded for this goal.</string>
+    <string name="dashboard_percent">%1$d%%</string>
+    <string name="dashboard_skill_mastery">%1$s, %2$d%% mastery</string>
+    <string name="dashboard_answers">%1$d answers</string>
+    <string name="dashboard_revise">revise soon</string>
+
+    <string name="recover_title">Recover</string>
+    <string name="recover_body">If you missed days, Sahay can re-pack the plan into the time you actually have left. It keeps the skills with the highest value per hour and explains what it dropped.</string>
+    <string name="recover_budget">Time left to study</string>
+    <string name="recover_apply">Rebuild my plan</string>
+    <string name="recover_no_change">Choose a budget and rebuild to see what changes.</string>
+    <string name="recover_result">What changed</string>
+    <string name="recover_before_after">Before: %1$d planned items. After: %2$d items, %3$d dropped.</string>
+    <string name="recover_note">The planner keeps prerequisite order. Dropped skills are listed below with the reason.</string>
+    <string name="recover_dropped">Dropped this time</string>
+
     <string name="not_in_build">This screen is not part of this build yet.</string>
 </resources>

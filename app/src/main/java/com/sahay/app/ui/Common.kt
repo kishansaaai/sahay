@@ -20,6 +20,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.sahay.app.R
@@ -75,11 +77,12 @@ fun LanguageChips(state: AppState, modifier: Modifier = Modifier) {
     }
 }
 
-/** Small progress line used on the dashboard and today screen. */
+/** Small progress line used on the dashboard and today screen. [label] is read by TalkBack when the bar is not self-explanatory. */
 @Composable
-fun MasteryBar(fraction: Double, modifier: Modifier = Modifier) {
+fun MasteryBar(fraction: Double, modifier: Modifier = Modifier, label: String? = null) {
+    val described = if (label == null) modifier else modifier.semantics { contentDescription = label }
     androidx.compose.material3.LinearProgressIndicator(
         progress = { fraction.coerceIn(0.0, 1.0).toFloat() },
-        modifier = modifier.fillMaxWidth(),
+        modifier = described.fillMaxWidth(),
     )
 }

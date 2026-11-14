@@ -16,6 +16,7 @@ import com.sahay.engine.Content
 import com.sahay.engine.Diagnostic
 import com.sahay.engine.Fallbacks
 import com.sahay.engine.FatigueMonitor
+import com.sahay.engine.GoalForecast
 import com.sahay.engine.LearnerModel
 import com.sahay.engine.LearnerProfileRow
 import com.sahay.engine.LlmResult
@@ -29,6 +30,8 @@ import com.sahay.engine.Snapshot
 import com.sahay.engine.TeachBackRow
 import com.sahay.engine.applyAnswer
 import com.sahay.engine.buildPlan
+import com.sahay.engine.forecastToTarget
+import com.sahay.engine.recover
 import com.sahay.engine.replay
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -604,7 +607,52 @@ class AppState(private val app: Application) {
         }
     }
 
-    // ---- derived dashboard values (B10 later) ----
+    // ---- dashboard (B10) ----
+
+    /** Skills in the goal closure in prerequisite order, for the mastery heatmap. */
+    fun goalSkills(): List<String> = runCatching {
+        val c = contentFor(domain)
+        c.graph.topoOrder(c.graph.closure(targets))
+    }.getOrElse { emptyList() }
+
+    /** Projection to the target, or null before a profile exists. Never invents a number: see [ForecastBasis]. */
+    fun forecast(): GoalForecast? {
+        val p = profile ?: return null
+        return runCatching {
+            forecastToTarget(contentFor(domain), targets, attempts, day, p.targetMastery)
+        }.getOrNull()
+    }
+
+    fun answersFor(skillId: String): Int = attempts.count { it.skillId == skillId }
+
+    fun needsRevision(skillId: String): Boolean = model.needsRevision(skillId, day)
+
+    // ---- recovery (B11) ----
+
+    /** Re-pack the remaining work into [budgetMinutes] with the engine's knapsack and list every dropped skill. */
+    fun recoverPlan(budgetMinutes: Int) {
+        val p = profile ?: return
+        val next = runCatching {
+            recover(
+                contentFor(domain), model, p.toPlannerProfile(), day, targets,
+                oldPlan = plan, budgetMinutes = budgetMinutes, mis = misconceptions,
+                version = (plan?.version ?: 0) + 1,
+            )
+        }.getOrNull() ?: return
+        if (next.items.isEmpty() && next.dropped.isEmpty()) {
+            planChangeNote = "Recovery found nothing left below the target mastery."
+            revision++
+            persist()
+            return
+        }
+        plan = next
+        planChangeNote = "Recovery re-packed the remaining skills into $budgetMinutes minutes."
+        revision++
+        persist()
+        screen = Screen.Recover
+    }
+
+    // ---- derived values for today, roadmap and dashboard ----
 
     fun mastery(skillId: String): Double = model.pEff(skillId, day)
 
