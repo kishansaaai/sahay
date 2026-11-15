@@ -16,13 +16,13 @@ No issue is automatically closed by this record. CONTRIBUTING.md requires anothe
 | [B11 #30](https://github.com/kishansaaai/sahay/issues/30) | Existing engine recovery and before/after/dropped reasons retained | Phone walkthrough and weekly budget evidence |
 | [B12 #31](https://github.com/kishansaaai/sahay/issues/31) | Bundled Latin/Devanagari OCR, full-resolution camera/image input, edit-before-generation, validated graph/quiz drafts; no network permission | Airplane-mode capture and scan-to-quiz under 60 seconds on main phone |
 | [B13 #32](https://github.com/kishansaaai/sahay/issues/32) | Periodic signals, generation speed, charge-counter estimate, governor reason log; transactional import/export and ordered data/model deletion | Real-phone energy counters, deletion and export/import; thread/context values remain policy targets until native support exists |
-| [B14 #33](https://github.com/kishansaaai/sahay/issues/33) | Device/comparison register in bench/devices.md; limitations of the native thread API documented | Real native thread sweep and 1B INT4 / 1B INT8 / 3B INT4 speed/RAM/quality runs; needs Stream A exports and runner support |
-| [B15 #34](https://github.com/kishansaaai/sahay/issues/34) | Beta procedure, device register, Hindi/accessibility review steps | Eight distinct Arm phones and native reviewers; no synthetic device results substituted |
-| [B16 #35](https://github.com/kishansaaai/sahay/issues/35) | Gradle wrapper; APK/checksum artifacts; daily/manual builds retained; Room/localization/lint/merged-manifest/pinned-runtime compile checks added | Successful branch CI artifact and tester installation |
+| [B14 #33](https://github.com/kishansaaai/sahay/issues/33) | Device/comparison register in bench/devices.md; actual-phone metadata/OS/RAM collector in scripts/check_phone.py; Vivo handoff in docs/VIVO_TESTING.md; native thread API limitations documented | Real native thread sweep and 1B INT4 / 1B INT8 / 3B INT4 speed/RAM/quality runs; needs Stream A exports and runner support |
+| [B15 #34](https://github.com/kishansaaai/sahay/issues/34) | Beta procedure, device register, Hindi/accessibility review steps and a Vivo V21e collector that records facts without guessing variant/specs | Eight distinct Arm phones and native reviewers; no synthetic device results substituted |
+| [B16 #35](https://github.com/kishansaaai/sahay/issues/35) | Gradle wrapper; APK/checksum artifacts; daily/manual builds retained; Room/localization/lint/merged-manifest/pinned-runtime compile checks added | Main CI APK, checksum and debug signature verified on 2026-11-15; physical install remains part of B21/beta |
 | [B17 #36](https://github.com/kishansaaai/sahay/issues/36) | Checksummed multipart QR, complete snapshot round trip, camera/image scanning, explicit import, pseudonymous teacher heatmap; existing SAHAY1 text/QR compatibility and batch class averages retained; tests with five simulated learners | Physical camera/display transfer and teacher usability review |
 | [B18 #37](https://github.com/kishansaaai/sahay/issues/37) | On-device STT (Android 12+) and downloaded non-network TTS; explicit permission/error/typing fallback; labelled Prototype | Airplane-mode voice checks on at least three phones |
-| [B19 #38](https://github.com/kishansaaai/sahay/issues/38) | 291 English/Hindi UI resource keys; 59 core keys each in Tamil/Telugu/Bengali/Marathi; runtime language switch; experimental model languages; intentional English fallback disclosed and checked | Native review; detailed additional-locale copy remains partial (232 fallback keys each) |
-| [B20 #39](https://github.com/kishansaaai/sahay/issues/39) | Selected-answer radio semantics, labelled confidence/text inputs, 48dp answer targets, wrapping action rows; accessibility test script | TalkBack, maximum font/display scale and contrast verification on physical devices |
+| [B19 #38](https://github.com/kishansaaai/sahay/issues/38) | 303 UI resource keys in all six languages; CI rejects missing translations and mismatched placeholders; runtime locale switch preserves the in-progress diagnostic and persists selection; experimental generated-language notice retained | Native-language copy/quality review; course notes and template/generated text have a separate language review |
+| [B20 #39](https://github.com/kishansaaai/sahay/issues/39) | Selected-answer radio semantics, labelled confidence/text inputs, 48dp answer targets, wrapping actions, single-line app-bar/tab labels; automated 200% portrait/landscape renders and light/dark text-contrast checks | TalkBack, maximum font/display scale and contrast verification on physical devices |
 | [B21 #40](https://github.com/kishansaaai/sahay/issues/40) | Environment-based signing and protected release-candidate workflow; unsigned release can be compile-checked locally; signing guide | Team signing secrets, fresh-phone airplane-mode test, review, version tag/release and backup link |
 | [B22 #41](https://github.com/kishansaaai/sahay/issues/41) | 4:30 recording script with English/Hindi SRT caption drafts | Record real phone/model, align/review captions, upload and add real README link |
 
@@ -44,7 +44,7 @@ With Java 17 and Android SDK 35:
 python scripts/ci_checks.py --merged-manifest app/build/intermediates/merged_manifests/debug/processDebugManifest/AndroidManifest.xml
 ```
 
-Lint keeps intentional additional-language fallbacks as warnings. It continues to fail on other errors.
+Lint fails on missing translations. All six UI packs must have the same keys and format placeholders; generated content and source notes are reviewed separately.
 An unsigned release build is compilation evidence, not a distributable signed release.
 
 
@@ -59,3 +59,28 @@ An unsigned release build is compilation evidence, not a distributable signed re
 - Debug lint passed with zero errors. Warnings remain, including the deliberately partial additional-language packs.
 
 These are automated/software checks. The physical-phone and human-review acceptance items in the table remain open.
+
+
+## Follow-up verification (2026-11-15)
+
+PR #73 was merged and main CI passed for `12abdbada0cf1ade437f08556457cc86d3d8a28a`.
+This follow-up completes the four additional UI packs (303 keys each), localizes app-generated status/count messages,
+and verifies locale changes without resetting a pending answer or confidence value. Native-language review remains pending.
+
+The B20 suite renders settings in all six languages at 200% text scale in landscape, checks selected-answer and slider
+semantics in portrait, and exercises bottom-tab navigation with long labels in dark mode. It also checks WCAG AA normal-text
+contrast (at least 4.5:1) for eight foreground/background pairs in both themes. Generated PNGs are uploaded as
+`sahay-accessibility-previews`. These checks are headless Android evidence, not a physical TalkBack result.
+
+The current-main debug artifact was downloaded and independently verified; see [ANDROID_ARTIFACT.md](ANDROID_ARTIFACT.md).
+
+
+The user identified a Vivo V21e as the prospective test phone. The read-only ADB collector records actual installed SDK/RAM/SoC fields,
+with an opt-in update attempt that never uninstalls or clears data. It correctly stops when no authorized phone is attached. No phone
+facts or performance numbers were produced here. Debug CI also reuses a test-only signing cache and exports certificate evidence;
+release signing remains separate.
+
+
+The follow-up local run passed 11 Android/JUnit tests (including the rendered UI matrix and contrast checks), two phone-evidence
+parser tests, the debug APK build, lint with zero errors, full locale/placeholder checks and the merged-manifest no-INTERNET check.
+The Vivo collector was also exercised with no connected device and correctly stopped without producing a device report or attempting an install.
