@@ -65,4 +65,37 @@ class AppStateTest {
         await("fresh startup did not complete") { !fresh.restoring }
         assertNull("queued writes resurrected a deleted learner", fresh.profile)
     }
+    @Test fun everyLanguageSwitchPreservesTheInProgressDiagnosticAndPersistsSelection() {
+        val app = ApplicationProvider.getApplicationContext<Application>()
+        app.deleteDatabase("sahay.db")
+        val state = AppState(app)
+        state.restore()
+        await("startup did not complete") { !state.restoring }
+        state.createProfile("DSA", "dsa", "beginner", 6.0, 8, emptyList())
+        state.chooseOption(1)
+        state.updateConfidence(73.0)
+        val question = state.question
+        val before = state.snapshot()
+        for (code in listOf("hi", "ta", "te", "bn", "mr", "en", "mr")) {
+            state.selectLanguage(code)
+            assertEquals(code, state.language)
+            assertEquals(code, state.resources().configuration.locales[0].language)
+            assertSame(question, state.question)
+            assertEquals(1, state.pendingChoice)
+            assertEquals(73.0, state.confidence, 0.0)
+            assertEquals(Screen.Diagnostic, state.screen)
+            assertEquals(before.toJson(), state.snapshot().copy(language = before.language).toJson())
+            if (code != "en") assertFalse(state.exportSummary().contains("attempts"))
+        }
+        var saved = false
+        state.importSnapshot(state.exportJson()) { error -> assertNull(error); saved = true }
+        await("ordered language writes did not complete") { saved && !state.restoring }
+        val restarted = AppState(app)
+        restarted.restore()
+        await("restart did not complete") { !restarted.restoring }
+        assertEquals("mr", restarted.language)
+        assertEquals(before.profile, restarted.profile)
+        assertEquals(before.targets, restarted.targets)
+    }
+
 }

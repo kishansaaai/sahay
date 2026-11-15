@@ -85,7 +85,7 @@ fun ScanScreen(state: AppState) {
                 if (revealed) Text(sr(R.string.diag_answer_reveal, options[(output["answer"] as Number).toInt()]["text"].toString()))
             } else {
                 val skills = output["skills"] as List<Map<String, Any?>>
-                skills.forEach { Text("${it["name"]} (${it["hours"]} h)") }
+                skills.forEach { Text(sr(R.string.scan_skill_estimate, it["name"].toString(), it["hours"].toString())) }
                 Text(sr(R.string.scan_dependencies, (output["prerequisites"] as List<*>).size))
             }
             if (r.source == "fallback") Text(sr(R.string.tutor_template))

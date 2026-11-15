@@ -61,7 +61,7 @@ fun ProgressDots(total: Int, current: Int) {
 
 @Composable
 fun LanguageChips(state: AppState, modifier: Modifier = Modifier) {
-    // Additional locales have core navigation translations; detailed copy falls back to English.
+    // Each offered locale has a complete bundled UI resource pack.
     val options = listOf(
         "en" to sr(R.string.english),
         "hi" to sr(R.string.hindi),
