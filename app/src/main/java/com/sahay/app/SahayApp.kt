@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.style.TextOverflow
 import com.sahay.app.state.AppState
 import com.sahay.app.state.Screen
 import com.sahay.app.ui.screens.DashboardScreen
@@ -46,9 +47,8 @@ private val TABS = listOf(Screen.Today, Screen.Roadmap, Screen.Dashboard, Screen
 /** App shell (issue B03): top bar, three main tabs and the full-screen flows (welcome, intake, diagnostic, study). */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SahayApp() {
-    val app = LocalContext.current.applicationContext as SahayApplication
-    val state = app.state
+fun SahayApp(stateOverride: AppState? = null) {
+    val state = stateOverride ?: (LocalContext.current.applicationContext as SahayApplication).state
     SahayTheme {
         val base = LocalContext.current
         val localized = remember(base, state.language, base.resources.configuration) {
@@ -63,7 +63,7 @@ fun SahayApp() {
             Scaffold(
                 topBar = {
                     TopAppBar(
-                        title = { Text(screenTitle(state.screen)) },
+                        title = { Text(screenTitle(state.screen), maxLines = 1, overflow = TextOverflow.Ellipsis) },
                         navigationIcon = {
                             if (!onTab && state.screen != Screen.Welcome) {
                                 TextButton(onClick = { goBack(state) }) { Text(sr(R.string.back)) }
@@ -80,7 +80,7 @@ fun SahayApp() {
                                     selected = state.screen == tab,
                                     onClick = { state.go(tab) },
                                     icon = { Text(label.take(1), modifier = Modifier.clearAndSetSemantics {}) },
-                                    label = { Text(label) },
+                                    label = { Text(label, maxLines = 1, overflow = TextOverflow.Ellipsis) },
                                 )
                             }
                         }

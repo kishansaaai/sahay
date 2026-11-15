@@ -69,6 +69,13 @@ jobs:
           if [ -x "$S" ]; then yes | "$S" "platforms;android-35" "build-tools;35.0.0" > /dev/null; fi
       - name: Build debug APK (compiles app/ and engine/)
         run: ./gradlew :app:assembleDebug :app:testDebugUnitTest :app:lintDebug --no-daemon --stacktrace
+      - name: Upload large-text accessibility previews
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sahay-accessibility-previews
+          path: app/build/outputs/ui-previews/*.png
+          if-no-files-found: warn
       - name: Verify merged APK manifest remains offline
         run: python scripts/ci_checks.py --merged-manifest app/build/intermediates/merged_manifests/debug/processDebugManifest/AndroidManifest.xml
       - name: Compile the pinned ExecuTorch integration
