@@ -4,6 +4,16 @@ The user identified the test phone as **Vivo V21e** on 2026-11-15. Its exact var
 have not been read from the phone. No ADB device is attached to the cloud workspace. Published launch specifications do not
 establish which OS update or language packs are installed, so the collector reads these facts from the actual handset.
 
+## Read the details on the phone
+
+Download `sahay-vivo-test-kit` from the follow-up PR's green CI run, unzip it and install `app-debug.apk` on the phone.
+Open Sahay → **Device and energy** on the welcome screen → **Copy phone details**. The copied JSON reports actual Android/SDK,
+platform/CPU ABIs, kernel-managed RAM and on-device speech-service detection without serial or learner data. No intake or diagnostic
+is required to reach this panel. A detected service still needs the requested language pack before voice can work.
+
+The kit contains a README, APK checksum/certificate evidence and optional Windows/Linux/macOS collector launchers.
+No model weights or signing private keys are packaged. It is a debug build with labelled template replies.
+
 ## Connect and collect
 
 1. Download and unzip `sahay-debug-apk` from the follow-up PR's green CI run. Keep its checksum and certificate files beside the APK.
@@ -16,6 +26,7 @@ establish which OS update or language packs are installed, so the collector read
 python scripts/check_phone.py --label vivo-v21e --apk path/to/app-debug.apk --out phone-evidence
 ```
 
+In the supplied kit, use `check_phone.py` instead of `scripts/check_phone.py`, or use its collector launcher.
 The first command reads facts and records the APK hash; it does not install anything. To attempt an update:
 
 ```

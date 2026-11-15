@@ -6,9 +6,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import android.content.ClipData
+import android.content.ClipboardManager
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.LocalContext
+import com.sahay.app.data.PhoneInfo
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -26,6 +33,9 @@ import com.sahay.engine.GovMode
  */
 @Composable
 fun DeviceScreen(state: AppState) {
+    val context = LocalContext.current
+    val phone = remember(context.applicationContext) { PhoneInfo.read(context) }
+    var copied by remember { mutableStateOf(false) }
     var reading by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(state.deviceSnapshot()) }
     androidx.compose.runtime.LaunchedEffect(state) {
         while (true) { reading = state.deviceSnapshot(); kotlinx.coroutines.delay(2000) }
@@ -42,6 +52,20 @@ fun DeviceScreen(state: AppState) {
         Text(text = sr(R.string.device_title), style = MaterialTheme.typography.headlineSmall)
         Text(text = sr(R.string.device_note), style = MaterialTheme.typography.bodyMedium)
 
+        SectionCard(title = sr(R.string.device_info_title)) {
+            Text(sr(R.string.device_identity, phone.manufacturer, phone.model))
+            Text(sr(R.string.device_android_version, phone.androidRelease, phone.sdk))
+            Text(sr(R.string.device_platform_name, phone.platform))
+            Text(sr(R.string.device_cpu_abis, phone.cpuAbis.joinToString(", ")))
+            Text(phone.kernelManagedRamMiB?.let { sr(R.string.device_total_ram, it) } ?: sr(R.string.device_unmeasured))
+            Text(sr(R.string.device_speech_service, sr(if (phone.onDeviceSpeechServiceAvailable) R.string.yes else R.string.no)))
+            OutlinedButton(onClick = {
+                val clipboard = context.getSystemService(ClipboardManager::class.java)
+                clipboard?.setPrimaryClip(ClipData.newPlainText(context.getString(R.string.device_info_title), phone.toJson()))
+                copied = clipboard != null
+            }) { Text(sr(R.string.device_copy_facts)) }
+            if (copied) Text(sr(R.string.device_facts_copied), style = MaterialTheme.typography.bodySmall)
+        }
         SectionCard(title = sr(R.string.device_signals)) {
             if (snapshot == null) {
                 Text(text = sr(R.string.device_no_sample), style = MaterialTheme.typography.bodyMedium)

@@ -117,7 +117,7 @@ private fun goBack(state: AppState) {
         Screen.Diagnostic -> state.go(if (state.profile == null) Screen.Intake else Screen.Today)
         Screen.Study -> state.go(Screen.Today)
         Screen.Recover -> state.go(Screen.Today)
-        Screen.Device -> state.go(Screen.Settings)
+        Screen.Device -> state.go(if (state.profile == null) Screen.Welcome else Screen.Settings)
         Screen.Settings -> state.go(Screen.Today)
         else -> state.go(Screen.Today)
     }

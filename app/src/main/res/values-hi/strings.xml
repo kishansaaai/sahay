@@ -217,7 +217,7 @@
     <string name="settings_device">डिवाइस और ऊर्जा</string>
 
     <string name="device_title">डिवाइस और ऊर्जा</string>
-    <string name="device_note">ये रीडिंग फ़ोन से आती हैं। गवर्नर की सीमाएँ अभी बिना ट्यूनिंग वाली डिफ़ॉल्ट हैं; फ़ोन पर कोई माप दर्ज नहीं हुआ है (A13)।</string>
+    <string name="device_note">ये माप इसी फ़ोन से हैं। प्रदर्शन उसकी मौजूदा स्थिति पर निर्भर है। सुरक्षा सीमाएँ डिफ़ॉल्ट सेटिंग्स पर हैं।</string>
     <string name="device_signals">मौजूदा संकेत</string>
     <string name="device_no_sample">अभी कोई नमूना नहीं। मॉनिटर हर पाँच सेकंड में थर्मल स्थिति, बैटरी और मेमोरी पढ़ता है।</string>
     <string name="device_mode">गवर्नर मोड: %1$s</string>
@@ -322,4 +322,13 @@
     <string name="share_mastery_row">%1$s: %2$d%%</string>
     <string name="share_average_row">%1$s: %2$d%% (%3$d विद्यार्थी)</string>
     <string name="settings_storage_error">आपका डेटा लोड या सुरक्षित नहीं किया जा सका: %1$s। ऐप बंद करने से पहले एक प्रति निर्यात करें।</string>
+    <string name="device_info_title">फ़ोन का विवरण</string>
+    <string name="device_identity">फ़ोन: %1$s %2$s</string>
+    <string name="device_android_version">Android %1$s (API %2$d)</string>
+    <string name="device_platform_name">प्लैटफ़ॉर्म: %1$s</string>
+    <string name="device_cpu_abis">CPU आर्किटेक्चर: %1$s</string>
+    <string name="device_total_ram">कर्नेल-प्रबंधित RAM: %1$d MiB (एक्सटेंडेड RAM शामिल नहीं)</string>
+    <string name="device_copy_facts">फ़ोन का विवरण कॉपी करें</string>
+    <string name="device_facts_copied">फ़ोन का विवरण कॉपी हुआ। इसमें डिवाइस का सीरियल या विद्यार्थी डेटा नहीं है।</string>
+    <string name="device_speech_service">फ़ोन पर आवाज़ पहचान सेवा मिली: %1$s</string>
 </resources>

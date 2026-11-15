@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -48,9 +49,12 @@ fun WelcomeScreen(state: AppState) {
         SectionCard(title = sr(R.string.language)) {
             LanguageChips(state)
             Text(text = sr(R.string.languages_in_build), style = MaterialTheme.typography.bodySmall)
-            Text(text = sr(R.string.experimental_language), style = MaterialTheme.typography.bodySmall)
+            if (state.language !in setOf("en", "hi")) Text(text = sr(R.string.experimental_language), style = MaterialTheme.typography.bodySmall)
         }
 
+        OutlinedButton(onClick = { state.go(com.sahay.app.state.Screen.Device) }, modifier = Modifier.fillMaxWidth()) {
+            Text(sr(R.string.device_title))
+        }
         Button(onClick = { state.startIntake() }, modifier = Modifier.fillMaxWidth()) {
             Text(text = sr(R.string.welcome_start))
         }

@@ -163,7 +163,7 @@ TalkBack result or video upload is claimed without its evidence. Other streams' 
 
 ## Stream B follow-up - 2026-11-15
 
-- B19: all six UI resource packs now cover 303 keys, including app-generated plan/recovery/data-count messages. Missing translations
+- B19: all six UI resource packs now cover 312 keys, including app-generated plan/recovery/data-count messages. Missing translations
   and format mismatches fail CI. Locale-switch testing preserves the in-progress question, selected option and confidence.
 - B20: automated 200% text renders cover portrait quiz controls, landscape settings in all six languages, and dark-mode navigation.
   App-bar/tab text truncates cleanly instead of clipping; full labels remain available to accessibility services. Light/dark text
@@ -172,3 +172,6 @@ TalkBack result or video upload is claimed without its evidence. Other streams' 
   artifact are recorded in `docs/ANDROID_ARTIFACT.md`. Physical installation and release signing remain separate B21 checks.
 
 Translation coverage is complete for UI resources; native-speaker quality review and model/course-note language review remain open.
+
+- B13: actual on-phone OS/RAM/platform facts can be copied from Device and energy before intake. The Vivo test kit packages this
+  debug build plus optional ADB collectors; no device facts are invented while the phone is disconnected.

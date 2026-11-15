@@ -15,13 +15,13 @@ No issue is automatically closed by this record. CONTRIBUTING.md requires anothe
 | [B10 #29](https://github.com/kishansaaai/sahay/issues/29) | Active misconceptions added; restart preserves the distinction between rated diagnostic confidence and unrated practice; mastery/forecast existing | Measure update under 1 second; portrait/landscape and real history |
 | [B11 #30](https://github.com/kishansaaai/sahay/issues/30) | Existing engine recovery and before/after/dropped reasons retained | Phone walkthrough and weekly budget evidence |
 | [B12 #31](https://github.com/kishansaaai/sahay/issues/31) | Bundled Latin/Devanagari OCR, full-resolution camera/image input, edit-before-generation, validated graph/quiz drafts; no network permission | Airplane-mode capture and scan-to-quiz under 60 seconds on main phone |
-| [B13 #32](https://github.com/kishansaaai/sahay/issues/32) | Periodic signals, generation speed, charge-counter estimate, governor reason log; transactional import/export and ordered data/model deletion | Real-phone energy counters, deletion and export/import; thread/context values remain policy targets until native support exists |
+| [B13 #32](https://github.com/kishansaaai/sahay/issues/32) | Phone facts/clipboard export reachable before intake; periodic signals, generation speed, charge-counter estimate, governor reason log; transactional import/export and ordered data/model deletion | Real-phone energy counters, deletion and export/import; thread/context values remain policy targets until native support exists |
 | [B14 #33](https://github.com/kishansaaai/sahay/issues/33) | Device/comparison register in bench/devices.md; actual-phone metadata/OS/RAM collector in scripts/check_phone.py; Vivo handoff in docs/VIVO_TESTING.md; native thread API limitations documented | Real native thread sweep and 1B INT4 / 1B INT8 / 3B INT4 speed/RAM/quality runs; needs Stream A exports and runner support |
 | [B15 #34](https://github.com/kishansaaai/sahay/issues/34) | Beta procedure, device register, Hindi/accessibility review steps and a Vivo V21e collector that records facts without guessing variant/specs | Eight distinct Arm phones and native reviewers; no synthetic device results substituted |
 | [B16 #35](https://github.com/kishansaaai/sahay/issues/35) | Gradle wrapper; APK/checksum artifacts; daily/manual builds retained; Room/localization/lint/merged-manifest/pinned-runtime compile checks added | Main CI APK, checksum and debug signature verified on 2026-11-15; physical install remains part of B21/beta |
 | [B17 #36](https://github.com/kishansaaai/sahay/issues/36) | Checksummed multipart QR, complete snapshot round trip, camera/image scanning, explicit import, pseudonymous teacher heatmap; existing SAHAY1 text/QR compatibility and batch class averages retained; tests with five simulated learners | Physical camera/display transfer and teacher usability review |
 | [B18 #37](https://github.com/kishansaaai/sahay/issues/37) | On-device STT (Android 12+) and downloaded non-network TTS; explicit permission/error/typing fallback; labelled Prototype | Airplane-mode voice checks on at least three phones |
-| [B19 #38](https://github.com/kishansaaai/sahay/issues/38) | 303 UI resource keys in all six languages; CI rejects missing translations and mismatched placeholders; runtime locale switch preserves the in-progress diagnostic and persists selection; experimental generated-language notice retained | Native-language copy/quality review; course notes and template/generated text have a separate language review |
+| [B19 #38](https://github.com/kishansaaai/sahay/issues/38) | 312 UI resource keys in all six languages; CI rejects missing translations and mismatched placeholders; runtime locale switch preserves the in-progress diagnostic and persists selection; experimental generated-language notice retained | Native-language copy/quality review; course notes and template/generated text have a separate language review |
 | [B20 #39](https://github.com/kishansaaai/sahay/issues/39) | Selected-answer radio semantics, labelled confidence/text inputs, 48dp answer targets, wrapping actions, single-line app-bar/tab labels; automated 200% portrait/landscape renders and light/dark text-contrast checks | TalkBack, maximum font/display scale and contrast verification on physical devices |
 | [B21 #40](https://github.com/kishansaaai/sahay/issues/40) | Environment-based signing and protected release-candidate workflow; unsigned release can be compile-checked locally; signing guide | Team signing secrets, fresh-phone airplane-mode test, review, version tag/release and backup link |
 | [B22 #41](https://github.com/kishansaaai/sahay/issues/41) | 4:30 recording script with English/Hindi SRT caption drafts | Record real phone/model, align/review captions, upload and add real README link |
@@ -64,7 +64,7 @@ These are automated/software checks. The physical-phone and human-review accepta
 ## Follow-up verification (2026-11-15)
 
 PR #73 was merged and main CI passed for `12abdbada0cf1ade437f08556457cc86d3d8a28a`.
-This follow-up completes the four additional UI packs (303 keys each), localizes app-generated status/count messages,
+This follow-up completes the four additional UI packs (312 keys each), localizes app-generated status/count messages,
 and verifies locale changes without resetting a pending answer or confidence value. Native-language review remains pending.
 
 The B20 suite renders settings in all six languages at 200% text scale in landscape, checks selected-answer and slider
@@ -84,3 +84,8 @@ release signing remains separate.
 The follow-up local run passed 11 Android/JUnit tests (including the rendered UI matrix and contrast checks), two phone-evidence
 parser tests, the debug APK build, lint with zero errors, full locale/placeholder checks and the merged-manifest no-INTERNET check.
 The Vivo collector was also exercised with no connected device and correctly stopped without producing a device report or attempting an install.
+
+
+B13 now exposes manufacturer/model, installed Android/API, hardware platform, CPU ABIs and kernel-managed RAM directly on the
+Device screen, with a serial-free JSON copy action. The panel is reachable from Welcome before intake. The debug CI handoff
+`sahay-vivo-test-kit` packages the tested APK, checksums and optional collector launchers, without model weights or signing keys.

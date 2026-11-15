@@ -101,3 +101,12 @@ jobs:
             app/build/outputs/apk/debug/apk-sha256.txt
             app/build/outputs/apk/debug/signing-cert.txt
           if-no-files-found: error
+
+      - name: Package the Vivo phone test handoff
+        run: python scripts/build_phone_kit.py --apk app/build/outputs/apk/debug/app-debug.apk --out app/build/outputs/vivo-kit --commit "${{ github.sha }}"
+      - name: Upload Vivo phone test kit
+        uses: actions/upload-artifact@v4
+        with:
+          name: sahay-vivo-test-kit
+          path: app/build/outputs/vivo-kit/
+          if-no-files-found: error

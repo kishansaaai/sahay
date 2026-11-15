@@ -205,7 +205,7 @@
     <string name="settings_delete_body">এই ফোনের শিক্ষার রেকর্ড, মডেল ফাইল ও সব উত্তর মুছে যাবে। ফেরানো যাবে না।</string>
     <string name="settings_device">ডিভাইস ও শক্তি</string>
     <string name="device_title">ডিভাইস ও শক্তি</string>
-    <string name="device_note">এই মাপগুলি ফোন থেকে আসে। নিয়ন্ত্রণের সীমা এখনো প্রাথমিক অবস্থায় আছে; ফোন পরীক্ষার মাপ নথিভুক্ত হয়নি (A13)।</string>
+    <string name="device_note">এই মাপগুলি এই ফোন থেকেই আসে। কর্মক্ষমতা বর্তমান অবস্থার ওপর নির্ভরশীল। সুরক্ষার সীমা প্রাথমিক সেটিংসে আছে।</string>
     <string name="device_signals">বর্তমান অবস্থা</string>
     <string name="device_no_sample">এখনো মাপ নেই। প্রতি পাঁচ সেকেন্ডে তাপ, ব্যাটারি ও মেমরি দেখা হয়।</string>
     <string name="device_mode">নিয়ন্ত্রণ মোড: %1$s</string>
@@ -303,4 +303,13 @@
     <string name="share_mastery_row">%1$s: %2$d%%</string>
     <string name="share_average_row">%1$s: %2$d%% (%3$d জন শিক্ষার্থী)</string>
     <string name="settings_storage_error">আপনার তথ্য লোড বা সংরক্ষণ করা যায়নি: %1$s। অ্যাপ ছাড়ার আগে একটি কপি রপ্তানি করুন।</string>
+    <string name="device_info_title">ফোনের তথ্য</string>
+    <string name="device_identity">ফোন: %1$s %2$s</string>
+    <string name="device_android_version">Android %1$s (API %2$d)</string>
+    <string name="device_platform_name">প্ল্যাটফর্ম: %1$s</string>
+    <string name="device_cpu_abis">CPU আর্কিটেকচার: %1$s</string>
+    <string name="device_total_ram">কার্নেল-পরিচালিত RAM: %1$d MiB (বর্ধিত RAM বাদে)</string>
+    <string name="device_copy_facts">ফোনের তথ্য কপি করুন</string>
+    <string name="device_facts_copied">ফোনের তথ্য কপি হয়েছে। ডিভাইসের সিরিয়াল বা শিক্ষার্থীর তথ্য এতে নেই।</string>
+    <string name="device_speech_service">ডিভাইসে কথার পরিষেবা পাওয়া গেছে: %1$s</string>
 </resources>

@@ -205,7 +205,7 @@
     <string name="settings_delete_body">या फोनवरील अभ्यास नोंद, मॉडेल फाइल्स आणि सर्व उत्तरे हटतील. हे पूर्ववत करता येणार नाही.</string>
     <string name="settings_device">उपकरण आणि ऊर्जा</string>
     <string name="device_title">उपकरण आणि ऊर्जा</string>
-    <string name="device_note">हे मोजमाप फोनमधून येतात. नियंत्रण मर्यादा अजून न जुळवलेल्या मूळ मूल्यांवर आहेत; फोन चाचणीची मोजमापे नोंदलेली नाहीत (A13).</string>
+    <string name="device_note">हे मोजमाप याच फोनचे आहेत. कामगिरी सध्याच्या स्थितीवर अवलंबून असते. संरक्षण मर्यादा मूळ सेटिंग्जवर आहेत.</string>
     <string name="device_signals">सध्याचे संकेत</string>
     <string name="device_no_sample">अजून नमुना नाही. दर पाच सेकंदांनी तापमान, बॅटरी आणि मेमरी तपासली जाते.</string>
     <string name="device_mode">नियंत्रण मोड: %1$s</string>
@@ -303,4 +303,13 @@
     <string name="share_mastery_row">%1$s: %2$d%%</string>
     <string name="share_average_row">%1$s: %2$d%% (%3$d विद्यार्थी)</string>
     <string name="settings_storage_error">डेटा लोड किंवा जतन करता आला नाही: %1$s. अ‍ॅप बंद करण्यापूर्वी प्रत निर्यात करा.</string>
+    <string name="device_info_title">फोनची माहिती</string>
+    <string name="device_identity">फोन: %1$s %2$s</string>
+    <string name="device_android_version">Android %1$s (API %2$d)</string>
+    <string name="device_platform_name">प्लॅटफॉर्म: %1$s</string>
+    <string name="device_cpu_abis">CPU रचना: %1$s</string>
+    <string name="device_total_ram">कर्नल-व्यवस्थापित RAM: %1$d MiB (विस्तारित RAM वगळून)</string>
+    <string name="device_copy_facts">फोनची माहिती कॉपी करा</string>
+    <string name="device_facts_copied">फोनची माहिती कॉपी झाली. उपकरणाचा अनुक्रमांक किंवा अभ्यास डेटा यात नाही.</string>
+    <string name="device_speech_service">उपकरणावरील आवाज सेवा आढळली: %1$s</string>
 </resources>

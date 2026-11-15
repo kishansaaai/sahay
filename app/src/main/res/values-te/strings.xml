@@ -205,7 +205,7 @@
     <string name="settings_delete_body">ఈ ఫోన్‌లోని అభ్యాస రికార్డు, మోడల్ ఫైళ్లు, ప్రతి జవాబు తొలగిపోతాయి. తిరిగి పొందలేరు.</string>
     <string name="settings_device">పరికరం మరియు శక్తి</string>
     <string name="device_title">పరికరం మరియు శక్తి</string>
-    <string name="device_note">ఇవి ఫోన్ నుంచి వచ్చే కొలతలు. నియంత్రణ పరిమితులు ఇంకా సర్దని డిఫాల్ట్ విలువలే; ఫోన్ పరీక్ష కొలతలు నమోదు కాలేదు (A13).</string>
+    <string name="device_note">ఈ కొలతలు ఈ ఫోన్ నుంచే వస్తాయి. పనితీరు ప్రస్తుత స్థితిపై ఆధారపడి ఉంటుంది. రక్షణ పరిమితులకు డిఫాల్ట్ సెట్టింగ్‌లు వాడుతున్నాం.</string>
     <string name="device_signals">ప్రస్తుత సంకేతాలు</string>
     <string name="device_no_sample">ఇంకా కొలత లేదు. ప్రతి ఐదు సెకన్లకు వేడి, బ్యాటరీ, మెమరీని తనిఖీ చేస్తుంది.</string>
     <string name="device_mode">నియంత్రణ మోడ్: %1$s</string>
@@ -303,4 +303,13 @@
     <string name="share_mastery_row">%1$s: %2$d%%</string>
     <string name="share_average_row">%1$s: %2$d%% (%3$d విద్యార్థులు)</string>
     <string name="settings_storage_error">మీ డేటా లోడ్ లేదా సేవ్ కాలేదు: %1$s. యాప్ నుంచి వెళ్ళే ముందు ఒక కాపీ ఎగుమతి చేయండి.</string>
+    <string name="device_info_title">ఫోన్ వివరాలు</string>
+    <string name="device_identity">ఫోన్: %1$s %2$s</string>
+    <string name="device_android_version">Android %1$s (API %2$d)</string>
+    <string name="device_platform_name">ప్లాట్‌ఫారం: %1$s</string>
+    <string name="device_cpu_abis">CPU నిర్మాణాలు: %1$s</string>
+    <string name="device_total_ram">కెర్నల్ నిర్వహించే RAM: %1$d MiB (ఎక్స్‌టెండెడ్ RAM లేదు)</string>
+    <string name="device_copy_facts">ఫోన్ వివరాలు కాపీ చేయి</string>
+    <string name="device_facts_copied">ఫోన్ వివరాలు కాపీ అయ్యాయి. పరికర సీరియల్ లేదా అభ్యాస డేటా ఇందులో లేదు.</string>
+    <string name="device_speech_service">పరికరంలో మాటల సేవ కనిపించింది: %1$s</string>
 </resources>

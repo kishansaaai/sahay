@@ -1,6 +1,8 @@
 package com.sahay.app.ui
 
 import android.app.Application
+import android.content.ClipboardManager
+import org.json.JSONObject
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import androidx.activity.ComponentActivity
@@ -90,6 +92,17 @@ class LargeTextUiTest {
                 assertEquals(1, state.pendingChoice)
             }
             preview("settings-$code-landscape-200pct")
+            compose.onNodeWithText(resources.getString(R.string.settings_device)).performScrollTo().performClick()
+            compose.onNodeWithText(resources.getString(R.string.device_copy_facts)).performScrollTo().performClick()
+            compose.runOnIdle {
+                val clipboard = compose.activity.getSystemService(ClipboardManager::class.java)
+                val facts = JSONObject(clipboard.primaryClip!!.getItemAt(0).text.toString())
+                assertEquals("sahay.phone-info/1", facts.getString("schema"))
+                assertFalse(facts.has("serial"))
+                assertEquals(android.os.Build.VERSION.SDK_INT, facts.getInt("sdk"))
+            }
+            preview("device-$code-landscape-200pct")
+            compose.onNodeWithText(resources.getString(R.string.back)).performClick()
         }
     }
 
