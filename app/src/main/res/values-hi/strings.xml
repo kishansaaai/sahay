@@ -18,7 +18,7 @@
     <string name="telugu">తెలుగు</string>
     <string name="bengali">বাংলা</string>
     <string name="marathi">मराठी</string>
-    <string name="experimental_language">इस भाषा में शिक्षक का उत्तर प्रयोगात्मक है। अनुवाद की समीक्षा पूरी होने तक विस्तृत इंटरफ़ेस और टेम्पलेट उत्तर अंग्रेज़ी में हो सकते हैं।</string>
+    <string name="experimental_language">इस भाषा में शिक्षक का उत्तर प्रयोगात्मक है। पाठ्य नोट और टेम्पलेट उत्तर अंग्रेज़ी में हो सकते हैं।</string>
 
     <string name="nav_today">आज</string>
     <string name="nav_roadmap">योजना</string>
@@ -136,7 +136,7 @@
     <string name="study_retry">दूसरा प्रश्न</string>
     <string name="study_misconception">इस पर नज़र: %1$s</string>
     <string name="study_no_skill">पहले आज की योजना से कोई आइटम चुनें।</string>
-    <string name="languages_in_build">अंग्रेज़ी और हिन्दी में पूरा इंटरफ़ेस उपलब्ध है। तमिल, तेलुगु, बांग्ला और मराठी में मुख्य बटन अनूदित हैं; बाकी पाठ अंग्रेज़ी में दिखता है।</string>
+    <string name="languages_in_build">इंटरफ़ेस छह भाषाओं में उपलब्ध है। पाठ्य नोट मूल भाषा में हो सकते हैं; मॉडल की भाषा गुणवत्ता की समीक्षा बाकी है।</string>
 
     <string name="tutor_title">ट्यूटर</string>
     <string name="tutor_empty">जिस कौशल को पढ़ रहे हैं उसके बारे में पूछें। उत्तर फ़ोन पर ही रहते हैं।</string>
@@ -217,7 +217,7 @@
     <string name="settings_device">डिवाइस और ऊर्जा</string>
 
     <string name="device_title">डिवाइस और ऊर्जा</string>
-    <string name="device_note">ये रीडिंग फ़ोन से आती हैं। गवर्नर की सीमाएँ अभी बिना ट्यूनिंग वाली डिफ़ॉल्ट हैं; फ़ोन पर कोई माप दर्ज नहीं हुआ है (A13)।</string>
+    <string name="device_note">ये माप इसी फ़ोन से हैं। प्रदर्शन उसकी मौजूदा स्थिति पर निर्भर है। सुरक्षा सीमाएँ डिफ़ॉल्ट सेटिंग्स पर हैं।</string>
     <string name="device_signals">मौजूदा संकेत</string>
     <string name="device_no_sample">अभी कोई नमूना नहीं। मॉनिटर हर पाँच सेकंड में थर्मल स्थिति, बैटरी और मेमोरी पढ़ता है।</string>
     <string name="device_mode">गवर्नर मोड: %1$s</string>
@@ -310,4 +310,25 @@
     <string name="device_unmeasured">मापा नहीं गया</string>
     <string name="device_events">गवर्नर बदलाव और कारण</string>
     <string name="device_threads_note">थ्रेड और संदर्भ मान नीति के लक्ष्य हैं। पिन किया Java रनर चलते समय नेटिव थ्रेड पूल नहीं बदल सकता।</string>
+    <string name="plan_initial">आपकी पहली योजना शुरुआती जाँच के उत्तरों पर आधारित है।</string>
+    <string name="plan_diagnostic_prefix">शुरुआती जाँच के अनुसार। </string>
+    <string name="plan_repair_reason">आपका उत्तर %1$s के बारे में गलत धारणा दर्शाता है; योजना की फिर जाँच की गई।</string>
+    <string name="plan_wrong_reason">गलत उत्तर के बाद %1$s के लिए अधिक समय दिया गया।</string>
+    <string name="plan_correct_reason">%1$s पर सही उत्तर के बाद आपकी योजना बदली गई।</string>
+    <string name="recover_nothing">पुनर्प्राप्ति में लक्ष्य दक्षता से नीचे कोई कौशल नहीं मिला।</string>
+    <string name="recover_changed">पुनर्प्राप्ति ने बाकी कौशलों को %1$d मिनट में व्यवस्थित किया।</string>
+    <string name="data_summary">%1$d उत्तर, %2$d समझाकर बताए गए पाठ, %3$d सत्र, %4$d योजना मदें</string>
+    <string name="scan_skill_estimate">%1$s (%2$s घंटे)</string>
+    <string name="share_mastery_row">%1$s: %2$d%%</string>
+    <string name="share_average_row">%1$s: %2$d%% (%3$d विद्यार्थी)</string>
+    <string name="settings_storage_error">आपका डेटा लोड या सुरक्षित नहीं किया जा सका: %1$s। ऐप बंद करने से पहले एक प्रति निर्यात करें।</string>
+    <string name="device_info_title">फ़ोन का विवरण</string>
+    <string name="device_identity">फ़ोन: %1$s %2$s</string>
+    <string name="device_android_version">Android %1$s (API %2$d)</string>
+    <string name="device_platform_name">प्लैटफ़ॉर्म: %1$s</string>
+    <string name="device_cpu_abis">CPU आर्किटेक्चर: %1$s</string>
+    <string name="device_total_ram">कर्नेल-प्रबंधित RAM: %1$d MiB (एक्सटेंडेड RAM शामिल नहीं)</string>
+    <string name="device_copy_facts">फ़ोन का विवरण कॉपी करें</string>
+    <string name="device_facts_copied">फ़ोन का विवरण कॉपी हुआ। इसमें डिवाइस का सीरियल या विद्यार्थी डेटा नहीं है।</string>
+    <string name="device_speech_service">फ़ोन पर आवाज़ पहचान सेवा मिली: %1$s</string>
 </resources>

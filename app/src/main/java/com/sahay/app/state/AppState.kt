@@ -421,8 +421,8 @@ class AppState(private val app: Application) {
 
     private fun finishDiagnostic() {
         question = null
-        planChangeNote = "Your first plan is based on the diagnostic answers."
-        buildRoadmap("Diagnostic placed you. ")
+        planChangeNote = str(com.sahay.app.R.string.plan_initial)
+        buildRoadmap(str(com.sahay.app.R.string.plan_diagnostic_prefix) + " ")
         screen = Screen.Roadmap
     }
 
@@ -446,10 +446,9 @@ class AppState(private val app: Application) {
         val c = contentFor(domain)
         val name = c.graph.skills[skillId]?.name ?: skillId
         val reason = when {
-            misconception != null -> "A repair item was added for %s because a confident answer showed that misconception."
-                .format(misconception)
-            !correct -> "%s was given more time because you answered a question on it wrongly.".format(name)
-            else -> "Your plan was refreshed after a correct answer on %s.".format(name)
+            misconception != null -> str(com.sahay.app.R.string.plan_repair_reason, misconception)
+            !correct -> str(com.sahay.app.R.string.plan_wrong_reason, name)
+            else -> str(com.sahay.app.R.string.plan_correct_reason, name)
         }
         val next = buildPlan(
             c, model, misconceptions, p.toPlannerProfile(), day, targets,
@@ -726,13 +725,13 @@ class AppState(private val app: Application) {
             )
         }.getOrNull() ?: return
         if (next.items.isEmpty() && next.dropped.isEmpty()) {
-            planChangeNote = "Recovery found nothing left below the target mastery."
+            planChangeNote = str(com.sahay.app.R.string.recover_nothing)
             revision++
             persist()
             return
         }
         plan = next
-        planChangeNote = "Recovery re-packed the remaining skills into $budgetMinutes minutes."
+        planChangeNote = str(com.sahay.app.R.string.recover_changed, budgetMinutes)
         revision++
         persist()
         screen = Screen.Recover
@@ -780,8 +779,7 @@ class AppState(private val app: Application) {
 
     /** Small, honest summary for the settings export card. */
     fun exportSummary(): String =
-        "${attempts.size} attempts, ${teachBacks.size} teach-backs, ${sessions.size} sessions, " +
-            "${plan?.items?.size ?: 0} plan items"
+        str(com.sahay.app.R.string.data_summary, attempts.size, teachBacks.size, sessions.size, plan?.items?.size ?: 0)
 
     /**
      * Replace local state with an exported snapshot. Returns null on success or a readable reason when the snapshot is

@@ -159,3 +159,19 @@ governor caps and no prompt echo. Scan, multipart QR/classroom and strict offlin
 additional languages is present; their detailed copy still falls back to English. English and Hindi resources have matching keys and placeholders.
 Release-candidate signing uses team-provided secrets; beta and demo materials are prepared. No phone benchmark, native-language review, signed release,
 TalkBack result or video upload is claimed without its evidence. Other streams' issues remain outside this follow-up.
+
+
+## Stream B follow-up - 2026-11-15
+
+- B19: all six UI resource packs now cover 312 keys, including app-generated plan/recovery/data-count messages. Missing translations
+  and format mismatches fail CI. Locale-switch testing preserves the in-progress question, selected option and confidence.
+- B20: automated 200% text renders cover portrait quiz controls, landscape settings in all six languages, and dark-mode navigation.
+  App-bar/tab text truncates cleanly instead of clipping; full labels remain available to accessibility services. Light/dark text
+  contrast is checked. Physical TalkBack and phone testing remain pending.
+- B16: main CI is green; its debug APK checksum and v2 debug signature were independently verified. Evidence and the downloadable
+  artifact are recorded in `docs/ANDROID_ARTIFACT.md`. Physical installation and release signing remain separate B21 checks.
+
+Translation coverage is complete for UI resources; native-speaker quality review and model/course-note language review remain open.
+
+- B13: actual on-phone OS/RAM/platform facts can be copied from Device and energy before intake. The Vivo test kit packages this
+  debug build plus optional ADB collectors; no device facts are invented while the phone is disconnected.

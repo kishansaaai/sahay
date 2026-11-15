@@ -34,7 +34,7 @@ An Android app that builds and re-plans a personal study roadmap using a quantiz
 | ID | Feature | Status |
 | --- | --- | --- |
 | B1-B4 | ExecuTorch + INT4 Llama, JNI streaming, no INTERNET permission | In progress (export script, runtime wrapper, model manager, checksum check written and unit-tested; nothing verified on a phone yet; B2 manifest check is in CI) |
-| C1-C7 | Intake, skill graph, diagnostic, tracing, planner, tutor, dashboard | UI written and compile-checked only (intake, diagnostic, roadmap, today/study, tutor, dashboard, recovery); no screen rendered and no model run yet |
+| C1-C7 | Intake, skill graph, diagnostic, tracing, planner, tutor, dashboard | UI written and compile-checked only (intake, diagnostic, roadmap, today/study, tutor, dashboard, recovery); headless large-text renders cover settings, diagnostic and tabs; physical-phone/model checks remain pending |
 | I1-I8 | Hint ladder, governor, simulator, syllabus compiler, analogies, recovery, teach-back, scan | In progress (LLM side of I1, I2 policy, I4 validator, I5, I7 grading written and unit-tested; needs device and model runs) |
 | X1-X5 | Pacing, voice, QR sharing, KV-cache, offline LoRA | Voice and multipart QR/classroom prototypes implemented; physical-phone validation pending. Other experimental work remains with its owning stream. |
 
@@ -43,3 +43,5 @@ An Android app that builds and re-plans a personal study roadmap using a quantiz
 - Original work of the registered team only; credit every dataset, library and model in LICENSES/.
 - Never commit model weights (`*.pte`, checkpoints); use the export script and release assets.
 - No analytics SDKs and no INTERNET permission (CI enforces the manifest check).
+
+UI resources are bundled for English, Hindi, Tamil, Telugu, Bengali and Marathi. Automated coverage/format checks run in CI; native-language quality review remains pending.

@@ -39,12 +39,14 @@ private val DarkColors = darkColorScheme(
     onSurface = Color(0xFFE2E2E6),
 )
 
+internal fun sahayColorScheme(dark: Boolean) = if (dark) DarkColors else LightColors
+
 @Composable
 fun SahayTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
-    val colorScheme = if (darkTheme) DarkColors else LightColors
+    val colorScheme = sahayColorScheme(darkTheme)
     val context = LocalContext.current
     SideEffect {
         (context as? Activity)?.window?.let { window ->

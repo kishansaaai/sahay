@@ -18,7 +18,7 @@
     <string name="telugu">తెలుగు</string>
     <string name="bengali">বাংলা</string>
     <string name="marathi">मराठी</string>
-    <string name="experimental_language">Tutor output in this language is experimental. Detailed UI copy and template replies may use English until translation review is complete.</string>
+    <string name="experimental_language">Tutor output in this language is experimental. Course notes and template replies may use English.</string>
 
     <string name="nav_today">Today</string>
     <string name="nav_roadmap">Roadmap</string>
@@ -136,7 +136,7 @@
     <string name="study_retry">Try another question</string>
     <string name="study_misconception">Watched for: %1$s</string>
     <string name="study_no_skill">Pick an item from today\'s plan first.</string>
-    <string name="languages_in_build">English and Hindi have full UI coverage. Tamil, Telugu, Bengali and Marathi translate core navigation; detailed copy falls back to English.</string>
+    <string name="languages_in_build">The interface is available in six languages. Course notes may remain in their source language; model language quality still needs review.</string>
 
     <string name="tutor_title">Tutor</string>
     <string name="tutor_empty">Ask about the skill you are studying. Answers stay on the phone.</string>
@@ -217,7 +217,7 @@
     <string name="settings_device">Device and energy</string>
 
     <string name="device_title">Device and energy</string>
-    <string name="device_note">These readings come from the phone. The governor thresholds are still the untuned defaults; no phone measurement has been recorded yet (A13).</string>
+    <string name="device_note">These readings come from this phone. Performance depends on its current condition. Protection thresholds use default settings.</string>
     <string name="device_signals">Current signals</string>
     <string name="device_no_sample">No sample yet. The monitor reads thermal status, battery and memory every five seconds.</string>
     <string name="device_mode">Governor mode: %1$s</string>
@@ -310,4 +310,25 @@
     <string name="device_unmeasured">Not measured</string>
     <string name="device_events">Governor changes and reasons</string>
     <string name="device_threads_note">Thread and context values are policy targets. The pinned Java runner cannot change its native thread pool at runtime.</string>
+    <string name="plan_initial">Your first plan is based on the diagnostic answers.</string>
+    <string name="plan_diagnostic_prefix">Diagnostic placement. </string>
+    <string name="plan_repair_reason">Your answer suggests a misconception about %1$s; the plan was reassessed.</string>
+    <string name="plan_wrong_reason">%1$s was given more time after an incorrect answer.</string>
+    <string name="plan_correct_reason">Your plan was refreshed after a correct answer on %1$s.</string>
+    <string name="recover_nothing">Recovery found no skills below the target mastery.</string>
+    <string name="recover_changed">Recovery fitted the remaining skills into %1$d minutes.</string>
+    <string name="data_summary">%1$d attempts, %2$d teach-backs, %3$d sessions, %4$d plan items</string>
+    <string name="scan_skill_estimate">%1$s (%2$s h)</string>
+    <string name="share_mastery_row">%1$s: %2$d%%</string>
+    <string name="share_average_row">%1$s: %2$d%% (%3$d students)</string>
+    <string name="settings_storage_error">Your data could not be loaded or saved: %1$s. Export a copy before leaving the app.</string>
+    <string name="device_info_title">Phone details</string>
+    <string name="device_identity">Phone: %1$s %2$s</string>
+    <string name="device_android_version">Android %1$s (API %2$d)</string>
+    <string name="device_platform_name">Platform: %1$s</string>
+    <string name="device_cpu_abis">CPU architectures: %1$s</string>
+    <string name="device_total_ram">Kernel-managed RAM: %1$d MiB (excludes extended RAM)</string>
+    <string name="device_copy_facts">Copy phone details</string>
+    <string name="device_facts_copied">Phone details copied. No device serial or learner data is included.</string>
+    <string name="device_speech_service">On-device speech service detected: %1$s</string>
 </resources>

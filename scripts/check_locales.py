@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate complete English/Hindi resources and intentional partial additional locale packs (B19)."""
+"""Validate complete UI resources and format placeholders in every supported locale (B19)."""
 from pathlib import Path
 import re
 import xml.etree.ElementTree as ET
@@ -23,14 +23,12 @@ def main():
     for locale in ('hi', 'ta', 'te', 'bn', 'mr'):
         translated = strings('values-' + locale)
         assert translated.keys() <= base.keys(), f'{locale}: unknown resource key'
-        if locale == 'hi':
-            assert translated.keys() == base.keys(), 'Hindi must cover every UI string'
-        else:
-            assert {'nav_today', 'nav_roadmap', 'nav_tutor', 'nav_dashboard', 'settings_title', 'scan_title', 'share_title'} <= translated.keys(), f'{locale}: missing core navigation'
+        missing = base.keys() - translated.keys()
+        assert not missing, f'{locale}: missing UI strings: {", ".join(sorted(missing))}'
         for key, text in translated.items():
             assert text.strip(), f'{locale}: empty translation: {key}'
             assert placeholders(text) == placeholders(base[key]), f'{locale}: format mismatch: {key}'
-        print(f'{locale}: {len(translated)}/{len(base)} strings; {len(base) - len(translated)} intentional English fallbacks')
+        print(f'{locale}: {len(translated)}/{len(base)} strings; all placeholders match')
 
 
 if __name__ == '__main__':

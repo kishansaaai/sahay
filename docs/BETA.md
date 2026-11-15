@@ -65,7 +65,8 @@ The default debug build uses template text; real model tests need the separately
 ## Accessibility evidence (B20)
 
 For every screen and dialog, record pass/fail, phone, font scale and theme. Code changes provide radio-button selection
-semantics, a labelled confidence slider, at least 48dp answer targets and wrapping action rows. They do not replace these checks.
+semantics, a labelled confidence slider, at least 48dp answer targets and wrapping action rows. They do not replace these checks. The CI artifact `sahay-accessibility-previews` contains automated 200% text renders in
+portrait/landscape; the test suite also checks the app text/container contrast in light and dark themes.
 
 - TalkBack: heading/order, selected answer announcement, sliders, text fields, language chips, source note, Stop and permission denial.
 - Maximum system font size and 200% display/font scaling: portrait and landscape; every action remains reachable by scrolling.
@@ -75,7 +76,7 @@ semantics, a labelled confidence slider, at least 48dp answer targets and wrappi
 ## Hindi review
 
 Two native speakers review intake, question feedback, errors, export/import and all new flows. Record reviewer ID, APK SHA,
-incorrect copy, suggested correction and whether the model or a template produced each reply. Additional locale packs currently
-translate core navigation; detailed strings intentionally fall back to English and still need a complete native-language review.
+incorrect copy, suggested correction and whether the model or a template produced each reply. All six UI packs have matching resource keys and format placeholders. Native review of Tamil, Telugu, Bengali and Marathi
+copy is still needed; course notes and model/template output may remain in their source language.
 
 Report failures with the issue ID, exact reproduction steps and a screenshot or log. Do not report synthetic unit tests as phone measurements.

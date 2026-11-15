@@ -124,7 +124,7 @@ fun ShareScreen(state: AppState) {
             classRows = result; error = failure
         }) { Text(sr(R.string.share_teacher_title)) }
         classRows.forEach { row ->
-            val label = "${row.name}: ${AppState.percent(row.meanMastery)}% (${row.students})"
+            val label = sr(R.string.share_average_row, row.name, AppState.percent(row.meanMastery), row.students)
             Text(label); MasteryBar(row.meanMastery, label = label)
         }
         if (rows.isNotEmpty()) {
@@ -133,7 +133,7 @@ fun ShareScreen(state: AppState) {
             rows.forEach { row ->
                 Text(row.learnerId)
                 row.values.forEach { (id, value) ->
-                    val label = "${state.contentFor(row.domain).graph.skills[id]?.name ?: id}: ${AppState.percent(value)}%"
+                    val label = sr(R.string.share_mastery_row, state.contentFor(row.domain).graph.skills[id]?.name ?: id, AppState.percent(value))
                     Text(label); MasteryBar(value, label = label)
                 }
             }

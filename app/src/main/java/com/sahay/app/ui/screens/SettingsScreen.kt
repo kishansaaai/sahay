@@ -77,6 +77,9 @@ fun SettingsScreen(state: AppState) {
             Text(text = sr(R.string.settings_model_note), style = MaterialTheme.typography.bodySmall)
         }
 
+        state.storageErrorText()?.let { error ->
+            Text(sr(R.string.settings_storage_error, error), color = MaterialTheme.colorScheme.error)
+        }
         SectionCard(title = sr(R.string.settings_data)) {
             Text(
                 text = sr(R.string.settings_data_summary, state.exportSummary()),
