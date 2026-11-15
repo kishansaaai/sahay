@@ -134,7 +134,7 @@ def main():
             installed = adb.call('install', '-r', str(args.apk.resolve()), required=False, timeout=120)
             result['installation_succeeded'] = installed.returncode == 0 and 'Success' in installed.stdout
             if not result['installation_succeeded']:
-                result['installation_error'] = installed.stderr.strip() or installed.stdout.strip()
+                result['installation_error'] = (installed.stderr.strip() or installed.stdout.strip()).replace(adb.serial, '[device]')
                 print('Installation did not succeed. No uninstall or data deletion was attempted.')
         result['app_package_present'] = adb.call('shell', 'pm', 'path', 'com.sahay.app', required=False).stdout.strip().startswith('package:')
         args.out.mkdir(parents=True, exist_ok=True)
