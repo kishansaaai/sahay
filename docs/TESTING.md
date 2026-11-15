@@ -8,7 +8,7 @@ This APK is for testing only. It is not the release artefact (B21/#40) and must 
 
 1. Open the repository's **Actions** tab and pick the workflow run you want (the newest run on `main` for the daily build).
 2. Scroll to **Artifacts** and download `sahay-debug-apk`.
-3. Unzip it. The archive contains `app-debug.apk` and `apk-sha256.txt`.
+3. Unzip it. The archive contains `app-debug.apk`, `apk-sha256.txt` and, on current builds, `signing-cert.txt`.
 
 To force a fresh build without pushing a commit, run the workflow manually:
 
@@ -50,3 +50,10 @@ Nothing in this list has been verified yet by the team. Treat it as a test scrip
 Record the phone model, Android version, the APK's SHA-256 from `apk-sha256.txt`, and the exact steps. Use the device table in `bench/` for timings and battery numbers. Numbers measured on one phone must not be presented as results on another.
 
 For scan, QR/classroom, voice, large-text and Hindi test cases, use [BETA.md](BETA.md). Release candidates have a separate [signing procedure](../releases/SIGNING.md).
+
+A verified current-main APK and its checksum/signature evidence are linked in [ANDROID_ARTIFACT.md](ANDROID_ARTIFACT.md).
+
+The CI debug signing key is reused through a test-only Actions cache so normal daily builds can update each other.
+The production release key remains separate and must come from the team signing secrets. Cache resets or older debug builds
+can have a different certificate: the phone collector reports an incompatible update and does not uninstall the existing app.
+For the Vivo V21e handoff and automatic hardware/OS/RAM collection, see [VIVO_TESTING.md](VIVO_TESTING.md).

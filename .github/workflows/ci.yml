@@ -19,6 +19,7 @@ jobs:
         run: |
           python scripts/ci_checks.py
           python scripts/check_locales.py
+          python -m unittest discover -s scripts/tests
       - name: Content validation (acyclic graphs, one correct option, misconception tags)
         run: python scripts/validate_content.py
       - name: Learning engine unit tests
@@ -62,6 +63,11 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
+      - name: Reuse the test-only debug signing identity
+        uses: actions/cache@v4
+        with:
+          path: ~/.android/debug.keystore
+          key: ${{ runner.os }}-sahay-debug-keystore-v1
       - name: Install Android SDK packages
         run: |
           S="$(command -v sdkmanager || true)"
@@ -84,6 +90,7 @@ jobs:
         run: |
           cd app/build/outputs/apk/debug
           sha256sum ./*.apk | tee apk-sha256.txt
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose --print-certs ./*.apk | tee signing-cert.txt
           ls -l ./*.apk
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
@@ -92,4 +99,5 @@ jobs:
           path: |
             app/build/outputs/apk/debug/*.apk
             app/build/outputs/apk/debug/apk-sha256.txt
+            app/build/outputs/apk/debug/signing-cert.txt
           if-no-files-found: error
